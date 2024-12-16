@@ -1,0 +1,28 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [replicationcontrollers]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Containers Missing Liveness Probe
+  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: containers-missing-liveness-probe
+  io.kubewarden.policy.description: "This Policy detects whether or not a livenessProbe has been set for containers. Containers probes are:\n\n### liveness \nThe kubelet uses liveness probes to know when to restart a container. For example, liveness probes could catch a deadlock, where an application is running, but unable to make progress. Restarting a container in such a state can help to make the application more available despite bugs.\n\n### readiness\nThe kubelet uses readiness probes to know when a container is ready to start accepting traffic. A Pod is considered ready when all of its containers are ready. One use of this signal is to control which Pods are used as backends for Services. When a Pod is not ready, it is removed from Service load balancers.\n\n### startup\nThe kubelet uses startup probes to know when a container application has started. If such a probe is configured, it disables liveness and readiness checks until it succeeds, making sure those probes don't interfere with the application startup. This can be used to adopt liveness checks on slow starting containers, avoiding them getting killed by the kubelet before they are up and running.\n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-missing-liveness-probe
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: reliability
+  io.kubewarden.policy.severity: medium

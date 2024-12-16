@@ -1,0 +1,45 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [replicationcontrollers]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Containers Sharing Process Namespace
+  io.artifacthub.keywords: nist800-190, gdpr, default
+  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: containers-sharing-process-namespace
+  io.kubewarden.policy.description: |
+    This Policy allows check if sharing process namespace with other containers in the pod should be allowed or not. Resources that can be shared with the container include:
+
+    ### hostNetwork
+    Controls whether the pod may use the node network namespace. Doing so gives the pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other pods on the same node.
+
+    ### hostPID
+    Controls whether the pod containers can share the host process ID namespace. Note that when paired with ptrace this can be used to escalate privileges outside of the container (ptrace is forbidden by default).
+
+    ### shareProcessNamespace
+    When process namespace sharing is enabled, processes in a container are visible to all other containers in that pod.
+
+    ### hostIPC
+    Controls whether the pod containers can share the host IPC namespace.
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-sharing-process-namespace
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: pod-security
+  io.kubewarden.policy.severity: high
+  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.2.4, cis-benchmark.5.2.3
+  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.4.5.2
+  # io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24

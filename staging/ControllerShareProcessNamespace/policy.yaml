@@ -1,0 +1,101 @@
+apiVersion: pac.weave.works/v2beta2
+kind: Policy
+metadata:
+  name: weave.policies.containers-sharing-process-namespace
+spec:
+  id: weave.policies.containers-sharing-process-namespace
+  name: Containers Sharing Process Namespace
+  enabled: true
+  description: |
+    This Policy allows check if sharing process namespace with other containers in the pod should be allowed or not. Resources that can be shared with the container include:
+
+    ### hostNetwork
+    Controls whether the pod may use the node network namespace. Doing so gives the pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other pods on the same node.
+
+    ### hostPID
+    Controls whether the pod containers can share the host process ID namespace. Note that when paired with ptrace this can be used to escalate privileges outside of the container (ptrace is forbidden by default).
+
+    ### shareProcessNamespace
+    When process namespace sharing is enabled, processes in a container are visible to all other containers in that pod.
+
+    ### hostIPC
+    Controls whether the pod containers can share the host IPC namespace.
+  how_to_solve: "Match the shared resource with either true or false, as set in your constraint. \n```\n...\n  spec:\n    <shared_resource>: <resource_enabled>\n```\nhttps://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces\n"
+  category: weave.categories.pod-security
+  severity: high
+  targets: {kinds: [Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob]}
+  standards:
+    - id: weave.standards.cis-benchmark
+      controls:
+        - weave.controls.cis-benchmark.5.2.4
+        - weave.controls.cis-benchmark.5.2.3
+    - id: weave.standards.nist-800-190
+      controls:
+        - weave.controls.nist-800-190.4.5.2
+    - id: weave.standards.gdpr
+      controls:
+        - weave.controls.gdpr.25
+        - weave.controls.gdpr.32
+        - weave.controls.gdpr.24
+  tags: [nist800-190, gdpr, default]
+  parameters:
+    - name: resource_enabled
+      type: boolean
+      required: true
+      value: false
+    - name: exclude_namespaces
+      type: array
+      required: false
+      value:
+    - name: exclude_label_key
+      type: string
+      required: false
+      value:
+    - name: exclude_label_value
+      type: string
+      required: false
+      value:
+  code: |
+    package weave.advisor.podSecurity.deny_shared_process_namespace
+
+    import future.keywords.in
+
+    resource_enabled := input.parameters.resource_enabled
+    exclude_namespaces := input.parameters.exclude_namespaces
+    exclude_label_key := input.parameters.exclude_label_key
+    exclude_label_value := input.parameters.exclude_label_value
+
+    violation[result] {
+      isExcludedNamespace == false
+      not exclude_label_value == controller_input.metadata.labels[exclude_label_key]
+      shared_resource := "shareProcessNamespace"
+      resource := controller_spec[shared_resource]
+      not resource == resource_enabled
+      result = {
+        "issue_detected": true,
+        "msg": sprintf("'%v' should be set to '%v'; found '%v'", [shared_resource, resource_enabled, resource]),
+        "violating_key": sprintf("spec.template.spec[%v]", [shared_resource]),
+        "recommended_value": resource_enabled
+      }
+    }
+
+    # Controller input
+    controller_input = input.review.object
+
+    # controller_container acts as an iterator to get containers from the template
+    controller_spec = controller_input.spec.template.spec {
+      contains_kind(controller_input.kind, {"StatefulSet" , "DaemonSet", "Deployment", "Job"})
+    } else = controller_input.spec {
+      controller_input.kind == "Pod"
+    } else = controller_input.spec.jobTemplate.spec.template.spec {
+      controller_input.kind == "CronJob"
+    }
+
+    contains_kind(kind, kinds) {
+      kinds[_] = kind
+    }
+
+    isExcludedNamespace = true {
+    	controller_input.metadata.namespace
+    	controller_input.metadata.namespace in exclude_namespaces
+    } else = false

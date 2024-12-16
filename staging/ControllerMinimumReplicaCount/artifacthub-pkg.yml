@@ -1,0 +1,72 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.0.1
+name: containers-minimum-replica-count
+displayName: Containers Minimum Replica Count
+createdAt: 2024-12-12T12:50:17.077832849Z
+description: "Use this Policy to to check the replica count of your workloads. The value set in the Policy is greater than or equal to the amount desired, so if the replica count is lower than what is specified, the Policy will be in violation. \n"
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/rego-policies
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/containers-minimum-replica-count:v0.0.1
+keywords:
+- soc2-type1
+links:
+- name: policy
+  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/rego-policies
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/containers-minimum-replica-count:v0.0.1
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/containers-minimum-replica-count:v0.0.1
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/resources: Deployment, StatefulSet, ReplicaSet, ReplicationController, HorizontalPodAutoscaler
+  kubewarden/rules: |
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - statefulsets
+      - replicasets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - autoscaling
+      apiVersions:
+      - v2
+      resources:
+      - horizontalpodautoscalers
+      operations:
+      - CREATE
+      - UPDATE

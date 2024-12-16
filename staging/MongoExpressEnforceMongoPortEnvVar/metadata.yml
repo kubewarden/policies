@@ -1,0 +1,32 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [replicationcontrollers]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_MONGODB_PORT
+  io.artifacthub.keywords: pci-dss
+  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: mongo-express-enforce-mongodb-port-env-var
+  io.kubewarden.policy.description: |
+    This Policy ensures ME_CONFIG_MONGODB_PORT environment variable are in place when using the official container images from Docker Hub.
+    ME_CONFIG_MONGODB_PORT: The ME_CONFIG_MONGODB_PORT environment variable sets the mongodb port
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/mongo-express-enforce-mongodb-port-env-var
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: network-security
+  io.kubewarden.policy.severity: high
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.1.1.6, pci-dss.2.2.2

@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [helm.toolkit.fluxcd.io]
+    apiVersions: [v2]
+    resources: [helmreleases]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Helm Release Storage Namespace
+  io.artifacthub.keywords: flux
+  io.artifacthub.resources: HelmRelease
+  io.kubewarden.policy.title: helm-release-storage-namespace
+  io.kubewarden.policy.description: "HelmRelease storageNamespace must contain a value from storage_namespaces."
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/helm-release-storage-namespace
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: access-control
+  io.kubewarden.policy.severity: medium

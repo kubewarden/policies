@@ -1,0 +1,30 @@
+rules:
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [cronjobs, jobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [daemonsets, deployments, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [pods]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Container Maximum CPU Limits
+  io.artifacthub.resources: CronJob, DaemonSet, Deployment, Job, Pod, StatefulSet
+  io.kubewarden.policy.title: container-maximum-cpu-limits
+  io.kubewarden.policy.description: |
+    This Policy is to ensure a maximum CPU Limit value is set. The policy will fail if the set CPU limit is higher than the one specified in the policy. You must specify a unit size (m, g, etc).
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/container-maximum-cpu-limits
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: capacity-management
+  io.kubewarden.policy.severity: medium
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.2.1.1

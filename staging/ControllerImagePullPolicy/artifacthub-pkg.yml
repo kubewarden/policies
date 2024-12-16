@@ -1,0 +1,72 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.0.1
+name: container-image-pull-policy
+displayName: Container Image Pull Policy
+createdAt: 2024-12-12T12:50:16.396862509Z
+description: "This Policy is to ensure you are setting a value for your `imagePullPolicy`. \n\nThe `imagePullPolicy` and the tag of the image affect when the kubelet attempts to pull the specified image.\n\n`imagePullPolicy`: IfNotPresent: the image is pulled only if it is not already present locally.\n\n`imagePullPolicy`: Always: every time the kubelet launches a container, the kubelet queries the container image registry to resolve the name to an image digest. If the kubelet has a container image with that exact digest cached locally, the kubelet uses its cached image; otherwise, the kubelet downloads (pulls) the image with the resolved digest, and uses that image to launch the container.\n\n`imagePullPolicy` is omitted and either the image tag is :latest or it is omitted: `imagePullPolicy` is automatically set to Always. Note that this will not be updated to IfNotPresent if the tag changes value.\n\n`imagePullPolicy` is omitted and the image tag is present but not :latest: `imagePullPolicy` is automatically set to IfNotPresent. Note that this will not be updated to Always if the tag is later removed or changed to :latest.\n\n`imagePullPolicy`: Never: the image is assumed to exist locally. No attempt is made to pull the image.\n"
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/rego-policies
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/container-image-pull-policy:v0.0.1
+links:
+- name: policy
+  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/rego-policies
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/container-image-pull-policy:v0.0.1
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/container-image-pull-policy:v0.0.1
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  kubewarden/rules: |
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - daemonsets
+      - statefulsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE

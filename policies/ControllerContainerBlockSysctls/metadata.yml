@@ -1,0 +1,34 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [replicationcontrollers]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Container Block Sysctls
+  io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, nist800-190, gdpr, default
+  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: container-block-sysctl
+  io.kubewarden.policy.description: "Setting sysctls can allow containers unauthorized escalated privileges to a Kubernetes node. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/container-block-sysctl
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: pod-security
+  io.kubewarden.policy.severity: high
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.2.2.4, pci-dss.2.2.5
+  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.2.6
+  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.4.1
+  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.3.3.1
+  # io.kubewarden.policy.standards.gdpr: gdpr.24, gdpr.25, gdpr.32

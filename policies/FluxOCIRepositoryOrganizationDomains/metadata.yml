@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [source.toolkit.fluxcd.io]
+    apiVersions: [v1beta2]
+    resources: [ocirepositories]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: OCIRepository Organization Domains
+  io.artifacthub.keywords: flux
+  io.artifacthub.resources: OCIRepository
+  io.kubewarden.policy.title: ocirepository-organization-domains
+  io.kubewarden.policy.description: "OCIRepository resources must only be from allowed organization domains."
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/ocirepository-organization-domains
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: security
+  io.kubewarden.policy.severity: medium

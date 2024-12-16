@@ -1,0 +1,57 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.0.1
+name: rbac-protect-cluster-admin-clusterrolebindings
+displayName: Rbac Protect Cluster Admin Clusterrolebindings
+createdAt: 2024-12-12T12:50:54.502811252Z
+description: "This Policy allows you to select which groups you can set for Cluster-admin. The default policy checks for the \n\n```\nsubjects:\n- kind: Group\n  name: system:masters\n```\n\n`cluster-admin` allows super-user access to perform any action on any resource. When used in a ClusterRoleBinding, it gives full control over every resource in the cluster and in all namespaces. When used in a RoleBinding, it gives full control over every resource in the role binding's namespace, including the namespace itself. Be selective when adding additional subjects. \n"
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/rego-policies
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/rbac-protect-cluster-admin-clusterrolebindings:v0.0.1
+keywords:
+- pci-dss
+- cis-benchmark
+- mitre-attack
+- gdpr
+- hipaa
+- soc2-type1
+links:
+- name: policy
+  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/rego-policies
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/rbac-protect-cluster-admin-clusterrolebindings:v0.0.1
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/rbac-protect-cluster-admin-clusterrolebindings:v0.0.1
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/resources: ClusterRoleBinding
+  kubewarden/rules: |
+    - apiGroups:
+      - rbac.authorization.k8s.io
+      apiVersions:
+      - v1
+      resources:
+      - clusterrolebindings
+      operations:
+      - CREATE
+      - UPDATE

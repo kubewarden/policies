@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [source.toolkit.fluxcd.io]
+    apiVersions: [v1]
+    resources: [gitrepositories]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: GitRepository Ignore Suffixes
+  io.artifacthub.keywords: flux
+  io.artifacthub.resources: GitRepository
+  io.kubewarden.policy.title: gitrepository-ignore-suffixes
+  io.kubewarden.policy.description: "GitRepository resources must include specific suffixes in the spec.ignore field which determines the files to be ignored before making a commit."
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/gitrepository-ignore-suffixes
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: best-practices
+  io.kubewarden.policy.severity: medium

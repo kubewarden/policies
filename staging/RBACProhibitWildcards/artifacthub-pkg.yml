@@ -1,0 +1,50 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.0.1
+name: rbac-prohibit-resources-wildcards
+displayName: Rbac Prohibit Resources Wildcards
+createdAt: 2024-12-12T12:51:22.792937444Z
+description: "This Policy prohbits various resources from being set with wildcards for Role or ClusterRole resources, except for the `cluster-admin` ClusterRole. It will check each resource specified for the verb specified. The wildcards will be checked in:\n\n### Resources\nIn the Kubernetes API, most resources are represented and accessed using a string representation of their object name, such as pods for a Pod. RBAC refers to resources using exactly the same name that appears in the URL for the relevant API endpoint. \n\n### Verbs\nAPI verbs like get, list, create, update, patch, watch, delete, and deletecollection are used for resource requests. \n\n### API Groups\nThe API Group being accessed (for resource requests only).\n\n### Non Resource URLs\nRequests to endpoints other than /api/v1/... or /apis/<group>/<version>/... are considered \"non-resource requests\", and use the lower-cased HTTP method of the request as the verb.\n"
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/rego-policies
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/rbac-prohibit-resources-wildcards:v0.0.1
+links:
+- name: policy
+  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/rego-policies
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/rbac-prohibit-resources-wildcards:v0.0.1
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/rbac-prohibit-resources-wildcards:v0.0.1
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/resources: Role
+  kubewarden/rules: |
+    - apiGroups:
+      - rbac.authorization.k8s.io
+      apiVersions:
+      - v1
+      resources:
+      - roles
+      operations:
+      - CREATE
+      - UPDATE

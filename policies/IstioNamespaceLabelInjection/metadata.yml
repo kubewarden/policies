@@ -1,0 +1,20 @@
+rules:
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [namespaces]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Istio Injected Namespaces
+  io.artifacthub.resources: Namespace
+  io.kubewarden.policy.title: istio-injected-namespaces
+  io.kubewarden.policy.description: "# Istio-Injected Namespaces\nSpecify namespaces you would like to be labeld with `istio-injected: enabled`. Namespaces with this label with automatically deploy a Istio sidecar with each pod. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/istio-injected-namespaces
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: network-security
+  io.kubewarden.policy.severity: low

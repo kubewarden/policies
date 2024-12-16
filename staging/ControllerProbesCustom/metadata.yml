@@ -1,0 +1,28 @@
+rules:
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [cronjobs, jobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [daemonsets, deployments, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [pods]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Container Custom Probe
+  io.artifacthub.resources: CronJob, DaemonSet, Deployment, Job, Pod, StatefulSet
+  io.kubewarden.policy.title: container-custom-probe
+  io.kubewarden.policy.description: "This Policy allows defining the various container probes, and ensures consistent probes are configured across all containers. You can set the type of probe `livenessProbe`, `readinessProbe`, `startupProbe` along with a `command`, a `path` and a `port`. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/container-custom-probe
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: reliability
+  io.kubewarden.policy.severity: high

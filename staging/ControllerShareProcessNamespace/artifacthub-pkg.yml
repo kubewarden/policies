@@ -1,0 +1,89 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.0.1
+name: containers-sharing-process-namespace
+displayName: Containers Sharing Process Namespace
+createdAt: 2024-12-12T12:50:24.424577626Z
+description: |
+  This Policy allows check if sharing process namespace with other containers in the pod should be allowed or not. Resources that can be shared with the container include:
+
+  ### hostNetwork
+  Controls whether the pod may use the node network namespace. Doing so gives the pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other pods on the same node.
+
+  ### hostPID
+  Controls whether the pod containers can share the host process ID namespace. Note that when paired with ptrace this can be used to escalate privileges outside of the container (ptrace is forbidden by default).
+
+  ### shareProcessNamespace
+  When process namespace sharing is enabled, processes in a container are visible to all other containers in that pod.
+
+  ### hostIPC
+  Controls whether the pod containers can share the host IPC namespace.
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/rego-policies
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/containers-sharing-process-namespace:v0.0.1
+keywords:
+- nist800-190
+- gdpr
+- default
+links:
+- name: policy
+  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/rego-policies
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/containers-sharing-process-namespace:v0.0.1
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/containers-sharing-process-namespace:v0.0.1
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  kubewarden/rules: |
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - daemonsets
+      - statefulsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE

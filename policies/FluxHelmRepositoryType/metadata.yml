@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [source.toolkit.fluxcd.io]
+    apiVersions: [v1]
+    resources: [helmrepositories]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Helm Repo Type Should Be OCI
+  io.artifacthub.keywords: flux
+  io.artifacthub.resources: HelmRepository
+  io.kubewarden.policy.title: helm-repo-type
+  io.kubewarden.policy.description: "The type of a Helm repository should be OCI."
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/helm-repo-type
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: best-practices
+  io.kubewarden.policy.severity: medium

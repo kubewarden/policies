@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [kustomize.toolkit.fluxcd.io]
+    apiVersions: [v1]
+    resources: [kustomizations]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Kustomization Excluded Paths
+  io.artifacthub.keywords: flux
+  io.artifacthub.resources: Kustomization
+  io.kubewarden.policy.title: kustomization-excluded-paths
+  io.kubewarden.policy.description: "spec.path cannot be one of excludedPathsList[]"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/kustomization-excluded-paths
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: organizational-standard
+  io.kubewarden.policy.severity: medium

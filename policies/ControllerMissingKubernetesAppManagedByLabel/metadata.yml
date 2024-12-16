@@ -1,0 +1,28 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [replicationcontrollers]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Missing Kubernetes App Managed By Label
+  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: missing-kubernetes-app-managed-by-label
+  io.kubewarden.policy.description: "Custom labels can help enforce organizational standards for each artifact deployed. This Policy ensure a custom label key is set in the entity's `metadata`. The Policy detects the presence of the following: \n\n### owner\nA label key of `owner` will help identify who the owner of this entity is. \n\n### app.kubernetes.io/name\nThe name of the application\t\n\n### app.kubernetes.io/instance\nA unique name identifying the instance of an application\t  \n\n### app.kubernetes.io/version\nThe current version of the application (e.g., a semantic version, revision hash, etc.)\n\n### app.kubernetes.io/part-of\nThe name of a higher level application this one is part of\t\n\n### app.kubernetes.io/managed-by\nThe tool being used to manage the operation of an application\t\n\n### app.kubernetes.io/created-by\nThe controller/user who created this resource\t\n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/missing-kubernetes-app-managed-by-label
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: organizational-standards
+  io.kubewarden.policy.severity: low

@@ -1,0 +1,28 @@
+rules:
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [cronjobs, jobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [daemonsets, deployments, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [pods]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Container Named Port
+  io.artifacthub.resources: CronJob, DaemonSet, Deployment, Job, Pod, StatefulSet
+  io.kubewarden.policy.title: container-named-port
+  io.kubewarden.policy.description: "This Policy checks the named port of your containers to see if they are set in your container probes. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/container-named-port
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: best-practices
+  io.kubewarden.policy.severity: high

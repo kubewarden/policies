@@ -1,0 +1,25 @@
+rules:
+  - apiGroups: [networking.k8s.io]
+    apiVersions: [v1]
+    resources: [networkpolicies]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Block All Egress Traffic
+  io.artifacthub.keywords: pci-dss, mitre-attack, nist800-190, gdpr, soc2-type1
+  io.artifacthub.resources: NetworkPolicy
+  io.kubewarden.policy.title: block-all-egress-traffic
+  io.kubewarden.policy.description: "### Block all traffic\nIf you are using a CNI that allows for Network Policies, you can use this Policy to block all Egress traffic between namespaces. \n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/block-all-egress-traffic
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: network-security
+  io.kubewarden.policy.severity: medium
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.1.2.1
+  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.3.3.4
+  # io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.1

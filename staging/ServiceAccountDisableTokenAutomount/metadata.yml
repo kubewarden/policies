@@ -1,0 +1,27 @@
+rules:
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [serviceaccounts]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Disable ServiceAccount Token Automount In Specific Namespace
+  io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, hipaa, gdpr, default, soc2-type1
+  io.artifacthub.resources: ServiceAccount
+  io.kubewarden.policy.title: disable-service-account-token-automount-in-specific-namespace
+  io.kubewarden.policy.description: "This Policy allows you to enforce the enabling or disabling the automounting of service account tokens. \n\nWhen a pod is created without a service account defined, the default service account within the same namespace will be assigned automatically. \n\nThis is a security concern because a kubernetes client can load a container's service account token. With that token a compromoised contaienr can then access the Kubernetes API to perform actions such as creating and deleting pods.\n\nIn version 1.6+, you can opt out of automounting API credentials for a service account by setting automountServiceAccountToken: false on the service account.\n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/disable-service-account-token-automount-in-specific-namespace
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: access-control
+  io.kubewarden.policy.severity: high
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.7.1.1
+  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.1.6
+  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.6.3
+  # io.kubewarden.policy.standards.hipaa: hipaa.164.312.a.2.i, hipaa.164.312.a.1
+  # io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.3

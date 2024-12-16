@@ -1,0 +1,38 @@
+rules:
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [nodes]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Node Missing Label
+  io.artifacthub.resources: Node
+  io.kubewarden.policy.title: node-missing-label
+  io.kubewarden.policy.description: |
+    This Policy only looks for specific node label keys.
+
+    Important node labels include:
+    ### kubernetes.io/hostname
+    The Kubelet populates this label with the hostname. Note that the hostname can be changed from the "actual" hostname by passing the --hostname-override flag to the kubelet.
+
+    ### kubernetes.io/arch
+    The Kubelet populates this with runtime.GOARCH as defined by Go. This can be handy if you are mixing arm and x86 nodes.
+
+    ### node.kubernetes.io/instance-type
+    The Kubelet populates this with the instance type as defined by the cloudprovider. This will be set only if you are using a cloudprovider. This setting is handy if you want to target certain workloads to certain instance types, but typically you want to rely on the Kubernetes scheduler to perform resource-based scheduling. You should aim to schedule based on properties rather than on instance types (for example: require a GPU, instead of requiring a g2.2xlarge).
+
+    ### kubernetes.io/os
+    The Kubelet populates this with runtime.GOOS as defined by Go. This can be handy if you are mixing operating systems in your cluster (for example: mixing Linux and Windows nodes).
+
+    ### topology.kubernetes.io/zone
+    The kubelet or the external cloud-controller-manager populates this with the information as provided by the cloudprovider. This will be set only if you are using a cloudprovider. However, you should consider setting this on nodes if it makes sense in your topology.
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/node-missing-label
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: organizational-standards
+  io.kubewarden.policy.severity: low
+  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.4.5.1

@@ -1,0 +1,35 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [replicationcontrollers]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Containers Running With Unapproved Linux Capabilities
+  io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, nist800-190, gdpr, soc2-type1, default
+  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: containers-running-with-unapproved-linux-capabilities
+  io.kubewarden.policy.description: "Linux capabilities provide a finer-grained breakdown of the privileges traditionally associated with the superuser. Not specifying those capabilities gives the container access to all OS capabilities which may result in exploiting the VM at which the container is running. The issue is reported when a container has `SYS_ADMIN`, `NET_RAW`, `NET_ADMIN`, or `ALL` capabilities. For this Policy, you can also exclude a namespace, such as `kube-system`. \n\nWith Linux capabilities, you can grant certain privileges to a process without granting all the privileges of the root user. To add or remove Linux capabilities for a Container, include the capabilities field in the securityContext section of the Container manifest.\n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-running-with-unapproved-linux-capabilities
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: pod-security
+  io.kubewarden.policy.severity: high
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.2.2.4, pci-dss.2.2.5
+  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.2.7, cis-benchmark.5.2.8, cis-benchmark.5.2.9
+  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.4.1
+  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.3.3.1
+  # io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.1

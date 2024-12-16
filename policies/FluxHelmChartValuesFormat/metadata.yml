@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [source.toolkit.fluxcd.io]
+    apiVersions: [v1]
+    resources: [helmcharts]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: HelmChart Values File Format
+  io.artifacthub.keywords: flux
+  io.artifacthub.resources: HelmChart
+  io.kubewarden.policy.title: helm-chart-values-files-format
+  io.kubewarden.policy.description: "HelmChart must reference values files in the following format: 'xxx=values.yaml'."
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/helm-chart-values-files-format
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: configuration
+  io.kubewarden.policy.severity: medium

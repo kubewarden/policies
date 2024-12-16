@@ -1,0 +1,35 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [replicationcontrollers]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Controller ServiceAccount Tokens Automount
+  io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, hipaa, gdpr, default, soc2-type1
+  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: controller-serviceaccount-tokens-automount
+  io.kubewarden.policy.description: "This Policy allows for the option of enabling or disabling Service Accounts that are created for a Pod. The recommended practice is to set the `automount_token` to `false.  \n\nWhen a pod is created without specifying a service account, it is automatically assigned the default service account in the same namespace. This is a security concern because a compromised container can access the API using automatically mounted service account credentials. The API permissions of the service account depend on the authorization plugin and policy in use, but could possibly create and delete pods. \n\nWe recommend setting the `automount_token` to `false`. \n\nIn version 1.6+, you can opt out of automounting API credentials for a particular pod.\n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/controller-serviceaccount-tokens-automount
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: access-control
+  io.kubewarden.policy.severity: high
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.7.2.1
+  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.1.5
+  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.1.4
+  # io.kubewarden.policy.standards.hipaa: hipaa.164.312.a.2.i
+  # io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.3

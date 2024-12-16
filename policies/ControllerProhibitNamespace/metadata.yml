@@ -1,0 +1,31 @@
+rules:
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [pods, replicationcontrollers]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [deployments, replicasets, daemonsets, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs, cronjobs]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Containers Should Not Run In Namespace
+  io.artifacthub.keywords: cis-benchmark, soc2-type1
+  io.artifacthub.resources: Pod, Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.kubewarden.policy.title: containers-should-not-run-in-namespace
+  io.kubewarden.policy.description: "This Policy ensure workloads are not running in a specified namespace. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-should-not-run-in-namespace
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: Best practices RBAC
+  io.kubewarden.policy.severity: low
+  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.7.4
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.2.1.1

@@ -1,0 +1,25 @@
+rules:
+  - apiGroups: [apps]
+    apiVersions: [v1]
+    resources: [daemonsets, deployments, statefulsets]
+    operations: [CREATE, UPDATE]
+  - apiGroups: [batch]
+    apiVersions: [v1]
+    resources: [jobs]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Containers Are Missing A Spec Template Label
+  io.artifacthub.resources: DaemonSet, Deployment, Job, StatefulSet
+  io.kubewarden.policy.title: containers-are-missing-a-spec-template-label
+  io.kubewarden.policy.description: |
+    This Policy allows setting a custom label in `spec.template.metadata`.
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-are-missing-a-spec-template-label
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: organizational-standards
+  io.kubewarden.policy.severity: low

@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [networking.k8s.io]
+    apiVersions: [v1]
+    resources: [ingresses]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Enforce Specific Ingress Class
+  io.artifacthub.resources: Ingress
+  io.kubewarden.policy.title: enforce-specific-ingress-class
+  io.kubewarden.policy.description: "This Policy allows for a custom Ingress annotation key and value. When using Kubernetes Ingress, various annotation can be used to define different configurations, even different ingress controllers. Values may vary depending on your use case. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/enforce-specific-ingress-class
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: network-security
+  io.kubewarden.policy.severity: medium
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.1.1.4

@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [networking.k8s.io]
+    apiVersions: [v1]
+    resources: [networkpolicies]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Network Allow Ingress Traffic From Namespace To Another
+  io.artifacthub.resources: NetworkPolicy
+  io.kubewarden.policy.title: network-allow-ingress-traffic-from-namespace-to-another
+  io.kubewarden.policy.description: "If you are using a CNI that allows for Network Policies, you can use this Policy to allow Ingress traffic from one namespace to another.\n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/network-allow-ingress-traffic-from-namespace-to-another
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: network-security
+  io.kubewarden.policy.severity: medium
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.1

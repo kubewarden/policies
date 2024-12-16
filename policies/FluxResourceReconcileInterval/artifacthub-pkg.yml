@@ -1,0 +1,74 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.0.1
+name: resource-reconcile-interval
+displayName: Resource Reconcile Interval Must Be Set Between Lower and Upper Bound
+createdAt: 2024-12-12T12:51:12.108909024Z
+description: The reconcile interval of a Resource must be set between a lower and upper bound, lower_bound & upper_bound must be in seconds .
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/rego-policies
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/resource-reconcile-interval:v0.0.1
+keywords:
+- flux
+links:
+- name: policy
+  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/rego-policies
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/resource-reconcile-interval:v0.0.1
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/resource-reconcile-interval:v0.0.1
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/resources: HelmRelease, GitRepository, OCIRepository, Bucket, HelmChart, HelmRepository, Kustomization
+  kubewarden/rules: |
+    - apiGroups:
+      - helm.toolkit.fluxcd.io
+      apiVersions:
+      - v2
+      resources:
+      - helmreleases
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - source.toolkit.fluxcd.io
+      apiVersions:
+      - v1
+      resources:
+      - gitrepositories
+      - ocirepositories
+      - buckets
+      - helmcharts
+      - helmrepositories
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - kustomize.toolkit.fluxcd.io
+      apiVersions:
+      - v1
+      resources:
+      - kustomizations
+      operations:
+      - CREATE
+      - UPDATE

@@ -1,0 +1,22 @@
+rules:
+  - apiGroups: [networking.k8s.io]
+    apiVersions: [v1]
+    resources: [networkpolicies]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Network Allow Egress Dns To Coredns
+  io.artifacthub.resources: NetworkPolicy
+  io.kubewarden.policy.title: network-allow-egress-dns-to-coredns
+  io.kubewarden.policy.description: "If you are using a CNI that allows for Network Policies, you can use this Policy to allow egress traffic from a specified namespace, to your coredns pods with the label `k8s-app: kube-dns`. The Policy specifically looks for port UDP 53. \n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/network-allow-egress-dns-to-coredns
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: network-security
+  io.kubewarden.policy.severity: medium
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.1.2.1
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.1

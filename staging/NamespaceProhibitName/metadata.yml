@@ -1,0 +1,20 @@
+rules:
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [namespaces]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Prohibit Creating Namespace Starting With Prefix
+  io.artifacthub.resources: Namespace
+  io.kubewarden.policy.title: prohibit-creating-namespace-starting-with-prefix
+  io.kubewarden.policy.description: "Using this Policy, you can prohibit certain namespaces from containing a specified combination of letters and/or numbers. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/prohibit-creating-namespace-starting-with-prefix
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: organizational-standards
+  io.kubewarden.policy.severity: medium

@@ -1,0 +1,25 @@
+rules:
+  - apiGroups: [rbac.authorization.k8s.io]
+    apiVersions: [v1]
+    resources: [roles]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Rbac Prohibit Updating Configmaps
+  io.artifacthub.resources: Role
+  io.kubewarden.policy.title: rbac-prohibit-updating-configmaps
+  io.kubewarden.policy.description: "This Policy will violate if any RBAC ClusterRoles or Roles are designated with a specific verbs set for ConfigMaps. For example, if you wanted to deny the patching of a configmap, you would create a Policy with a the `resource_name` of the configmap you want to protect, it's `namespace` and the `verb` you want to block. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/rbac-prohibit-updating-configmaps
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: access-control
+  io.kubewarden.policy.severity: high
+  # io.kubewarden.policy.standards.pci-dss: pci-dss.7.1.1, pci-dss.7.1.2
+  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.8.6
+  # io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24
+  # io.kubewarden.policy.standards.hipaa: hipaa.164.312.a.1
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.8, soc2-type-i.1.6.3

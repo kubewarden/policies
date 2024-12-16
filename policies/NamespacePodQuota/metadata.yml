@@ -1,0 +1,21 @@
+rules:
+  - apiGroups: [""]
+    apiVersions: [v1]
+    resources: [resourcequotas]
+    operations: [CREATE, UPDATE]
+mutating: false
+executionMode: gatekeeper
+backgroundAudit: true
+annotations:
+  io.artifacthub.displayName: Namespace Pod Quota
+  io.artifacthub.resources: ResourceQuota
+  io.kubewarden.policy.title: namespace-pod-quota
+  io.kubewarden.policy.description: "When using a pod quota ensure setting the proper value for the quantity of pods you wish to have in your namespace. \n"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/namespace-pod-quota
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: capacity-management
+  io.kubewarden.policy.severity: low
+  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.2.1.1
