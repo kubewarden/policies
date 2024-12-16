@@ -7,7 +7,7 @@
 version: 0.0.1
 name: gitrepository-untrusted-domains
 displayName: GitRepository Untrusted Domains
-createdAt: 2024-12-12T12:51:06.300758619Z
+createdAt: 2024-12-16T15:58:54.002650622Z
 description: GitRepository resources must not use targets from untrusted domains.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

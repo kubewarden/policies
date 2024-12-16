@@ -7,7 +7,7 @@
 version: 0.0.1
 name: postgres-enforce-pgdata-env-var
 displayName: Postgres Enforce Environment Variable - PGDATA
-createdAt: 2024-12-12T12:50:46.562275124Z
+createdAt: 2024-12-16T15:58:36.57794573Z
 description: |
   This Policy ensures PGDATA environment variable are in place when using the official container images from Docker Hub.
   PGDATA: The PGDATA environment variable is used to define another location - like a subdirectory - for the database files. The default is /var/lib/postgresql/data. If the data volume you're using is a filesystem mountpoint (like with GCE persistent disks) or remote folder that cannot be chowned to the postgres user (like some NFS mounts), Postgres initdb recommends a subdirectory be created to contain the data.

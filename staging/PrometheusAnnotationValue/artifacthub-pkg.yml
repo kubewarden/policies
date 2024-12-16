@@ -7,7 +7,7 @@
 version: 0.0.1
 name: enforce-prometheus-annotation-value
 displayName: Enforce Prometheus Annotation Value
-createdAt: 2024-12-12T12:51:21.547887499Z
+createdAt: 2024-12-16T15:59:07.720531158Z
 description: "This Policy ensures custom annotation values are set like Prometheus scrape, path, and port values in your Prometheus annotations. If you are using something other than the default values, you can customize those requirements here. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

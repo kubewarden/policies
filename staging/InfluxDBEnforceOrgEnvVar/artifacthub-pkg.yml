@@ -7,7 +7,7 @@
 version: 0.0.1
 name: influxdb-enforce-org-env-var
 displayName: InfluxDB Enforce Environment Variable - DOCKER_INFLUXDB_INIT_ORG
-createdAt: 2024-12-12T12:50:29.267266218Z
+createdAt: 2024-12-16T15:58:21.267306742Z
 description: |
   This Policy ensures DOCKER_INFLUXDB_INIT_ORG environment variable are in place when using the official container images from Docker Hub.
   DOCKER_INFLUXDB_INIT_ORG: The name to set for the system's initial organization (Required).

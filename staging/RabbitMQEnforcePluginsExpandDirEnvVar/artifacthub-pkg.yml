@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-plugins-expand-dir-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_PLUGINS_EXPAND_DIR
-createdAt: 2024-12-12T12:50:51.690623966Z
+createdAt: 2024-12-16T15:58:41.193603693Z
 description: |
   This Policy ensures RABBITMQ_PLUGINS_EXPAND_DIR environment variable are in place when using the official container images from Docker Hub.
   RABBITMQ_PLUGINS_EXPAND_DIR: Working directory used to expand enabled plugins when starting the server. It is important that effective RabbitMQ user has sufficient permissions to read and create files and subdirectories in this directory.

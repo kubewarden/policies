@@ -7,7 +7,7 @@
 version: 0.0.1
 name: helm-release-remediation-retries
 displayName: Helm Release Remediation Retries
-createdAt: 2024-12-12T12:51:06.92405871Z
+createdAt: 2024-12-16T15:58:54.623146293Z
 description: HelmRelease remediation retries must be within the specified lower and upper bounds.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

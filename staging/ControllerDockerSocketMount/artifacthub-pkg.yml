@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-mounting-docker-socket
 displayName: Containers Mounting Docker Socket
-createdAt: 2024-12-12T12:50:16.059681652Z
+createdAt: 2024-12-16T15:58:10.150367757Z
 description: "This Policy checks the mounting of the `docker.sock` socket of the node into the container. The docker socket filename can be altered based on your configuration. The full path is unnecessary as the Policy accounts for any path.  \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

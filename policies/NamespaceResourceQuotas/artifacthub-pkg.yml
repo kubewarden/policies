@@ -7,7 +7,7 @@
 version: 0.0.1
 name: resource-quota-setting-is-missing
 displayName: Resource Quota Setting Is Missing
-createdAt: 2024-12-12T12:51:15.256284889Z
+createdAt: 2024-12-16T15:59:02.222886989Z
 description: |
   When creating resource quotas per namespace, ensure CPU and Memory requests and limits are set.
 license: Apache-2.0

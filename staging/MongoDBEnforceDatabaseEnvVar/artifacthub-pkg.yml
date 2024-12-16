@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongodb-enforce-database-env-var
 displayName: MongoDB Enforce Environment Variable - MONGO_INITDB_DATABASE
-createdAt: 2024-12-12T12:50:35.11361135Z
+createdAt: 2024-12-16T15:58:26.393105757Z
 description: |
   This Policy ensures MONGO_INITDB_DATABASE environment variable are in place when using the official container images from Docker Hub.
   MONGO_INITDB_DATABASE: The MONGO_INITDB_DATABASE environment variable allows you to specify the name of a database to be used for creation scripts.

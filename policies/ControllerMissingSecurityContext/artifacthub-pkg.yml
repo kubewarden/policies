@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-missing-security-context
 displayName: Containers Missing Security Context
-createdAt: 2024-12-12T12:50:21.539999761Z
+createdAt: 2024-12-16T15:58:14.517208288Z
 description: |
   This Policy checks if the container is missing securityContext while there is no securityContext defined on the Pod level as well. The security settings that are specified on the Pod level apply to all containers in the Pod.
 license: Apache-2.0

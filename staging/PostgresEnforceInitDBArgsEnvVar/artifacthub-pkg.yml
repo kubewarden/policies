@@ -7,7 +7,7 @@
 version: 0.0.1
 name: postgres-enforce-initdb-args-env-var
 displayName: Postgres Enforce Environment Variable - POSTGRES_INITDB_ARGS
-createdAt: 2024-12-12T12:50:45.673918024Z
+createdAt: 2024-12-16T15:58:35.730234445Z
 description: |
   This Policy ensures POSTGRES_INITDB_ARGS environment variable are in place when using the official container images from Docker Hub.
   POSTGRES_INITDB_ARGS:   The POSTGRES_INITDB_ARGS environment variable is used to send arguments to postgres initdb. The value is a space separated string of arguments as postgres initdb would expect them. This is useful for adding functionality like data page checksums: `-e POSTGRES_INITDB_ARGS="--data-checksums"`.

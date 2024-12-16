@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-default-user-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_DEFAULT_USER
-createdAt: 2024-12-12T12:50:48.383602186Z
+createdAt: 2024-12-16T15:58:38.169325327Z
 description: |
   This Policy ensures RABBITMQ_DEFAULT_USER environment variable are in place when using the official container images from Docker Hub.
   RABBITMQ_DEFAULT_USER: The RABBITMQ_DEFAULT_USER environment variable sets the User name to create when RabbitMQ creates a new database from scratch.

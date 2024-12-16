@@ -7,7 +7,7 @@
 version: 0.0.1
 name: network-block-all-egress-traffic-from-namespace
 displayName: Network Block All Egress Traffic From Namespace
-createdAt: 2024-12-12T12:51:17.789725745Z
+createdAt: 2024-12-16T15:59:04.44636427Z
 description: "If you are using a CNI that allows for Network Policies, you can use this Policy to block all Egress traffic from a specified namespace. \n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: enforce-prometheus-annotation-key
 displayName: Enforce Prometheus Annotation Key
-createdAt: 2024-12-12T12:51:21.255017358Z
+createdAt: 2024-12-16T15:59:07.457828651Z
 description: |
   This Policy ensures annotation keys like `prometheus.io/scrape`, `prometheus.io/port`, or `prometheus.io/path` are set in your Policy's metadata annotation. This is based on the default configuration of Prometheus.
 license: Apache-2.0

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: prohibit-creating-namespace-starting-with-prefix
 displayName: Prohibit Creating Namespace Starting With Prefix
-createdAt: 2024-12-12T12:50:43.794871802Z
+createdAt: 2024-12-16T15:58:34.116009376Z
 description: "Using this Policy, you can prohibit certain namespaces from containing a specified combination of letters and/or numbers. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

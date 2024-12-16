@@ -7,7 +7,7 @@
 version: 0.0.1
 name: services-prohibit-type
 displayName: Services Prohibit Type
-createdAt: 2024-12-12T12:50:56.985572555Z
+createdAt: 2024-12-16T15:58:46.026522317Z
 description: "This Policy checks your Kubernetes Service kind to see what Service type is set. If a specified service type is found, this Policy will be in violation. Security practices suggest using types `ServiceType` of `ClusterIP` or `LoadBalancer` and not `NodePort`. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

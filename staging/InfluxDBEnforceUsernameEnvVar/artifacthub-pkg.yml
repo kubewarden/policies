@@ -7,7 +7,7 @@
 version: 0.0.1
 name: influxdb-enforce-username-env-var
 displayName: InfluxDB Enforce Environment Variable - DOCKER_INFLUXDB_INIT_USERNAME
-createdAt: 2024-12-12T12:50:30.211764975Z
+createdAt: 2024-12-16T15:58:22.147734328Z
 description: |
   This Policy ensures DOCKER_INFLUXDB_INIT_USERNAME environment variable are in place when using the official container images from Docker Hub.
   DOCKER_INFLUXDB_INIT_USERNAME: The username to set for the system's initial super-user (Required).

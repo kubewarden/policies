@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mysql-enforce-skip-tzinfo-env-var
 displayName: MYSQL Enforce Environment Variable - MYSQL_INITDB_SKIP_TZINFO
-createdAt: 2024-12-12T12:50:42.860811285Z
+createdAt: 2024-12-16T15:58:33.322931742Z
 description: |
   This Policy ensures MYSQL_INITDB_SKIP_TZINFO environment variable are in place when using the official container images from Docker Hub.
   MYSQL_INITDB_SKIP_TZINFO: The MYSQL_INITDB_SKIP_TZINFO environment variable allows the skipping of timezone checking when initializing the DB.

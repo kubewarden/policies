@@ -7,7 +7,7 @@
 version: 0.0.1
 name: block-workloads-created-without-specifying-namespace
 displayName: Block Workloads Created Without Specifying Namespace
-createdAt: 2024-12-12T12:50:20.529642943Z
+createdAt: 2024-12-16T15:58:13.632492345Z
 description: "Using this Policy, you can prohibit workloads from being created in a default namespace due to the lack of a namespace label. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongo-express-enforce-enable-admin-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_MONGODB_ENABLE_ADMIN
-createdAt: 2024-12-12T12:50:38.787817721Z
+createdAt: 2024-12-16T15:58:29.72540905Z
 description: |
   This Policy ensures ME_CONFIG_MONGODB_ENABLE_ADMIN environment variable are in place when using the official container images from Docker Hub.
   ME_CONFIG_MONGODB_ENABLE_ADMIN: The ME_CONFIG_MONGODB_ENABLE_ADMIN environment variable enables admin access to all databases. Send strings: `"true"` or `"false"`

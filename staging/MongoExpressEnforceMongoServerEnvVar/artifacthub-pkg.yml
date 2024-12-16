@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongo-express-enforce-mongodb-server-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_MONGODB_SERVER
-createdAt: 2024-12-12T12:50:39.373627888Z
+createdAt: 2024-12-16T15:58:30.308355598Z
 description: |
   This Policy ensures ME_CONFIG_MONGODB_SERVER environment variable are in place when using the official container images from Docker Hub.
   ME_CONFIG_MONGODB_SERVER: The ME_CONFIG_MONGODB_SERVER environment variable sets the MongoDB container name. Use comma delimited list of host names for replica sets.

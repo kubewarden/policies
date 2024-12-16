@@ -7,7 +7,7 @@
 version: 0.0.1
 name: affinity-pod-simple
 displayName: Affinity Pod Simple
-createdAt: 2024-12-12T12:50:58.206611663Z
+createdAt: 2024-12-16T15:58:47.110294825Z
 description: "This Policy sets podAffinity keys, regardless of the Pod Affinity scheduling type. List out the keys you want to check for. This Policy supports the following Pod Affinity types:\n- preferredDuringSchedulingIgnoredDuringExecution \n- requiredDuringSchedulingIgnoredDuringExecution \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: bucket-endpoint-domain
 displayName: Bucket Endpoint Domain
-createdAt: 2024-12-12T12:51:05.045771142Z
+createdAt: 2024-12-16T15:58:52.799618706Z
 description: Bucket endpoint domain must be one of the trusted domains.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

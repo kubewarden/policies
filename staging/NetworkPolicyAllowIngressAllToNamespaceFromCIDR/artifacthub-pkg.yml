@@ -7,7 +7,7 @@
 version: 0.0.1
 name: network-allow-all-ingress-traffic-to-namespace-from-cidr-block
 displayName: Network Allow All Ingress Traffic To Namespace From CIDR Block
-createdAt: 2024-12-12T12:51:17.153716734Z
+createdAt: 2024-12-16T15:59:03.907912721Z
 description: "If you are using a CNI that allows for Network Policies, you can use this Policy to block all Egress traffic from a specified namespace to a CIDR block of IP addresses. \n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

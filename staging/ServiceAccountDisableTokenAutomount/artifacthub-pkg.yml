@@ -7,7 +7,7 @@
 version: 0.0.1
 name: disable-service-account-token-automount-in-specific-namespace
 displayName: Disable ServiceAccount Token Automount In Specific Namespace
-createdAt: 2024-12-12T12:50:56.391403838Z
+createdAt: 2024-12-16T15:58:45.518936343Z
 description: "This Policy allows you to enforce the enabling or disabling the automounting of service account tokens. \n\nWhen a pod is created without a service account defined, the default service account within the same namespace will be assigned automatically. \n\nThis is a security concern because a kubernetes client can load a container's service account token. With that token a compromoised contaienr can then access the Kubernetes API to perform actions such as creating and deleting pods.\n\nIn version 1.6+, you can opt out of automounting API credentials for a service account by setting automountServiceAccountToken: false on the service account.\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

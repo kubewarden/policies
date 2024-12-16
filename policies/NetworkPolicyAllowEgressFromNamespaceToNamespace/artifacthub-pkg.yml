@@ -7,7 +7,7 @@
 version: 0.0.1
 name: network-allow-egress-traffic-from-namespace-to-another
 displayName: Network Allow Egress Traffic From Namespace To Another
-createdAt: 2024-12-12T12:51:16.522412252Z
+createdAt: 2024-12-16T15:59:03.374858231Z
 description: "If you are using a CNI that allows for Network Policies, you can use this Policy to allow Egress traffic from one namespace to another.\n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

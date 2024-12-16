@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-block-specific-image-names
 displayName: Containers Block Specific Image Names
-createdAt: 2024-12-12T12:50:59.910374908Z
+createdAt: 2024-12-16T15:58:48.50124415Z
 description: "This Policy prohibits images with certain image names from being deployed by specifying a list of unapproved names. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

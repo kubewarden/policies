@@ -7,7 +7,7 @@
 version: 0.0.1
 name: gitrepository-organization-domains
 displayName: GitRepository Organization Domains
-createdAt: 2024-12-12T12:51:05.711729589Z
+createdAt: 2024-12-16T15:58:53.423981349Z
 description: GitRepository resources must only be from allowed organization domains.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

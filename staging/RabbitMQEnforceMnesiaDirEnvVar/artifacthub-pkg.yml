@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-mnesia-dir-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_MNESIA_DIR
-createdAt: 2024-12-12T12:50:50.769500483Z
+createdAt: 2024-12-16T15:58:40.383126105Z
 description: |
   This Policy ensures RABBITMQ_MNESIA_DIR environment variable are in place when using the official container images from Docker Hub.
   RABBITMQ_MNESIA_DIR: The directory where this RabbitMQ node's data is stored. This s a schema database, message stores, cluster member information and other persistent node state.

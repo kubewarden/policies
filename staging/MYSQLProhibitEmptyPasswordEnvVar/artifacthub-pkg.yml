@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mysql-prohibit-empty-password-env-var
 displayName: MYSQL Prohibit Environment Variable - MYSQL_ALLOW_EMPTY_PASSWORD
-createdAt: 2024-12-12T12:50:43.485193456Z
+createdAt: 2024-12-16T15:58:33.852346519Z
 description: |
   This Policy ensures MYSQL_ALLOW_EMPTY_PASSWORD environment variable are in place when using the official container images from Docker Hub.
   MYSQL_ALLOW_EMPTY_PASSWORD: MYSQL_ALLOW_EMPTY_PASSWORD set to true will allow the container to be started with a blank password for the root user

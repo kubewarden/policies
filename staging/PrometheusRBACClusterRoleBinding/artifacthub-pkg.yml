@@ -7,7 +7,7 @@
 version: 0.0.1
 name: prometheus-clusterrolebinding-has-incorrect-bindings
 displayName: Prometheus Clusterrolebinding Has Incorrect Bindings
-createdAt: 2024-12-12T12:50:47.456156761Z
+createdAt: 2024-12-16T15:58:37.378689873Z
 description: "This Policy checks to see if the Prometheus Cluster Role Binding is bound to a `ClusterRole`, and is tied to a `ServiceAccount` name containing text of your choosing. The default policy is set for search for the Service Account name containing the word `prometheus`. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

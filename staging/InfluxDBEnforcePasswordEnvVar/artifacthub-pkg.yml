@@ -7,7 +7,7 @@
 version: 0.0.1
 name: influxdb-enforce-password-env-var
 displayName: InfluxDB Enforce Environment Variable - DOCKER_INFLUXDB_INIT_PASSWORD
-createdAt: 2024-12-12T12:50:29.611198997Z
+createdAt: 2024-12-16T15:58:21.544497654Z
 description: |
   This Policy ensures DOCKER_INFLUXDB_INIT_PASSWORD environment variable are in place when using the official container images from Docker Hub.
   DOCKER_INFLUXDB_INIT_PASSWORD: The password to set for the system's initial super-user (Required).

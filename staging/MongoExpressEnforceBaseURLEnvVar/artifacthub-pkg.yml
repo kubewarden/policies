@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongo-express-enforce-base-url-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_SITE_BASEURL
-createdAt: 2024-12-12T12:50:37.880033023Z
+createdAt: 2024-12-16T15:58:28.935407997Z
 description: |
   This Policy ensures ME_CONFIG_SITE_BASEURL environment variable are in place when using the official container images from Docker Hub.
   ME_CONFIG_SITE_BASEURL: The ME_CONFIG_SITE_BASEURL environment variable sets the baseUrl to ease mounting at a subdirectory. Remember to include a leading and trailing slash.

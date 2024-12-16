@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mysql-enforce-onetime-password-env-var
 displayName: MYSQL Enforce Environment Variable - MYSQL_ONETIME_PASSWORD
-createdAt: 2024-12-12T12:50:41.627763565Z
+createdAt: 2024-12-16T15:58:32.194305729Z
 description: "This Policy ensures MYSQL_ONETIME_PASSWORD environment variable are in place when using the official container images from Docker Hub.\nMYSQL_ONETIME_PASSWORD: The MYSQL_ONETIME_PASSWORD environment variable is set, the root user's password is set as expired and must be changed before MySQL can be used normally \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

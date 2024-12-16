@@ -7,7 +7,7 @@
 version: 0.0.1
 name: container-prohibit-image-tag
 displayName: Container Prohibit Image Tag
-createdAt: 2024-12-12T12:50:16.755557736Z
+createdAt: 2024-12-16T15:58:10.671869676Z
 description: "Prohibit certain image tags by specifying them in the Policy. The Policy will also violate if the a tag is not set, or is set to `latest`. \n\nNote: You should avoid using the :latest tag when deploying containers in production as it is harder to track which version of the image is running and more difficult to roll back properly.\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

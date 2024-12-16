@@ -7,7 +7,7 @@
 version: 0.0.1
 name: block-all-ingress-traffic
 displayName: Block All Ingress Traffic
-createdAt: 2024-12-12T12:50:44.414122681Z
+createdAt: 2024-12-16T15:58:34.637950006Z
 description: "### Block all traffic\nIf you are using a CNI that allows for Network Policies, you can use this Policy to block all Ingress traffic between namespaces. \n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

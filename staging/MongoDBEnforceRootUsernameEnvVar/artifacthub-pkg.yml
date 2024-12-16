@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongodb-enforce-root-username-env-var
 displayName: MongoDB Enforce Environment Variable - MONGO_INITDB_ROOT_USERNAME
-createdAt: 2024-12-12T12:50:36.043032166Z
+createdAt: 2024-12-16T15:58:27.229634363Z
 description: |
   This Policy ensures MONGO_INITDB_ROOT_USERNAME environment variable are in place when using the official container images from Docker Hub.
   MONGO_INITDB_ROOT_USERNAME: The MONGO_INITDB_ROOT_USERNAME environment variable sets the MongoDB root user name.

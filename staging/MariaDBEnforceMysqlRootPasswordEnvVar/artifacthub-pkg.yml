@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mariadb-enforce-mysql-root-password-env-var
 displayName: MariaDB Enforce Environment Variable - MYSQL_ROOT_PASSWORD
-createdAt: 2024-12-12T12:50:32.084942888Z
+createdAt: 2024-12-16T15:58:23.718824788Z
 description: "This Policy ensures MYSQL_ROOT_PASSWORD environment variable are in place when using the official container images from Docker Hub.\nMYSQL_ROOT_PASSWORD: The MYSQL_ROOT_PASSWORD environment variable specifies a password for the MARIADB root account. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

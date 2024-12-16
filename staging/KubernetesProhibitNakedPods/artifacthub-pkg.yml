@@ -7,7 +7,7 @@
 version: 0.0.1
 name: prohibit-naked-pods-from-being-scheduled
 displayName: Prohibit Naked Pods From Being Scheduled
-createdAt: 2024-12-12T12:50:30.527298309Z
+createdAt: 2024-12-16T15:58:22.396117174Z
 description: "This Policy checks for a `kind` and can prohibit it from being schedule to your cluster. A common example is running \"naked\" pods. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

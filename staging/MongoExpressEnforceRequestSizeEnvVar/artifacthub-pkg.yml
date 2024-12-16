@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongo-express-enforce-request-size-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_REQUEST_SIZE
-createdAt: 2024-12-12T12:50:39.717823404Z
+createdAt: 2024-12-16T15:58:30.577706263Z
 description: |
   This Policy ensures ME_CONFIG_REQUEST_SIZE environment variable are in place when using the official container images from Docker Hub.
   ME_CONFIG_REQUEST_SIZE: The ME_CONFIG_REQUEST_SIZE environment variable sets the maximum payload size. CRUD operations above this size will fail in [body-parser](https://www.npmjs.com/package/body-parser).

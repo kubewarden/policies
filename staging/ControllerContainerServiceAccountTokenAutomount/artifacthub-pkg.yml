@@ -7,7 +7,7 @@
 version: 0.0.1
 name: controller-serviceaccount-tokens-automount
 displayName: Controller ServiceAccount Tokens Automount
-createdAt: 2024-12-12T12:50:15.347211866Z
+createdAt: 2024-12-16T15:58:09.621000926Z
 description: "This Policy allows for the option of enabling or disabling Service Accounts that are created for a Pod. The recommended practice is to set the `automount_token` to `false.  \n\nWhen a pod is created without specifying a service account, it is automatically assigned the default service account in the same namespace. This is a security concern because a compromised container can access the API using automatically mounted service account credentials. The API permissions of the service account depend on the authorization plugin and policy in use, but could possibly create and delete pods. \n\nWe recommend setting the `automount_token` to `false`. \n\nIn version 1.6+, you can opt out of automounting API credentials for a particular pod.\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

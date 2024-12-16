@@ -7,7 +7,7 @@
 version: 0.0.1
 name: namespace-resources-limitrange
 displayName: Namespace Resources Limitrange
-createdAt: 2024-12-12T12:51:14.58670471Z
+createdAt: 2024-12-16T15:59:01.637274829Z
 description: |
   When setting up default CPU and Memory values for your namespace, this policy will check if both requests and limits are set. This policy checks for the following:
 
