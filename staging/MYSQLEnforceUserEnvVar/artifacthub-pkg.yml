@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mysql-enforce-user-env-var
 displayName: MYSQL Enforce Environment Variable - MYSQL_USER
-createdAt: 2024-12-16T15:58:33.584254421Z
+createdAt: 2024-12-17T10:09:45.931438097Z
 description: "This Policy ensures MYSQL_USER environment variable are in place when using the official container images from Docker Hub.\nMYSQL_USER: The MYSQL_USER environment variable sets up a superuser with the same name. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

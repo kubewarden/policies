@@ -48,4 +48,4 @@ https://kubernetes.io/docs/reference/labels-annotations-taints/
 
 # Resources
 Policy applies to resources kinds:
-
+`Node`

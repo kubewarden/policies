@@ -7,7 +7,7 @@
 version: 0.0.1
 name: persistent-volume-claim-max-size
 displayName: Persistent Volume Claim Max Size
-createdAt: 2024-12-16T15:59:06.638383929Z
+createdAt: 2024-12-17T10:10:22.479215499Z
 description: |
   This Policy allows you to set a max size on your Persistent Volumes Claims. When specifying a size, be sure to include the size and sizing suffix (e.g. 1Gi).
 license: Apache-2.0

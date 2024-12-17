@@ -36,4 +36,4 @@ Use an image that is not set in the Policy.
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

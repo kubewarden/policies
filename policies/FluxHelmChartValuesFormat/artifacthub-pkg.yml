@@ -7,7 +7,7 @@
 version: 0.0.1
 name: helm-chart-values-files-format
 displayName: HelmChart Values File Format
-createdAt: 2024-12-16T15:58:18.164437581Z
+createdAt: 2024-12-17T10:09:28.771893455Z
 description: 'HelmChart must reference values files in the following format: ''xxx=values.yaml''.'
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

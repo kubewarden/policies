@@ -40,4 +40,4 @@ Replace the violating registry with one that is approved.
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

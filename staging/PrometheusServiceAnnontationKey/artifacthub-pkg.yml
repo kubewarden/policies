@@ -7,7 +7,7 @@
 version: 0.0.1
 name: enforce-prometheus-service-annotation-key
 displayName: Enforce Prometheus Service Annotation Key
-createdAt: 2024-12-16T15:59:07.988531324Z
+createdAt: 2024-12-17T10:10:24.074690663Z
 description: "This Policy checks to see if Services have the specified Prometheus annotations like  `prometheus.io/scrape` and `filter.by.port.name`. These annotations are used to send metric data to your Prometheus instance. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

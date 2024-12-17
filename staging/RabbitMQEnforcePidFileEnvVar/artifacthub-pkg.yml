@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-pid-file-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_PID_FILE
-createdAt: 2024-12-16T15:58:40.655233207Z
+createdAt: 2024-12-17T10:09:53.729994652Z
 description: |
   This Policy ensures RABBITMQ_PID_FILE environment variable are in place when using the official container images from Docker Hub.
   RABBITMQ_PID_FILE: File in which the process id is placed for use by rabbitmqctl wait.

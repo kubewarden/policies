@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-vm-memory-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_VM_MEMORY_HIGH_WATERMARK
-createdAt: 2024-12-16T15:58:43.432739512Z
+createdAt: 2024-12-17T10:09:56.689289156Z
 description: |
   This Policy ensures RABBITMQ_VM_MEMORY_HIGH_WATERMARK environment variable are in place when using the official container images from Docker Hub.
   RABBITMQ_VM_MEMORY_HIGH_WATERMARK: The RABBITMQ_VM_MEMORY_HIGH_WATERMARK environment variable sets the memory threshold at which the flow control is triggered. Can be absolute or relative to the amount of RAM available to the OS.

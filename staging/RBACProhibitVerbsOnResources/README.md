@@ -37,4 +37,4 @@ https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
 # Resources
 Policy applies to resources kinds:
-
+`Role`

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-read-only-root-filesystem
 displayName: Containers Read Only Root Filesystem
-createdAt: 2024-12-16T15:58:15.409736602Z
+createdAt: 2024-12-17T10:09:25.678749987Z
 description: "This Policy will cause a violation if the root file system is not mounted as specified. As a security practice, the root file system should be read-only or expose risk to your nodes if compromised. \n\nThis Policy requires containers must run with a read-only root filesystem (i.e. no writable layer).\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

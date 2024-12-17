@@ -7,7 +7,7 @@
 version: 0.0.1
 name: container-named-port
 displayName: Container Named Port
-createdAt: 2024-12-16T15:58:49.598192993Z
+createdAt: 2024-12-17T10:10:03.423237509Z
 description: "This Policy checks the named port of your containers to see if they are set in your container probes. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -31,4 +31,4 @@ Ensure your domain name is the same as the one you are hosting.
 
 # Resources
 Policy applies to resources kinds:
-
+`Gateway`

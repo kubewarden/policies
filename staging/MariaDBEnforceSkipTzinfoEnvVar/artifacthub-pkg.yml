@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mariadb-enforce-initdb-skip-tzinfo-env-var
 displayName: MariaDB Enforce Environment Variable - MARIADB_INITDB_SKIP_TZINFO
-createdAt: 2024-12-16T15:58:25.334544894Z
+createdAt: 2024-12-17T10:09:36.828973018Z
 description: |
   This Policy ensures MARIADB_INITDB_SKIP_TZINFO environment variable are in place when using the official container images from Docker Hub.
   MARIADB_INITDB_SKIP_TZINFO:   The MARIADB_INITDB_SKIP_TZINFO environment variable allows the skipping of timezone checking when initializing the DB.

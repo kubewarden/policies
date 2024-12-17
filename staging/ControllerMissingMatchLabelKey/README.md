@@ -38,4 +38,4 @@ https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#resour
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

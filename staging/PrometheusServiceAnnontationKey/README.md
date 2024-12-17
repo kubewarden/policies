@@ -37,4 +37,4 @@ https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape
 
 # Resources
 Policy applies to resources kinds:
-
+`Service`

@@ -18,4 +18,4 @@ https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-read
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mariadb-enforce-mysql-database-env-var
 displayName: MariaDB Enforce Environment Variable - MYSQL_DATABASE
-createdAt: 2024-12-16T15:58:22.92778409Z
+createdAt: 2024-12-17T10:09:33.990140669Z
 description: "This Policy ensures MYSQL_DATABASE environment variable are in place when using the official container images from Docker Hub.\nMYSQL_DATABASE:   The MYSQL_DATABASE environment variable sets a default MARIADB database instance up with the name of that DB being the value of  environment variable. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -31,4 +31,4 @@ status:
 
 # Resources
 Policy applies to resources kinds:
-
+`Node`

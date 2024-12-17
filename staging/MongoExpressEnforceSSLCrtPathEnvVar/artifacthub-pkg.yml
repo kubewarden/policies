@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongo-express-enforce-ssl-crt-path-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_SITE_SSL_CRT_PATH
-createdAt: 2024-12-16T15:58:31.099012061Z
+createdAt: 2024-12-17T10:09:43.208589136Z
 description: "This Policy ensures ME_CONFIG_SITE_SSL_CRT_PATH environment variable are in place when using the official container images from Docker Hub.\nME_CONFIG_SITE_SSL_CRT_PATH: The ME_CONFIG_SITE_SSL_CRT_PATH environment variable sets the SSL Certificate path. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

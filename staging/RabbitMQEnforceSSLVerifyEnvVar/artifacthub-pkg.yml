@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-ssl-verify-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_SSL_VERIFY
-createdAt: 2024-12-16T15:58:43.16706898Z
+createdAt: 2024-12-17T10:09:56.38090776Z
 description: "This Policy ensures RABBITMQ_SSL_VERIFY environment variable are in place when using the official container images from Docker Hub.\nRABBITMQ_SSL_VERIFY: The RABBITMQ_SSL_VERIFY enables peer verification. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

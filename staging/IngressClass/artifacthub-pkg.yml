@@ -7,7 +7,7 @@
 version: 0.0.1
 name: enforce-specific-ingress-class
 displayName: Enforce Specific Ingress Class
-createdAt: 2024-12-16T15:58:59.878996314Z
+createdAt: 2024-12-17T10:10:14.463273138Z
 description: "This Policy allows for a custom Ingress annotation key and value. When using Kubernetes Ingress, various annotation can be used to define different configurations, even different ingress controllers. Values may vary depending on your use case. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

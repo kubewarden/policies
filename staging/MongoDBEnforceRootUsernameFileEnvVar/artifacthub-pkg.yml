@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongodb-enforce-root-username-file-env-var
 displayName: MongoDB Enforce Environment Variable - MONGO_INITDB_ROOT_USERNAME_FILE
-createdAt: 2024-12-16T15:58:27.503611537Z
+createdAt: 2024-12-17T10:09:39.259699398Z
 description: |
   This Policy ensures MONGO_INITDB_ROOT_USERNAME_FILE environment variable are in place when using the official container images from Docker Hub.
   MONGO_INITDB_ROOT_USERNAME_FILE: The MONGO_INITDB_ROOT_USERNAME_FILE environment variable is an alternative to passing sensitive information via environment variables, _FILE may be appended to the previously listed environment variables, causing the initialization script to load the values for those variables from files present in the container.

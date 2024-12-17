@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-using-hostpath
 displayName: Containers Using Hostpath
-createdAt: 2024-12-16T15:58:07.069856363Z
+createdAt: 2024-12-17T10:09:16.771568662Z
 description: "This Policy checks for containers that are trying to use HostPath. \n\nA `hostPath` volume mounts a file or directory from the host node's filesystem into your Pod. This is not something that most Pods will need, but it offers a powerful escape hatch for some applications.\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

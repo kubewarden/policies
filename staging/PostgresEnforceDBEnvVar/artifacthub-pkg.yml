@@ -7,7 +7,7 @@
 version: 0.0.1
 name: postgres-enforce-db-env-var
 displayName: Postgres Enforce Environment Variable - POSTGRES_DB
-createdAt: 2024-12-16T15:58:35.45563671Z
+createdAt: 2024-12-17T10:09:47.996273084Z
 description: |
   This Policy ensures POSTGRES_DB environment variable are in place when using the official container images from Docker Hub.
   POSTGRES_DB: The POSTGRES_DB environment variable defines a different name for the default database that is created when the image is first started. If it is not specified, then the value of POSTGRES_USER will be used.

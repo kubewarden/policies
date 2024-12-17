@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mariadb-enforce-mysql-password-env-var
 displayName: MariaDB Enforce Environment Variable - MYSQL_PASSWORD
-createdAt: 2024-12-16T15:58:23.189642973Z
+createdAt: 2024-12-17T10:09:34.315252561Z
 description: |
   This Policy ensures MYSQL_PASSWORD environment variable are in place when using the official container images from Docker Hub.
   MYSQL_PASSWORD: The MYSQL_PASSWORD environment variable specifies a password for MARIADB_USER user.

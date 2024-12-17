@@ -46,4 +46,4 @@ https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default
 
 # Resources
 Policy applies to resources kinds:
-
+`LimitRange`

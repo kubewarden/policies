@@ -7,7 +7,7 @@
 version: 0.0.1
 name: ocirepository-layer-selector
 displayName: OCIRepository Layer Selector
-createdAt: 2024-12-16T15:58:58.287353294Z
+createdAt: 2024-12-17T10:10:12.833675412Z
 description: OCIRepository layer selector must only reference predefined media/operation type.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

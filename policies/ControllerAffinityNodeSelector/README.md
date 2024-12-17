@@ -44,4 +44,4 @@ https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodesel
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

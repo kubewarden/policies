@@ -7,7 +7,7 @@
 version: 0.0.1
 name: container-maximum-memory-requests
 displayName: Container Maximum Memory Requests
-createdAt: 2024-12-16T15:58:50.636664167Z
+createdAt: 2024-12-17T10:10:04.610713881Z
 description: |
   This Policy is to ensure a maximum Memory Request value is set. The policy will fail if the set Memory request is higher than the one specified in the policy. You must specify a unit size (e.g Mi, Gi, etc).
 license: Apache-2.0

@@ -38,4 +38,4 @@ This Policy is to ensure a maxiumum CPU Request value is set. The policy will fa
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

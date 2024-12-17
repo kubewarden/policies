@@ -38,4 +38,4 @@ spec:
 
 # Resources
 Policy applies to resources kinds:
-
+`PersistentVolume`

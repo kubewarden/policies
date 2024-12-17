@@ -7,7 +7,7 @@
 version: 0.0.1
 name: helm-release-values-from-configmaps
 displayName: Helm Release Values From
-createdAt: 2024-12-16T15:58:55.722638135Z
+createdAt: 2024-12-17T10:10:10.061752734Z
 description: HelmRelease valuesFrom must use correctly configured ConfigMaps.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

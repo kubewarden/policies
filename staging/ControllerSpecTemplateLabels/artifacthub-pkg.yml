@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-are-missing-a-spec-template-label
 displayName: Containers Are Missing A Spec Template Label
-createdAt: 2024-12-16T15:58:52.24138498Z
+createdAt: 2024-12-17T10:10:06.376492249Z
 description: |
   This Policy allows setting a custom label in `spec.template.metadata`.
 license: Apache-2.0

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: ocirepository-ignore-suffixes
 displayName: OCIRepository Ignore Suffixes
-createdAt: 2024-12-16T15:58:57.958957045Z
+createdAt: 2024-12-17T10:10:12.487762454Z
 description: OCIRepository resources must include specific suffixes in the spec.ignore field which determines the files to be ignored before making a commit..
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

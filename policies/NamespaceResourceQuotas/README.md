@@ -31,4 +31,4 @@ https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memor
 
 # Resources
 Policy applies to resources kinds:
-
+`ResourceQuota`

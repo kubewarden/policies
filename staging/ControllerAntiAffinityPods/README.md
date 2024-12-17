@@ -47,4 +47,4 @@ https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#P
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

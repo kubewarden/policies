@@ -7,7 +7,7 @@
 version: 0.0.1
 name: kustomization-image-tag-standards
 displayName: Kustomization Image Tag Standards
-createdAt: 2024-12-16T15:58:19.605579095Z
+createdAt: 2024-12-17T10:09:30.352740758Z
 description: spec.Images must comply with image tag/semver reference standards.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

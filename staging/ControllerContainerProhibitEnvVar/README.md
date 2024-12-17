@@ -34,4 +34,4 @@ If you are encountered a violation, ensure the environment variable is not set.
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

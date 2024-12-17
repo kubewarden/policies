@@ -7,7 +7,7 @@
 version: 0.0.1
 name: helm-release-namespace-match
 displayName: Helm Release Namespace Match
-createdAt: 2024-12-16T15:58:18.483153876Z
+createdAt: 2024-12-17T10:09:29.122066295Z
 description: HelmRelease storageNamespace and targetNamespace must match.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

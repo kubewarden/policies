@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongo-express-enforce-admin-username-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_MONGODB_ADMINUSERNAME
-createdAt: 2024-12-16T15:58:28.098740423Z
+createdAt: 2024-12-17T10:09:39.846284513Z
 description: |
   This Policy ensures ME_CONFIG_MONGODB_ADMINUSERNAME environment variable are in place when using the official container images from Docker Hub.
   ME_CONFIG_MONGODB_ADMINUSERNAME: The ME_CONFIG_MONGODB_ADMINUSERNAME environment variable sets the MongoDB admin username.

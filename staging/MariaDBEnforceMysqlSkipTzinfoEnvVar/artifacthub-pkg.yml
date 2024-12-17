@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mariadb-enforce-mysql-initdb-skip-tzinfo-env-var
 displayName: MariaDB Enforce Environment Variable - MYSQL_INITDB_SKIP_TZINFO
-createdAt: 2024-12-16T15:58:23.976570424Z
+createdAt: 2024-12-17T10:09:35.291373809Z
 description: |
   This Policy ensures MYSQL_INITDB_SKIP_TZINFO environment variable are in place when using the official container images from Docker Hub.
   MYSQL_INITDB_SKIP_TZINFO:   The MYSQL_INITDB_SKIP_TZINFO environment variable allows the skipping of timezone checking when initializing the DB.

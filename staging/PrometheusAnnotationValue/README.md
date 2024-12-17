@@ -40,4 +40,4 @@ https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

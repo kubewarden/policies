@@ -47,4 +47,4 @@ https://kubernetes.io/docs/concepts/services-networking/network-policies/#target
 
 # Resources
 Policy applies to resources kinds:
-
+`NetworkPolicy`

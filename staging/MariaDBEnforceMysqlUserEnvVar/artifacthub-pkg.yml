@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mariadb-enforce-mysql-user-env-var
 displayName: MariaDB Enforce Environment Variable - MYSQL_USER
-createdAt: 2024-12-16T15:58:24.271296494Z
+createdAt: 2024-12-17T10:09:35.632240246Z
 description: |
   This Policy ensures MYSQL_USER environment variable are in place when using the official container images from Docker Hub.
   MYSQL_USER: The MYSQL_USER environment variable sets up a superuser with the same name.

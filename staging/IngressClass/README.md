@@ -39,4 +39,4 @@ https://kubernetes.io/docs/concepts/services-networking/ingress/
 
 # Resources
 Policy applies to resources kinds:
-
+`Ingress`

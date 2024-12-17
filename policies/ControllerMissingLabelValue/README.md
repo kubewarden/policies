@@ -48,4 +48,4 @@ For additional information, please check
 
 # Resources
 Policy applies to resources kinds:
-
+`DaemonSet`, `Deployment`, `Job`, `StatefulSet`

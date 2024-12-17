@@ -7,7 +7,7 @@
 version: 0.0.1
 name: missing-kubernetes-app-instance-label
 displayName: Missing Kubernetes App Instance Label
-createdAt: 2024-12-16T15:58:11.831932865Z
+createdAt: 2024-12-17T10:09:21.984716541Z
 description: "Custom labels can help enforce organizational standards for each artifact deployed. This Policy ensure a custom label key is set in the entity's `metadata`. The Policy detects the presence of the following: \n\n### owner\nA label key of `owner` will help identify who the owner of this entity is. \n\n### app.kubernetes.io/name\nThe name of the application\t\n\n### app.kubernetes.io/instance\nA unique name identifying the instance of an application\t  \n\n### app.kubernetes.io/version\nThe current version of the application (e.g., a semantic version, revision hash, etc.)\n\n### app.kubernetes.io/part-of\nThe name of a higher level application this one is part of\t\n\n### app.kubernetes.io/managed-by\nThe tool being used to manage the operation of an application\t\n\n### app.kubernetes.io/created-by\nThe controller/user who created this resource\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: postgres-enforce-auth-method-env-var
 displayName: Postgres Enforce Environment Variable - POSTGRES_HOST_AUTH_METHOD
-createdAt: 2024-12-16T15:58:35.193736278Z
+createdAt: 2024-12-17T10:09:47.70524968Z
 description: "This Policy ensures POSTGRES_HOST_AUTH_METHOD environment variable are in place when using the official container images from Docker Hub.\nPOSTGRES_HOST_AUTH_METHOD: The POSTGRES_HOST_AUTH_METHOD environment variable is used to control the auth-method for host connections for all databases, all users, and all addresses. If unspecified then md5 password authentication is used. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

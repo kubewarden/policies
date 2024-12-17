@@ -35,4 +35,4 @@ Ensure the key you have specified in your constraint exists in your workloads.
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

@@ -38,4 +38,4 @@ https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 # Resources
 Policy applies to resources kinds:
-
+`CronJob`, `DaemonSet`, `Deployment`, `Job`, `Pod`, `StatefulSet`

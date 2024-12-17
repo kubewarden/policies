@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mariadb-enforce-user-env-var
 displayName: MariaDB Enforce Environment Variable - MARIADB_USER
-createdAt: 2024-12-16T15:58:25.596438197Z
+createdAt: 2024-12-17T10:09:37.12082075Z
 description: |
   This Policy ensures MARIADB_USER environment variable are in place when using the official container images from Docker Hub.
   MARIADB_USER: The MARIADB_USER environment variable sets up a superuser with the same name.

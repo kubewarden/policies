@@ -7,7 +7,7 @@
 version: 0.0.1
 name: bucket-insecure-connections
 displayName: Bucket Insecure Connections
-createdAt: 2024-12-16T15:58:17.589351781Z
+createdAt: 2024-12-17T10:09:28.09256691Z
 description: Ensure that Bucket objects do not use insecure connections
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

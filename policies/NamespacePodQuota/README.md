@@ -24,4 +24,4 @@ https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-pod-n
 
 # Resources
 Policy applies to resources kinds:
-
+`ResourceQuota`

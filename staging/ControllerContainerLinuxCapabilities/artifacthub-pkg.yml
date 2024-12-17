@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-running-with-unapproved-linux-capabilities
 displayName: Containers Running With Unapproved Linux Capabilities
-createdAt: 2024-12-16T15:58:08.517618987Z
+createdAt: 2024-12-17T10:09:18.271011887Z
 description: "Linux capabilities provide a finer-grained breakdown of the privileges traditionally associated with the superuser. Not specifying those capabilities gives the container access to all OS capabilities which may result in exploiting the VM at which the container is running. The issue is reported when a container has `SYS_ADMIN`, `NET_RAW`, `NET_ADMIN`, or `ALL` capabilities. For this Policy, you can also exclude a namespace, such as `kube-system`. \n\nWith Linux capabilities, you can grant certain privileges to a process without granting all the privileges of the root user. To add or remove Linux capabilities for a Container, include the capabilities field in the securityContext section of the Container manifest.\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mysql-enforce-database-env-var
 displayName: MYSQL Enforce Environment Variable - MYSQL_DATABASE
-createdAt: 2024-12-16T15:58:31.922865175Z
+createdAt: 2024-12-17T10:09:44.137374774Z
 description: "This Policy ensures MYSQL_DATABASE environment variable are in place when using the official container images from Docker Hub.\nMYSQL_DATABASE: The MYSQL_DATABASE environment variable sets a default MySQL database instance up with the name of that DB being the value of  environment variable. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

@@ -7,7 +7,7 @@
 version: 0.0.1
 name: postgres-enforce-password-env-var
 displayName: Postgres Enforce Environment Variable - POSTGRES_PASSWORD
-createdAt: 2024-12-16T15:58:36.26118925Z
+createdAt: 2024-12-17T10:09:48.876058955Z
 description: |
   This Policy ensures POSTGRES_PASSWORD environment variable are in place when using the official container images from Docker Hub.
   POSTGRES_PASSWORD:   The POSTGRES_PASSWORD environment variable is required for you to use the PostgreSQL image. It must not be empty or undefined. This environment variable sets the superuser password for PostgreSQL. The default superuser is defined by the POSTGRES_USER environment variable.

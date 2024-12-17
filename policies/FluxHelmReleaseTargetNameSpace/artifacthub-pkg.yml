@@ -7,7 +7,7 @@
 version: 0.0.1
 name: helm-release-target-namespace
 displayName: Helm Release Target Namespace
-createdAt: 2024-12-16T15:58:55.445000001Z
+createdAt: 2024-12-17T10:10:09.770692201Z
 description: HelmRelease targetNamespace must be one of the allowed targetNamespace list.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies

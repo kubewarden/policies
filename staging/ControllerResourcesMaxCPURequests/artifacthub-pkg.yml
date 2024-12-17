@@ -7,7 +7,7 @@
 version: 0.0.1
 name: container-maximum-cpu-requests
 displayName: Container Maximum CPU Requests
-createdAt: 2024-12-16T15:58:50.126628195Z
+createdAt: 2024-12-17T10:10:04.035023757Z
 description: |
   This Policy is to ensure a maxiumum CPU Request value is set. The policy will fail if the set CPU request is higher than the one specified in the policy. You must specify a unit size (m, g, etc).
 license: Apache-2.0

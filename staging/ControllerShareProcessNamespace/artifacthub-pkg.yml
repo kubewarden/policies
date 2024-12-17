@@ -7,7 +7,7 @@
 version: 0.0.1
 name: containers-sharing-process-namespace
 displayName: Containers Sharing Process Namespace
-createdAt: 2024-12-16T15:58:17.049854681Z
+createdAt: 2024-12-17T10:09:27.50333483Z
 description: |
   This Policy allows check if sharing process namespace with other containers in the pod should be allowed or not. Resources that can be shared with the container include:
 

@@ -39,4 +39,4 @@ https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector
 
 # Resources
 Policy applies to resources kinds:
-
+`DaemonSet`, `Deployment`, `Job`, `StatefulSet`

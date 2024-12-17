@@ -35,4 +35,4 @@ metadata:
 
 # Resources
 Policy applies to resources kinds:
-
+`Node`

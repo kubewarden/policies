@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-plugins-dir-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_PLUGINS_DIR
-createdAt: 2024-12-16T15:58:40.9252935Z
+createdAt: 2024-12-17T10:09:54.033595652Z
 description: |
   This Policy ensures RABBITMQ_PLUGINS_DIR environment variable are in place when using the official container images from Docker Hub.
   RABBITMQ_PLUGINS_DIR: The list of directories where plugin archive files are located and extracted from. This is PATH-like variable, where different paths are separated by an OS-specific separator (: for Unix, ; for Windows). Plugins can be installed to any of the directories listed here.

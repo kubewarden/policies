@@ -19,4 +19,4 @@ https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic
 
 # Resources
 Policy applies to resources kinds:
-
+`Namespace`

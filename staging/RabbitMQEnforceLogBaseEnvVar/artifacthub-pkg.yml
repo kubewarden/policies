@@ -7,7 +7,7 @@
 version: 0.0.1
 name: rabbitmq-enforce-log-base-env-var
 displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_LOG_BASE
-createdAt: 2024-12-16T15:58:39.491567149Z
+createdAt: 2024-12-17T10:09:52.45398831Z
 description: |
   This Policy ensures RABBITMQ_LOG_BASE environment variable are in place when using the official container images from Docker Hub.
   RABBITMQ_LOG_BASE: This base directory contains the RabbitMQ server's log files, unless RABBITMQ_LOGS is set.

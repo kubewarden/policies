@@ -7,7 +7,7 @@
 version: 0.0.1
 name: mongo-express-enforce-editor-theme-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_OPTIONS_EDITORTHEME
-createdAt: 2024-12-16T15:58:29.457656949Z
+createdAt: 2024-12-17T10:09:41.388956689Z
 description: |
   This Policy ensures ME_CONFIG_OPTIONS_EDITORTHEME environment variable are in place when using the official container images from Docker Hub.
   ME_CONFIG_OPTIONS_EDITORTHEME: The ME_CONFIG_OPTIONS_EDITORTHEME environment variable sets the editor color theme, [more here](http://codemirror.net/demo/theme.html)
