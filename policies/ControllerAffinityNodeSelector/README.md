@@ -5,7 +5,7 @@ This Policy allows setting a key and value for `nodeSelector` when assigning pod
 `nodeSelector` is a field of PodSpec. It specifies a map of key-value pairs. For the pod to be eligible to scheduled on a node, the node must have each of the indicated key-value pairs as labels (it can have additional labels as well). 
 
 
-When working with with `nodeSelector`, the indicated key-value pair will be matched to a node label.  
+When working with `nodeSelector`, the indicated key-value pair will be matched to a node label.  
 
 ```
 ...
