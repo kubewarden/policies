@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.0.1
+version: 1.0.0
 name: container-running-as-user
 displayName: Container Running As User
-createdAt: 2024-12-17T10:09:18.900394307Z
+createdAt: 2025-03-03T10:11:44.471419965Z
 description: "Containers has a feature in which you specify the ID of the user which all processes in the container will run with. This Policy enforces that the `securityContext.runAsUser` attribute is set to a uid greater than root uid. Running as root user gives the container full access to all resources in the VM it is running on. Containers should not run with such access rights unless required by design. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/container-running-as-user:v0.0.1
+  image: ghcr.io/kubewarden/policies/container-running-as-user:v1.0.0
 keywords:
 - pci-dss
 - cis-benchmark
@@ -23,17 +23,17 @@ keywords:
 - default
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+  url: https://github.com/kubewarden/rego-policies/releases/download/v1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/container-running-as-user:v0.0.1
+  kwctl pull ghcr.io/kubewarden/policies/container-running-as-user:v1.0.0
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/container-running-as-user:v0.0.1
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/container-running-as-user:v1.0.0
   ```
 maintainers:
 - name: Kubewarden developers
