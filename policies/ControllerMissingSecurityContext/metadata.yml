@@ -23,8 +23,8 @@ annotations:
     This Policy checks if the container is missing securityContext while there is no securityContext defined on the Pod level as well. The security settings that are specified on the Pod level apply to all containers in the Pod.
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-missing-security-context
-  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
-  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies-library
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies-library
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: pod-security
   io.kubewarden.policy.severity: high

@@ -7,18 +7,18 @@
 version: 1.0.0
 name: block-workloads-created-without-specifying-namespace
 displayName: Block Workloads Created Without Specifying Namespace
-createdAt: 2025-03-03T10:11:45.00430339Z
+createdAt: 2025-03-03T13:09:34.34640528Z
 description: "Using this Policy, you can prohibit workloads from being created in a default namespace due to the lack of a namespace label. \n"
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/rego-policies
+homeURL: https://github.com/kubewarden/rego-policies-library
 containersImages:
 - name: policy
   image: ghcr.io/kubewarden/policies/block-workloads-created-without-specifying-namespace:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/rego-policies
+  url: https://github.com/kubewarden/rego-policies-library
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
