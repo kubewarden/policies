@@ -7,18 +7,18 @@
 version: 1.0.0
 name: network-allow-ingress-traffic-from-namespace-to-another
 displayName: Network Allow Ingress Traffic From Namespace To Another
-createdAt: 2025-03-03T10:11:47.409251481Z
+createdAt: 2025-03-03T13:09:37.420785045Z
 description: "If you are using a CNI that allows for Network Policies, you can use this Policy to allow Ingress traffic from one namespace to another.\n\nBy default, if no policies exist in a namespace, then all ingress and egress traffic is allowed to and from pods in that namespace. \n"
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/rego-policies
+homeURL: https://github.com/kubewarden/rego-policies-library
 containersImages:
 - name: policy
   image: ghcr.io/kubewarden/policies/network-allow-ingress-traffic-from-namespace-to-another:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/rego-policies
+  url: https://github.com/kubewarden/rego-policies-library
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console

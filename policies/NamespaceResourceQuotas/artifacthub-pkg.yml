@@ -7,11 +7,11 @@
 version: 1.0.0
 name: resource-quota-setting-is-missing
 displayName: Resource Quota Setting Is Missing
-createdAt: 2025-03-03T10:11:47.30681139Z
+createdAt: 2025-03-03T13:09:37.28683669Z
 description: |
   When creating resource quotas per namespace, ensure CPU and Memory requests and limits are set.
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/rego-policies
+homeURL: https://github.com/kubewarden/rego-policies-library
 containersImages:
 - name: policy
   image: ghcr.io/kubewarden/policies/resource-quota-setting-is-missing:v1.0.0
@@ -19,9 +19,9 @@ keywords:
 - soc2-type1
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/rego-policies
+  url: https://github.com/kubewarden/rego-policies-library
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
