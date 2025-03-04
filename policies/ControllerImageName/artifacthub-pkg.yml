@@ -7,7 +7,7 @@
 version: 1.0.0
 name: containers-block-specific-image-names
 displayName: Containers Block Specific Image Names
-createdAt: 2025-03-03T13:09:33.747547695Z
+createdAt: 2025-03-04T11:58:03.149230365Z
 description: "This Policy prohibits images with certain image names from being deployed by specifying a list of unapproved names. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -16,7 +16,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/containers-block-specific-image-names:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/ControllerImageName%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

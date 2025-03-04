@@ -7,7 +7,7 @@
 version: 1.0.0
 name: rbac-prohibit-wildcards-policyrule-resources
 displayName: Rbac Prohibit Wildcards on Policy Rule Resources
-createdAt: 2025-03-03T13:09:37.888895413Z
+createdAt: 2025-03-04T11:58:06.388111472Z
 description: "This Policy prohibits various resources from being set with wildcards for Role or ClusterRole resources, except for the `cluster-admin` ClusterRole. It will check each resource specified for the verb specified. The wildcards will be checked in:\n\n### Resources\nIn the Kubernetes API, most resources are represented and accessed using a string representation of their object name, such as pods for a Pod. RBAC refers to resources using exactly the same name that appears in the URL for the relevant API endpoint. \n\n### Verbs\nAPI verbs like get, list, create, update, patch, watch, delete, and deletecollection are used for resource requests. \n\n### API Groups\nThe API Group being accessed (for resource requests only).\n\n### Non Resource URLs\nRequests to endpoints other than /api/v1/... or /apis/<group>/<version>/... are considered \"non-resource requests\", and use the lower-cased HTTP method of the request as the verb.\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -16,7 +16,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/rbac-prohibit-wildcards-policyrule-resources:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/RBACProhibitWildcardsOnPolicyRuleResources%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

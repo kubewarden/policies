@@ -7,7 +7,7 @@
 version: 1.0.0
 name: namespace-pod-quota
 displayName: Namespace Pod Quota
-createdAt: 2025-03-03T13:09:37.219467412Z
+createdAt: 2025-03-04T11:58:05.864348718Z
 description: "When using a pod quota ensure setting the proper value for the quantity of pods you wish to have in your namespace. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -16,7 +16,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/namespace-pod-quota:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/NamespacePodQuota%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

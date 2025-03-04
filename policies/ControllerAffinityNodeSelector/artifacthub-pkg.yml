@@ -7,7 +7,7 @@
 version: 1.0.0
 name: affinity-node-selector
 displayName: Affinity Node Selector
-createdAt: 2025-03-03T13:09:33.306129596Z
+createdAt: 2025-03-04T11:58:02.828294325Z
 description: "This Policy allows setting a key and value for `nodeSelector` when assigning pods to nodes. \n\n`nodeSelector` is a field of PodSpec. It specifies a map of key-value pairs. For the pod to be eligible to scheduled on a node, the node must have each of the indicated key-value pairs as labels (it can have additional labels as well). \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -16,7 +16,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/affinity-node-selector:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/ControllerAffinityNodeSelector%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

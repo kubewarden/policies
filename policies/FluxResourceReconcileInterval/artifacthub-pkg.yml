@@ -7,7 +7,7 @@
 version: 1.0.0
 name: resource-reconcile-interval
 displayName: Resource Reconcile Interval Must Be Set Between Lower and Upper Bound
-createdAt: 2025-03-03T13:09:36.885474477Z
+createdAt: 2025-03-04T11:58:05.602616955Z
 description: The reconcile interval of a Resource must be set between a lower and upper bound, lower_bound & upper_bound must be in seconds .
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -18,7 +18,7 @@ keywords:
 - flux
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/FluxResourceReconcileInterval%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

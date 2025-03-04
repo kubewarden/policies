@@ -7,7 +7,7 @@
 version: 1.0.0
 name: container-running-as-root
 displayName: Container Running As Root
-createdAt: 2025-03-03T13:09:33.609991826Z
+createdAt: 2025-03-04T11:58:03.043225489Z
 description: "Running as root gives the container full access to all resources in the VM it is running on. Containers should not run with such access rights unless required by design. This Policy enforces that the `securityContext.runAsNonRoot` attribute is set to `true`. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -23,7 +23,7 @@ keywords:
 - default
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/ControllerContainerRunningAsRoot%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

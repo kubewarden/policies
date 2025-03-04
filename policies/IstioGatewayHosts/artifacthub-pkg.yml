@@ -7,7 +7,7 @@
 version: 1.0.0
 name: istio-gateway-approved-hosts
 displayName: Istio Gateway Approved Hosts
-createdAt: 2025-03-03T13:09:37.021886554Z
+createdAt: 2025-03-04T11:58:05.705866117Z
 description: "### Istio Gateway Approved Hosts\nThis ensures you are only serving traffic for approved hostnames. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -16,7 +16,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/istio-gateway-approved-hosts:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/IstioGatewayHosts%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

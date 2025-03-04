@@ -7,7 +7,7 @@
 version: 1.0.0
 name: rbac-prohibit-wildcard-secrets
 displayName: Rbac Prohibit Wildcard On Secrets
-createdAt: 2025-03-03T13:09:37.823771113Z
+createdAt: 2025-03-04T11:58:06.335632952Z
 description: |
   This Policy will violate if any RBAC ClusterRoles or Roles are designated with 'wildcard' verb on 'secrets' resource.
 license: Apache-2.0
@@ -17,7 +17,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/rbac-prohibit-wildcard-secrets:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/RBACProhibitWildcardOnSecrets%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |
