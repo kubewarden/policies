@@ -7,7 +7,7 @@
 version: 1.0.0
 name: helm-release-post-renderer
 displayName: Helm Release Post Renderer
-createdAt: 2025-03-03T13:09:35.350039717Z
+createdAt: 2025-03-04T11:58:04.401833891Z
 description: HelmRelease must not have post-renderers enabled.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -18,7 +18,7 @@ keywords:
 - flux
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/FluxHelmReleasePostRenderer%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

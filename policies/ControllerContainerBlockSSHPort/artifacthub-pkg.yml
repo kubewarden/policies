@@ -7,7 +7,7 @@
 version: 1.0.0
 name: containers-block-ssh-port
 displayName: Containers Block Ssh Port
-createdAt: 2025-03-03T13:00:40.705636709Z
+createdAt: 2025-03-04T11:58:02.886534739Z
 description: |
   This Policy checks if the container is exposing ssh port.
 license: Apache-2.0
@@ -19,7 +19,7 @@ keywords:
 - pci-dss
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/ControllerContainerBlockSSHPort%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

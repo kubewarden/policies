@@ -7,7 +7,7 @@
 version: 1.0.0
 name: istio-injected-namespaces
 displayName: Istio Injected Namespaces
-createdAt: 2025-03-03T13:09:37.08792543Z
+createdAt: 2025-03-04T11:58:05.758160194Z
 description: "# Istio-Injected Namespaces\nSpecify namespaces you would like to be labeld with `istio-injected: enabled`. Namespaces with this label with automatically deploy a Istio sidecar with each pod. \n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -16,7 +16,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/istio-injected-namespaces:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/IstioNamespaceLabelInjection%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

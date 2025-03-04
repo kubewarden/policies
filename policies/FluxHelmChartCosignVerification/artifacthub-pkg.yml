@@ -7,7 +7,7 @@
 version: 1.0.0
 name: helm-chart-cosign-verification
 displayName: HelmChart Cosign Verification
-createdAt: 2025-03-03T13:09:35.086858563Z
+createdAt: 2025-03-04T11:58:04.196379708Z
 description: HelmChart objects must provide cosign verification and reference a secret containing the Cosign public keys of trusted authors
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -18,7 +18,7 @@ keywords:
 - flux
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/FluxHelmChartCosignVerification%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

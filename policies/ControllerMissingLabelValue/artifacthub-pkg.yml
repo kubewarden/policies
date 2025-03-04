@@ -7,7 +7,7 @@
 version: 1.0.0
 name: metadata-missing-label-and-value
 displayName: Metadata Missing Label And Value
-createdAt: 2025-03-03T13:09:34.278338787Z
+createdAt: 2025-03-04T11:58:03.568848597Z
 description: "Custom labels can help enforce organizational standards for each artifact deployed. This Policy ensures a key and value are set in the entity's `metadata.labels` path. The Policy detects the presence of the following: \n\n### label\nA label key of your choosing. \n\n### value\nA label value of your choosing.\n"
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -16,7 +16,7 @@ containersImages:
   image: ghcr.io/kubewarden/policies/metadata-missing-label-and-value:v1.0.0
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/ControllerMissingLabelValue%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |

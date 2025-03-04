@@ -7,7 +7,7 @@
 version: 1.0.0
 name: helm-release-values-from-configmaps
 displayName: Helm Release Values From
-createdAt: 2025-03-03T13:09:35.749843648Z
+createdAt: 2025-03-04T11:58:04.711730145Z
 description: HelmRelease valuesFrom must use correctly configured ConfigMaps.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rego-policies-library
@@ -18,7 +18,7 @@ keywords:
 - flux
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies-library/releases/download/v1.0.0/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/FluxHelmReleaseValuesFromConfigMaps%2Fv1.0.0/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rego-policies-library
 install: |
