@@ -25,8 +25,8 @@ annotations:
     By default a container is not allowed to access any devices on the host, but a "privileged" container is given access to all devices on the host. This allows the container nearly all the same access as processes running on the host. This is useful for containers that want to use linux capabilities like manipulating the network stack and accessing devices.
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-running-in-privileged-mode
-  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
-  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies-library
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies-library
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: pod-security
   io.kubewarden.policy.severity: high

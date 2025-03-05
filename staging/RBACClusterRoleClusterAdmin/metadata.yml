@@ -14,8 +14,8 @@ annotations:
   io.kubewarden.policy.description: "This Policy allows you to select which groups you can set for Cluster-admin. The default policy checks for the \n\n```\nsubjects:\n- kind: Group\n  name: system:masters\n```\n\n`cluster-admin` allows super-user access to perform any action on any resource. When used in a ClusterRoleBinding, it gives full control over every resource in the cluster and in all namespaces. When used in a RoleBinding, it gives full control over every resource in the role binding's namespace, including the namespace itself. Be selective when adding additional subjects. \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/rbac-protect-cluster-admin-clusterrolebindings
-  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
-  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies-library
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies-library
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: access-control
   io.kubewarden.policy.severity: high

@@ -24,8 +24,8 @@ annotations:
     ME_CONFIG_BASICAUTH_USERNAME: The ME_CONFIG_BASICAUTH_USERNAME environment variable sets the mongo-express web username.
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/mongo-express-enforce-auth-username-env-var
-  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
-  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies-library
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies-library
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: access-control
   io.kubewarden.policy.severity: high
