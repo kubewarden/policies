@@ -27,5 +27,5 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: pod-security
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.3.2
-  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.4.4.4
+  io.kubewarden.policy.standards.mitre-attack: mitre-attack.3.2
+  io.kubewarden.policy.standards.nist-800-190: nist-800-190.4.4.4

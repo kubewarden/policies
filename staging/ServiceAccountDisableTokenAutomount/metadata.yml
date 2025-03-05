@@ -19,9 +19,9 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: access-control
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.pci-dss: pci-dss.7.1.1
-  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.1.6
-  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.6.3
-  # io.kubewarden.policy.standards.hipaa: hipaa.164.312.a.2.i, hipaa.164.312.a.1
-  # io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24
-  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.3
+  io.kubewarden.policy.standards.pci-dss: pci-dss.7.1.1
+  io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.1.6
+  io.kubewarden.policy.standards.mitre-attack: mitre-attack.6.3
+  io.kubewarden.policy.standards.hipaa: hipaa.164.312.a.2.i, hipaa.164.312.a.1
+  io.kubewarden.policy.standards.gdpr: gdpr.25, gdpr.32, gdpr.24
+  io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.3

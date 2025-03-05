@@ -26,4 +26,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: software-supply-chain
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.8
+  io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.8

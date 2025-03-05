@@ -30,5 +30,5 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: access-control
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.hipaa: hipaa.164.312.a.1, hipaa.164.312.a.2.i
-  # io.kubewarden.policy.standards.gdpr: gdpr.24, gdpr.25, gdpr.32
+  io.kubewarden.policy.standards.hipaa: hipaa.164.312.a.1, hipaa.164.312.a.2.i
+  io.kubewarden.policy.standards.gdpr: gdpr.24, gdpr.25, gdpr.32

@@ -19,4 +19,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: organizational-standards
   io.kubewarden.policy.severity: medium
-  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.1.4
+  io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.1.4

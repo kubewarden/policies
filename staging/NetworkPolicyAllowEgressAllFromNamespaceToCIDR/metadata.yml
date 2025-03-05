@@ -18,6 +18,6 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: network-security
   io.kubewarden.policy.severity: medium
-  # io.kubewarden.policy.standards.pci-dss: pci-dss.1.2.1
-  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.8.3
-  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.1
+  io.kubewarden.policy.standards.pci-dss: pci-dss.1.2.1
+  io.kubewarden.policy.standards.mitre-attack: mitre-attack.8.3
+  io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.1

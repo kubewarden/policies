@@ -29,4 +29,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: network-security
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.pci-dss: pci-dss.1.1.6, pci-dss.2.2.2
+  io.kubewarden.policy.standards.pci-dss: pci-dss.1.1.6, pci-dss.2.2.2
