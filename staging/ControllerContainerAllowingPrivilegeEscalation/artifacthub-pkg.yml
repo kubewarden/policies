@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.0.1
+version: 0.1.0
 name: containers-running-with-privilege-escalation
 displayName: Containers Running With Privilege Escalation
-createdAt: 2024-12-17T10:09:16.425321115Z
+createdAt: 2025-03-05T16:03:17.584196918Z
 description: "Containers are running with PrivilegeEscalation configured. Setting this Policy to `true` allows child processes to gain more privileges than its parent process.  \n\nThis Policy gates whether or not a user is allowed to set the security context of a container to `allowPrivilegeEscalation` to `true`. The default value for this is `false` so no child process of a container can gain more privileges than its parent.\n\nThere are 2 parameters for this Policy:\n- exclude_namespace (string) : This sets a namespace you want to exclude from Policy compliance checking. \n- allow_privilege_escalation (bool) : This checks for the value of `allowPrivilegeEscalation` in your spec.  \n"
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/rego-policies
+homeURL: https://github.com/kubewarden/rego-policies-library
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/containers-running-with-privilege-escalation:v0.0.1
+  image: ghcr.io/kubewarden/policies/containers-running-with-privilege-escalation:v0.1.0
 keywords:
 - pci-dss
 - cis-benchmark
@@ -24,17 +24,17 @@ keywords:
 - soc2-type1
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/v0.1.0/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/rego-policies
+  url: https://github.com/kubewarden/rego-policies-library
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/containers-running-with-privilege-escalation:v0.0.1
+  kwctl pull ghcr.io/kubewarden/policies/containers-running-with-privilege-escalation:v0.1.0
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/containers-running-with-privilege-escalation:v0.0.1
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/containers-running-with-privilege-escalation:v0.1.0
   ```
 maintainers:
 - name: Kubewarden developers
