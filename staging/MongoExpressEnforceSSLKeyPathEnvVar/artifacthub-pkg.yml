@@ -4,31 +4,31 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.0.1
+version: 0.1.0
 name: mongo-express-enforce-ssl-key-path-env-var
 displayName: Mongo-Express Enforce Environment Variable - ME_CONFIG_SITE_SSL_KEY_PATH
-createdAt: 2024-12-17T10:09:43.833997852Z
+createdAt: 2025-03-05T16:03:21.904232318Z
 description: "This Policy ensures ME_CONFIG_SITE_SSL_KEY_PATH environment variable are in place when using the official container images from Docker Hub.\nME_CONFIG_SITE_SSL_KEY_PATH: The ME_CONFIG_SITE_SSL_KEY_PATH environment variable sets the SSL Key file path. \n"
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/rego-policies
+homeURL: https://github.com/kubewarden/rego-policies-library
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/mongo-express-enforce-ssl-key-path-env-var:v0.0.1
+  image: ghcr.io/kubewarden/policies/mongo-express-enforce-ssl-key-path-env-var:v0.1.0
 keywords:
 - pci-dss
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/v0.1.0/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/rego-policies
+  url: https://github.com/kubewarden/rego-policies-library
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/mongo-express-enforce-ssl-key-path-env-var:v0.0.1
+  kwctl pull ghcr.io/kubewarden/policies/mongo-express-enforce-ssl-key-path-env-var:v0.1.0
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/mongo-express-enforce-ssl-key-path-env-var:v0.0.1
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/mongo-express-enforce-ssl-key-path-env-var:v0.1.0
   ```
 maintainers:
 - name: Kubewarden developers

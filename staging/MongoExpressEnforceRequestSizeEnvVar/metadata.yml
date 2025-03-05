@@ -24,9 +24,9 @@ annotations:
     ME_CONFIG_REQUEST_SIZE: The ME_CONFIG_REQUEST_SIZE environment variable sets the maximum payload size. CRUD operations above this size will fail in [body-parser](https://www.npmjs.com/package/body-parser).
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/mongo-express-enforce-request-size-env-var
-  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies
-  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies
+  io.kubewarden.policy.url: https://github.com/kubewarden/rego-policies-library
+  io.kubewarden.policy.source: https://github.com/kubewarden/rego-policies-library
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: access-control
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.pci-dss: pci-dss.8.7
+  io.kubewarden.policy.standards.pci-dss: pci-dss.8.7

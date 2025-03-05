@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.0.1
+version: 0.1.0
 name: container-prohibit-image-tag
 displayName: Container Prohibit Image Tag
-createdAt: 2024-12-17T10:09:20.713687093Z
+createdAt: 2025-03-05T16:03:18.228214916Z
 description: "Prohibit certain image tags by specifying them in the Policy. The Policy will also violate if the a tag is not set, or is set to `latest`. \n\nNote: You should avoid using the :latest tag when deploying containers in production as it is harder to track which version of the image is running and more difficult to roll back properly.\n"
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/rego-policies
+homeURL: https://github.com/kubewarden/rego-policies-library
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/container-prohibit-image-tag:v0.0.1
+  image: ghcr.io/kubewarden/policies/container-prohibit-image-tag:v0.1.0
 keywords:
 - cis-benchmark
 - mitre-attack
@@ -22,17 +22,17 @@ keywords:
 - default
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/v0.1.0/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/rego-policies
+  url: https://github.com/kubewarden/rego-policies-library
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/container-prohibit-image-tag:v0.0.1
+  kwctl pull ghcr.io/kubewarden/policies/container-prohibit-image-tag:v0.1.0
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/container-prohibit-image-tag:v0.0.1
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/container-prohibit-image-tag:v0.1.0
   ```
 maintainers:
 - name: Kubewarden developers

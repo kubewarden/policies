@@ -31,4 +31,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: capacity-management
   io.kubewarden.policy.severity: medium
-  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.2.1.1
+  io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.2.1.1

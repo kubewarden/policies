@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.0.1
+version: 0.1.0
 name: containers-running-with-unapproved-linux-capabilities
 displayName: Containers Running With Unapproved Linux Capabilities
-createdAt: 2024-12-17T10:09:18.271011887Z
+createdAt: 2025-03-05T16:03:17.799546265Z
 description: "Linux capabilities provide a finer-grained breakdown of the privileges traditionally associated with the superuser. Not specifying those capabilities gives the container access to all OS capabilities which may result in exploiting the VM at which the container is running. The issue is reported when a container has `SYS_ADMIN`, `NET_RAW`, `NET_ADMIN`, or `ALL` capabilities. For this Policy, you can also exclude a namespace, such as `kube-system`. \n\nWith Linux capabilities, you can grant certain privileges to a process without granting all the privileges of the root user. To add or remove Linux capabilities for a Container, include the capabilities field in the securityContext section of the Container manifest.\n"
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/rego-policies
+homeURL: https://github.com/kubewarden/rego-policies-library
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/containers-running-with-unapproved-linux-capabilities:v0.0.1
+  image: ghcr.io/kubewarden/policies/containers-running-with-unapproved-linux-capabilities:v0.1.0
 keywords:
 - pci-dss
 - cis-benchmark
@@ -24,17 +24,17 @@ keywords:
 - default
 links:
 - name: policy
-  url: https://github.com/kubewarden/rego-policies/releases/download/v0.0.1/policy.wasm
+  url: https://github.com/kubewarden/rego-policies-library/releases/download/v0.1.0/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/rego-policies
+  url: https://github.com/kubewarden/rego-policies-library
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/containers-running-with-unapproved-linux-capabilities:v0.0.1
+  kwctl pull ghcr.io/kubewarden/policies/containers-running-with-unapproved-linux-capabilities:v0.1.0
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/containers-running-with-unapproved-linux-capabilities:v0.0.1
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/containers-running-with-unapproved-linux-capabilities:v0.1.0
   ```
 maintainers:
 - name: Kubewarden developers

@@ -27,8 +27,8 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: pod-security
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.pci-dss: pci-dss.2.2.4, pci-dss.2.2.5
-  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.2.6
-  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.4.1
-  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.3.3.1
-  # io.kubewarden.policy.standards.gdpr: gdpr.24, gdpr.25, gdpr.32
+  io.kubewarden.policy.standards.pci-dss: pci-dss.2.2.4, pci-dss.2.2.5
+  io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.2.6
+  io.kubewarden.policy.standards.mitre-attack: mitre-attack.4.1
+  io.kubewarden.policy.standards.nist-800-190: nist-800-190.3.3.1
+  io.kubewarden.policy.standards.gdpr: gdpr.24, gdpr.25, gdpr.32

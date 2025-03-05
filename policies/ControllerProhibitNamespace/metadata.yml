@@ -27,5 +27,5 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Best practices RBAC
   io.kubewarden.policy.severity: low
-  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.7.4
-  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.2.1.1
+  io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.7.4
+  io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.2.1.1

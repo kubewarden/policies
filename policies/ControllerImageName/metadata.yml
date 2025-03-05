@@ -26,8 +26,8 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: software-supply-chain
   io.kubewarden.policy.severity: high
-  # io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.5.1
-  # io.kubewarden.policy.standards.mitre-attack: mitre-attack.1.2
-  # io.kubewarden.policy.standards.nist-800-190: nist-800-190.4.1.5
-  # io.kubewarden.policy.standards.gdpr: gdpr.24, gdpr.25, gdpr.32
-  # io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.8
+  io.kubewarden.policy.standards.cis-benchmark: cis-benchmark.5.5.1
+  io.kubewarden.policy.standards.mitre-attack: mitre-attack.1.2
+  io.kubewarden.policy.standards.nist-800-190: nist-800-190.4.1.5
+  io.kubewarden.policy.standards.gdpr: gdpr.24, gdpr.25, gdpr.32
+  io.kubewarden.policy.standards.soc2-type-i: soc2-type-i.1.6.8
