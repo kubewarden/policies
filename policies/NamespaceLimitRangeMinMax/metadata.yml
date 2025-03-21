@@ -11,6 +11,7 @@ annotations:
   io.artifacthub.keywords: soc2-type1
   io.artifacthub.resources: LimitRange
   io.kubewarden.policy.title: namespace-resources-limitrange
+  io.kubewarden.policy.version: 1.0.0
   io.kubewarden.policy.description: |
     When setting up default CPU and Memory values for your namespace, this policy will check if both requests and limits are set. This policy checks for the following:
 
