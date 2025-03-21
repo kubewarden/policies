@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: nist800-190, gdpr, default
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: containers-mounting-docker-socket
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: "This Policy checks the mounting of the `docker.sock` socket of the node into the container. The docker socket filename can be altered based on your configuration. The full path is unnecessary as the Policy accounts for any path.  \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-mounting-docker-socket

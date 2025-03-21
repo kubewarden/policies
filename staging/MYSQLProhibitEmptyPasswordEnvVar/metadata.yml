@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, hipaa
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mysql-prohibit-empty-password-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures MYSQL_ALLOW_EMPTY_PASSWORD environment variable are in place when using the official container images from Docker Hub.
     MYSQL_ALLOW_EMPTY_PASSWORD: MYSQL_ALLOW_EMPTY_PASSWORD set to true will allow the container to be started with a blank password for the root user

@@ -10,6 +10,7 @@ annotations:
   io.artifacthub.displayName: Rbac Prohibit Verbs On Resources
   io.artifacthub.resources: Role
   io.kubewarden.policy.title: rbac-prohibit-verbs-on-resources
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: "This Policy will violate if any RBAC ClusterRoles or Roles are designated with a specific Resource and Verb combination. For example, if you wanted to deny deployments, you would create a Policy with a resource of `deployments` and the verb `create`. \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/rbac-prohibit-verbs-on-resources

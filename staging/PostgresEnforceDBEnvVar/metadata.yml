@@ -18,6 +18,7 @@ annotations:
   io.artifacthub.displayName: Postgres Enforce Environment Variable - POSTGRES_DB
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: postgres-enforce-db-env-var
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: |
     This Policy ensures POSTGRES_DB environment variable are in place when using the official container images from Docker Hub.
     POSTGRES_DB: The POSTGRES_DB environment variable defines a different name for the default database that is created when the image is first started. If it is not specified, then the value of POSTGRES_USER will be used.

@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, hipaa, gdpr
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: rabbitmq-enforce-default-user-env-var
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: |
     This Policy ensures RABBITMQ_DEFAULT_USER environment variable are in place when using the official container images from Docker Hub.
     RABBITMQ_DEFAULT_USER: The RABBITMQ_DEFAULT_USER environment variable sets the User name to create when RabbitMQ creates a new database from scratch.

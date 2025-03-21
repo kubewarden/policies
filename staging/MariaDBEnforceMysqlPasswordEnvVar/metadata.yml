@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, mitre-attack, hipaa, gdpr
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mariadb-enforce-mysql-password-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures MYSQL_PASSWORD environment variable are in place when using the official container images from Docker Hub.
     MYSQL_PASSWORD: The MYSQL_PASSWORD environment variable specifies a password for MARIADB_USER user.

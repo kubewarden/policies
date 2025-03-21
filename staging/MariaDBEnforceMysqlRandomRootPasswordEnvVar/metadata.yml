@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, mitre-attack, hipaa, gdpr
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mariadb-enforce-mysql-random-root-password-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures MYSQL_RANDOM_ROOT_PASSWORD environment variable are in place when using the official container images from Docker Hub.
     MYSQL_RANDOM_ROOT_PASSWORD: The MYSQL_RANDOM_ROOT_PASSWORD environment variable creates random password for the server's root user when the Docker container is started.

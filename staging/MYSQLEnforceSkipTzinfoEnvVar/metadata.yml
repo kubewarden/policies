@@ -18,6 +18,7 @@ annotations:
   io.artifacthub.displayName: MYSQL Enforce Environment Variable - MYSQL_INITDB_SKIP_TZINFO
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mysql-enforce-skip-tzinfo-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures MYSQL_INITDB_SKIP_TZINFO environment variable are in place when using the official container images from Docker Hub.
     MYSQL_INITDB_SKIP_TZINFO: The MYSQL_INITDB_SKIP_TZINFO environment variable allows the skipping of timezone checking when initializing the DB.

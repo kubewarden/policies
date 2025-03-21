@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: cis-benchmark, nist800-190, gdpr, default
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: containers-sharing-host-pid
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy allows check if sharing host PID namespace with the container should be allowed or not. Resources that can be shared with the container include:
 

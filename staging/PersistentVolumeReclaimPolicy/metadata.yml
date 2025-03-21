@@ -11,6 +11,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, soc2-type1
   io.artifacthub.resources: PersistentVolume
   io.kubewarden.policy.title: persistent-volume-reclaim-policy-should-be-set-to-retain
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: |
     This Policy checks to see whether or not the persistent volume reclaim policy is set.
 

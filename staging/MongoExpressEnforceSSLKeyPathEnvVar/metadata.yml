@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mongo-express-enforce-ssl-key-path-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: "This Policy ensures ME_CONFIG_SITE_SSL_KEY_PATH environment variable are in place when using the official container images from Docker Hub.\nME_CONFIG_SITE_SSL_KEY_PATH: The ME_CONFIG_SITE_SSL_KEY_PATH environment variable sets the SSL Key file path. \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/mongo-express-enforce-ssl-key-path-env-var

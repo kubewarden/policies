@@ -18,6 +18,7 @@ annotations:
   io.artifacthub.displayName: InfluxDB Enforce Environment Variable - DOCKER_INFLUXDB_INIT_PASSWORD
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: influxdb-enforce-password-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures DOCKER_INFLUXDB_INIT_PASSWORD environment variable are in place when using the official container images from Docker Hub.
     DOCKER_INFLUXDB_INIT_PASSWORD: The password to set for the system's initial super-user (Required).

@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, mitre-attack, hipaa, gdpr
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mariadb-enforce-user-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures MARIADB_USER environment variable are in place when using the official container images from Docker Hub.
     MARIADB_USER: The MARIADB_USER environment variable sets up a superuser with the same name.

@@ -18,6 +18,7 @@ annotations:
   io.artifacthub.displayName: Affinity Node Simple
   io.artifacthub.resources: CronJob, DaemonSet, Deployment, Job, Pod, StatefulSet
   io.kubewarden.policy.title: affinity-node-simple
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy sets NodeAffinity keys, regardless of the Node Affinity selector or scheduling type. List out the keys you want to check to ensure you are using the right keys. This Policy supports the following Node Affinity types:
     - preferredDuringSchedulingIgnoredDuringExecution
