@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, nist800-190, gdpr, soc2-type1, default
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: containers-running-in-privileged-mode
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy reports if containers are running in privileged mode. A privileged container is given access to all devices on the host. This allows the container nearly all the same access as processes running on the host.
 

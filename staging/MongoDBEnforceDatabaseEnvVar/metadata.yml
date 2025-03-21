@@ -18,6 +18,7 @@ annotations:
   io.artifacthub.displayName: MongoDB Enforce Environment Variable - MONGO_INITDB_DATABASE
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mongodb-enforce-database-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures MONGO_INITDB_DATABASE environment variable are in place when using the official container images from Docker Hub.
     MONGO_INITDB_DATABASE: The MONGO_INITDB_DATABASE environment variable allows you to specify the name of a database to be used for creation scripts.

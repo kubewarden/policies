@@ -10,6 +10,7 @@ annotations:
   io.artifacthub.displayName: Node Missing Label
   io.artifacthub.resources: Node
   io.kubewarden.policy.title: node-missing-label
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: |
     This Policy only looks for specific node label keys.
 

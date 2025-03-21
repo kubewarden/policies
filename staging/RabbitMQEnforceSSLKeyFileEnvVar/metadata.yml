@@ -18,6 +18,7 @@ annotations:
   io.artifacthub.displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_SSL_KEYFILE
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: rabbitmq-enforce-ssl-keyfile-env-var
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: |
     This Policy ensures RABBITMQ_SSL_KEYFILE environment variable are in place when using the official container images from Docker Hub.
     RABBITMQ_SSL_KEYFILE: The RABBITMQ_SSL_KEYFILE sets a path for the server private key file.

@@ -18,6 +18,7 @@ annotations:
   io.artifacthub.displayName: RabbitMQ Enforce Environment Variable - RABBITMQ_SSL_FAIL_IF_NO_PEER_CERT
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: rabbitmq-enforce-fail-if-no-peer-cert-env-var
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: |
     This Policy ensures RABBITMQ_SSL_FAIL_IF_NO_PEER_CERT environment variable are in place when using the official container images from Docker Hub.
     RABBITMQ_SSL_FAIL_IF_NO_PEER_CERT: RABBITMQ_SSL_FAIL_IF_NO_PEER_CERT when set to true, TLS connection will be rejected if client fails to provide a certificate.

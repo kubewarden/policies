@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, mitre-attack, hipaa
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mongo-express-enforce-admin-username-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures ME_CONFIG_MONGODB_ADMINUSERNAME environment variable are in place when using the official container images from Docker Hub.
     ME_CONFIG_MONGODB_ADMINUSERNAME: The ME_CONFIG_MONGODB_ADMINUSERNAME environment variable sets the MongoDB admin username.

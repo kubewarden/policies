@@ -10,6 +10,7 @@ annotations:
   io.artifacthub.displayName: Rbac Prohibit Updating Configmaps
   io.artifacthub.resources: Role
   io.kubewarden.policy.title: rbac-prohibit-updating-configmaps
+  io.kubewarden.policy.version: 0.0.1
   io.kubewarden.policy.description: "This Policy will violate if any RBAC ClusterRoles or Roles are designated with a specific verbs set for ConfigMaps. For example, if you wanted to deny the patching of a configmap, you would create a Policy with a the `resource_name` of the configmap you want to protect, it's `namespace` and the `verb` you want to block. \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/rbac-prohibit-updating-configmaps

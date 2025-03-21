@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: mongo-express-enforce-mongodb-port-env-var
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: |
     This Policy ensures ME_CONFIG_MONGODB_PORT environment variable are in place when using the official container images from Docker Hub.
     ME_CONFIG_MONGODB_PORT: The ME_CONFIG_MONGODB_PORT environment variable sets the mongodb port

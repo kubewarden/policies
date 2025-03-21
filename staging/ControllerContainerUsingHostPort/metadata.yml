@@ -19,6 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, nist800-190
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: containers-using-hostport
+  io.kubewarden.policy.version: 0.1.0
   io.kubewarden.policy.description: "This Policy checks if `hostPort` is set. When `hostPort` is set, a Pod is bound to a hostPort and limits the number of places the Pod can be scheduled. That's because each <hostIP, hostPort, protocol> combination must be unique. If you don't specify the hostIP and protocol explicitly, Kubernetes will use 0.0.0.0 as the default hostIP and TCP as the default protocol.\n\nDon't specify a hostPort for a Pod unless it is absolutely necessary.  \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-using-hostport
