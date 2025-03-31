@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default restart_policy := "Always"
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 restart_policy := input.parameters.restart_policy
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

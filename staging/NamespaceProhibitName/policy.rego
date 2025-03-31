@@ -1,5 +1,7 @@
 package policy
 
+default namespace_name := "kube-"
+
 namespace_name := input.parameters.namespace_name
 
 violation[result] {

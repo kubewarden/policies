@@ -1,5 +1,10 @@
 package policy
 
+default automount := false
+default namespace := "default"
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 automount_value = input.parameters.automount
 namespace = input.parameters.namespace
 exclude_label_key := input.parameters.exclude_label_key

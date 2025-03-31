@@ -2,6 +2,10 @@ package policy
 
 import future.keywords.in
 
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 annotation_key := input.parameters.prometheus_annotation_key
 annotation_value := input.parameters.prometheus_annotation_value
 exclude_namespaces := input.parameters.exclude_namespaces

@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default hostpath_key := "hostPath"
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 hostpath_key := input.parameters.hostpath_key
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

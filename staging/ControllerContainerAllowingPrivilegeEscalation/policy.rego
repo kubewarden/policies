@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default exclude_namespaces := ["kube-system"]
+default allow_privilege_escalation := false
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 exclude_namespaces := input.parameters.exclude_namespaces
 allow_privilege_escalation := input.parameters.allow_privilege_escalation
 exclude_label_key := input.parameters.exclude_label_key

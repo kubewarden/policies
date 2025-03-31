@@ -1,5 +1,7 @@
 package policy
 
+default kind := "Pods"
+
 kind := input.parameters.kind
 
 violation[result] {

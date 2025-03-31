@@ -1,5 +1,10 @@
 package policy
 
+default subjects_name := "system:masters"
+default subjects_kind := "Group"
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 subjects_kind := input.parameters.subjects_kind
 subjects_name := input.parameters.subjects_name
 exclude_label_key := input.parameters.exclude_label_key

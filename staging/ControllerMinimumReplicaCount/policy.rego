@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default replica_count := 2
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 min_replica_count := input.parameters.replica_count
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

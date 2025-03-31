@@ -2,6 +2,12 @@ package policy
 
 import future.keywords.in
 
+default seccomp_annotation := "runtime/default"
+default seccomp_type := "RuntimeDefault"
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 seccomp_annotation := input.parameters.seccomp_annotation
 seccomp_type := input.parameters.seccomp_type
 exclude_namespaces := input.parameters.exclude_namespaces

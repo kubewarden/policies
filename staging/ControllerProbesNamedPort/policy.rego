@@ -1,5 +1,7 @@
 package policy
 
+default probe := "livenessProbe"
+
 healthcheck_name := "healthcheck"
 
 

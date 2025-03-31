@@ -1,5 +1,8 @@
 package policy
 
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 namespace := input.parameters.namespace
 blocked_cidr := input.parameters.blocked_cidr
 exclude_label_key := input.parameters.exclude_label_key

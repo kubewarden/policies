@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default automount_token := false
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 automount_token := input.parameters.automount_token
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key
