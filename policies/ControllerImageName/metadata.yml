@@ -18,7 +18,7 @@ annotations:
   io.artifacthub.displayName: Containers Block Specific Image Names
   io.artifacthub.resources: CronJob, DaemonSet, Deployment, Job, Pod, StatefulSet
   io.kubewarden.policy.title: containers-block-specific-image-names
-  io.kubewarden.policy.version: 1.0.0
+  io.kubewarden.policy.version: 1.0.1
   io.kubewarden.policy.description: "This Policy prohibits images with certain image names from being deployed by specifying a list of unapproved names. \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/containers-block-specific-image-names
