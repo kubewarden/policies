@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default toleration_key := "node-role.kubernetes.io/master"
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 toleration_key := input.parameters.toleration_key
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

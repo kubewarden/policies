@@ -1,5 +1,9 @@
 package policy
 
+default prometheus_subject_name := "prometheus"
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 subject_name := input.parameters.prometheus_subject_name
 exclude_label_key := input.parameters.exclude_label_key
 exclude_label_value := input.parameters.exclude_label_value

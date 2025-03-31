@@ -1,5 +1,8 @@
 package policy
 
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 src_namespace := input.parameters.src_namespace
 dst_namespace := input.parameters.dst_namespace
 exclude_label_key := input.parameters.exclude_label_key

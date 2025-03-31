@@ -1,5 +1,8 @@
 package policy
 
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 key := input.parameters.key
 value := input.parameters.value
 exclude_label_key := input.parameters.exclude_label_key

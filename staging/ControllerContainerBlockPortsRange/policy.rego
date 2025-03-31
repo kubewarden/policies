@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default target_port := 1024
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 target_port := input.parameters.target_port
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

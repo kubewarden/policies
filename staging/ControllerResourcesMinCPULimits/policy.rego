@@ -2,6 +2,10 @@ package policy
 
 import future.keywords.in
 
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 min_size := input.parameters.size
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

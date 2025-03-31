@@ -1,5 +1,8 @@
 package policy
 
+default pod_quota := "2"
+default namespace := "magalix"
+
 pod_quota := input.parameters.pod_quota
 namespace := input.parameters.namespace
 

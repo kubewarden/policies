@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default protocols := "HTTPS"
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 service_protocol := input.parameters.protocols
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

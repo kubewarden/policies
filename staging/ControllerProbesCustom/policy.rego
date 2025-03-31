@@ -2,6 +2,13 @@ package policy
 
 import future.keywords.in
 
+default command := []
+default path := ""
+default port := 0
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 probe_type := input.parameters.probe_type
 command := input.parameters.command
 path := input.parameters.path

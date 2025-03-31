@@ -1,5 +1,9 @@
 package policy
 
+default pv_policy := "Retain"
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 policy := input.parameters.pv_policy
 exclude_label_key := input.parameters.exclude_label_key
 exclude_label_value := input.parameters.exclude_label_value

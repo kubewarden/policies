@@ -1,5 +1,9 @@
 package policy
 
+default prometheus_verb := "put"
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 verb := input.parameters.prometheus_verb
 exclude_label_key := input.parameters.exclude_label_key
 exclude_label_value := input.parameters.exclude_label_value

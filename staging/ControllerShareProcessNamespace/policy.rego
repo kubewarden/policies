@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default resource_enabled := false
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 resource_enabled := input.parameters.resource_enabled
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

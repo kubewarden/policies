@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default host_port := "hostPort"
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 host_port := input.parameters.host_port
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

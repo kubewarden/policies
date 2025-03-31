@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default read_only := true
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 read_only = input.parameters.read_only
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

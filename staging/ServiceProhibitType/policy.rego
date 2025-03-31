@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default type := "NodePort"
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 type := input.parameters.type
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

@@ -1,5 +1,8 @@
 package policy
 
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 resource_name := input.parameters.resource_name
 verb := input.parameters.verb
 namespace := input.parameters.namespace
