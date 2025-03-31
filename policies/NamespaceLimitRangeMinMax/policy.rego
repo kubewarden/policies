@@ -1,5 +1,7 @@
 package policy
 
+default namespace := "magalix"
+
 resource_type := input.parameters.resource_type
 resource_setting := input.parameters.resource_setting
 namespace := input.parameters.namespace

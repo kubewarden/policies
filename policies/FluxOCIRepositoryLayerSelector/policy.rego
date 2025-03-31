@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default operations := ["extract"]
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 media_types := input.parameters.media_types
 operations := input.parameters.operations
 exclude_namespaces := input.parameters.exclude_namespaces

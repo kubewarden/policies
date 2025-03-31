@@ -1,5 +1,8 @@
 package policy
 
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 snapshot_class := input.parameters.snapshot_class
 pvc_name := input.parameters.pvc_name
 exclude_label_key := input.parameters.exclude_label_key

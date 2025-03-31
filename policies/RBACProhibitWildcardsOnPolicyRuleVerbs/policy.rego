@@ -1,5 +1,9 @@
 package policy
 
+default attributes := "verbs"
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 attributes := input.parameters.attributes
 exclude_role_name := input.parameters.exclude_role_name
 exclude_label_key := input.parameters.exclude_label_key

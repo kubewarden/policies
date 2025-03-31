@@ -3,6 +3,10 @@ package policy
 import future.keywords.in
 import data.k8s.matches
 
+default exclude_namespaces := []
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 provider := input.parameters.provider
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

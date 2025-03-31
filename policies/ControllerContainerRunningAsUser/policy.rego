@@ -2,6 +2,11 @@ package policy
 
 import future.keywords.in
 
+default uid := 0
+default exclude_namespaces := ["kube-system"]
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 uid := input.parameters.uid
 exclude_namespaces := input.parameters.exclude_namespaces
 exclude_label_key := input.parameters.exclude_label_key

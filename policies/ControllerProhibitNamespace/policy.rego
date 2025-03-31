@@ -1,5 +1,9 @@
 package policy
 
+default custom_namespace := "default"
+default exclude_label_key := ""
+default exclude_label_value := ""
+
 custom_namespace := input.parameters.custom_namespace
 exclude_label_key := input.parameters.exclude_label_key
 exclude_label_value := input.parameters.exclude_label_value
