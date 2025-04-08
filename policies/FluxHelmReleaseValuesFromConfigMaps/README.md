@@ -5,27 +5,16 @@ HelmRelease valuesFrom must use correctly configured ConfigMaps.
 Ensure that the HelmRelease uses allowed ConfigMaps in the valuesFrom field.
 
 # Settings
+
 ```yaml
-  settings:
-    parameters:
-      - name: configmaps
-        type: array
-        required: true
-        value:
-      - name: exclude_namespaces
-        type: array
-        required: false
-        value: []
-      - name: exclude_label_key
-        type: string
-        required: false
-        value:
-      - name: exclude_label_value
-        type: string
-        required: false
-        value:
+settings:
+  configmaps: []
+  exclude_namespaces: [] # optional, default: []
+  exclude_label_key: "" # optional
+  exclude_label_value: "" # optional
 ```
 
 # Resources
+
 Policy applies to resources kinds:
 `HelmRelease`

@@ -2,8 +2,8 @@
 
 This Policy checks if the container is exposing ssh port.
 
-
 Make sure you are not exposing ssh port on containers.
+
 ```
 ...
   spec:
@@ -12,29 +12,17 @@ Make sure you are not exposing ssh port on containers.
       - containerPort: <port>
 ```
 
-
 # Settings
+
 ```yaml
-  settings:
-    parameters:
-      - name: container_port
-        type: integer
-        required: true
-        value: 22
-      - name: exclude_namespaces
-        type: array
-        required: false
-        value:
-      - name: exclude_label_key
-        type: string
-        required: false
-        value:
-      - name: exclude_label_value
-        type: string
-        required: false
-        value:
+settings:
+  container_port: 22 # default: 22
+  exclude_namespaces: [] # optional
+  exclude_label_key: "" # optional
+  exclude_label_value: "" # optional
 ```
 
 # Resources
+
 Policy applies to resources kinds:
 `Deployment`, `Job`, `ReplicationController`, `ReplicaSet`, `DaemonSet`, `StatefulSet`, `CronJob`

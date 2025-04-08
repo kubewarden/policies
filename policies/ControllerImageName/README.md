@@ -14,24 +14,11 @@ Use an image that is not set in the Policy.
 
 # Settings
 ```yaml
-  settings:
-    parameters:
-      - name: restricted_image_names
-        type: array
-        required: true
-        value:
-      - name: exclude_namespaces
-        type: array
-        required: false
-        value:
-      - name: exclude_label_key
-        type: string
-        required: false
-        value:
-      - name: exclude_label_value
-        type: string
-        required: false
-        value:
+settings:
+  restricted_image_names: []
+  exclude_namespaces: [] # optional
+  exclude_label_key: "" # optional
+  exclude_label_value: "" # optional
 ```
 
 # Resources
