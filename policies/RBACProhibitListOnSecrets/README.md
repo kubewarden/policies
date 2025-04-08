@@ -2,8 +2,8 @@
 
 This Policy will violate if any RBAC ClusterRoles or Roles are designated with 'list' verb on 'secrets' resource.
 
+When deploying RBAC roles, ensure the resource and verb combination you choose are allowed by the Policy.
 
-When deploying RBAC roles, ensure the resource and verb combination you choose are allowed by the Policy. 
 ```
 rules:
 - resources: <resources>
@@ -12,29 +12,17 @@ rules:
 
 https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
-
 # Settings
+
 ```yaml
-  settings:
-    parameters:
-      - name: resource
-        type: string
-        required: true
-        value: "secrets"
-      - name: verb
-        type: string
-        required: true
-        value: "list"
-      - name: exclude_label_key
-        type: string
-        required: false
-        value: ""
-      - name: exclude_label_value
-        type: string
-        required: false
-        value: ""
+settings:
+  resource: "secrets" # default: "secrets"
+  verb: "list" # default: "list"
+  exclude_label_key: "" # optional, default: ""
+  exclude_label_value: "" # optional, default: ""
 ```
 
 # Resources
+
 Policy applies to resources kinds:
 `Role`, `ClusterRole`

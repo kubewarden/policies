@@ -5,27 +5,16 @@ The 'spec.prune' field in the Kustomization object must be set according to the 
 Update the 'spec.prune' field in the Kustomization object to match the required value.
 
 # Settings
+
 ```yaml
-  settings:
-    parameters:
-      - name: prune
-        type: boolean
-        required: true
-        value:
-      - name: exclude_namespaces
-        type: array
-        required: false
-        value:
-      - name: exclude_label_key
-        type: string
-        required: false
-        value:
-      - name: exclude_label_value
-        type: string
-        required: false
-        value:
+settings:
+  prune: false
+  exclude_namespaces: [] # optional
+  exclude_label_key: "" # optional
+  exclude_label_value: "" # optional
 ```
 
 # Resources
+
 Policy applies to resources kinds:
 `Kustomization`

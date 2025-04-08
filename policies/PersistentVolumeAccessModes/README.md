@@ -4,38 +4,32 @@ A PersistentVolume can be mounted on a host in any way supported by the resource
 
 The access modes are:
 
-* ReadWriteOnce
-* ReadOnlyMany
-* ReadWriteMany
-* ReadWriteOncePod
-
+- ReadWriteOnce
+- ReadOnlyMany
+- ReadWriteMany
+- ReadWriteOncePod
 
 Ensure the <name> of your Persistent Volume and <access_mode> set in your Policy match the PV you want to check.
+
 ```
 apiVersion: v1
 kind: PersistentVolume
-metadata: 
+metadata:
   name: <name>
-spec: 
-  accessModes: 
+spec:
+  accessModes:
     - <access_mode>
 ```
 
-
 # Settings
+
 ```yaml
-  settings:
-    parameters:
-      - name: name
-        type: string
-        required: true
-        value:
-      - name: access_mode
-        type: string
-        required: true
-        value:
+settings:
+  name: "name"
+  access_mode: "access_mode"
 ```
 
 # Resources
+
 Policy applies to resources kinds:
 `PersistentVolume`
