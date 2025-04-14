@@ -1,13 +1,13 @@
 questions:
-- default: value
-  description: >-
-    This policy has required settings, but corresponding UI elements are not yet implemented.
-    Please configure the settings manually via the Edit YAML tab.
-    Additional information is available in the policy's README file.
-  group: Settings
-  label: Description
-  required: false
-  hide_input: true
-  type: string
-  variable: name
-
+  - variable: attributes
+    default: "verbs"
+    required: true
+    group: Settings
+    type: string
+    label: Attributes
+  - variable: exclude_role_name
+    default: ""
+    required: true
+    group: Settings
+    type: string
+    label: Exclude role name
