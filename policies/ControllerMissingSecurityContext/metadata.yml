@@ -19,7 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, nist800-190, gdpr, default
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: containers-missing-security-context
-  io.kubewarden.policy.version: 1.0.2
+  io.kubewarden.policy.version: 1.0.3
   io.kubewarden.policy.description: |
     This Policy checks if the container is missing securityContext while there is no securityContext defined on the Pod level as well. The security settings that are specified on the Pod level apply to all containers in the Pod.
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
