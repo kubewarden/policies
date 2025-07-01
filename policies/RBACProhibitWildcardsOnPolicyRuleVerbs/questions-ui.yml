@@ -7,7 +7,7 @@ questions:
     label: Attributes
   - variable: exclude_role_name
     default: ""
-    required: true
+    required: false
     group: Settings
     type: string
     label: Exclude role name
