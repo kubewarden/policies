@@ -19,7 +19,7 @@ annotations:
   io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, nist800-190, gdpr, default
   io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: container-running-as-user
-  io.kubewarden.policy.version: 1.0.3
+  io.kubewarden.policy.version: 1.0.4
   io.kubewarden.policy.description: "Containers has a feature in which you specify the ID of the user which all processes in the container will run with. This Policy enforces that the `securityContext.runAsUser` attribute is set to a uid greater than root uid. Running as root user gives the container full access to all resources in the VM it is running on. Containers should not run with such access rights unless required by design. \n"
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/container-running-as-user
