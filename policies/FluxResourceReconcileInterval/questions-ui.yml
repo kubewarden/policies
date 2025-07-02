@@ -3,11 +3,11 @@ questions:
     default: 1
     required: true
     group: Settings
-    type: integer
+    type: int
     label: Lower bound
   - variable: upper_bound
     default: 1000
     required: true
     group: Settings
-    type: integer
+    type: int
     label: Upper bound

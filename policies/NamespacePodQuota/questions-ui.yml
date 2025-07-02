@@ -3,7 +3,7 @@ questions:
     default: 2
     required: true
     group: Settings
-    type: string
+    type: int
     label: Pod quota
   - variable: namespace
     default: magalix

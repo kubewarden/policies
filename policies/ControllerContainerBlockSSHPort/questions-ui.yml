@@ -3,5 +3,5 @@ questions:
     default: 22
     required: true
     group: Settings
-    type: integer
+    type: int
     label: Container port
