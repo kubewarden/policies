@@ -50,6 +50,29 @@ test_invalid_target_namespace {
   count(violation) == 1 with input as testcase
 }
 
+test_missing_target_namespace {
+  testcase = {
+    "parameters": {
+      "exclude_namespaces": [],
+      "exclude_label_key": "",
+      "exclude_label_value": "",
+      "target_namespaces": ["allowed-namespace"]
+    },
+    "review": {
+      "object": {
+        "kind": "Kustomization",
+        "metadata": {
+          "name": "invalid-kustomization",
+        },
+        "spec": {
+        }
+      }
+    }
+  }
+
+  count(violation) == 1 with input as testcase
+}
+
 test_exclude_label_target_namespace {
   testcase = {
     "parameters": {
