@@ -4,20 +4,15 @@ version = "1.0.5"
 authors = ["Flavio Castelli <fcastelli@suse.com>"]
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[workspace]
-members = ["crates/versions", "crates/policy-metadata-helper"]
-
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1.0"
-lazy_static = "1.4"
-kubewarden-policy-sdk = { version = "0.15.0", default-features = false }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-serde_yaml = "0.9"
+anyhow = { workspace = true }
+kubewarden-policy-sdk = { workspace = true }
+lazy_static = { workspace = true }
 semver = "1.0"
-versions = { path = "crates/versions" }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
+versions = { path = "/home/jvanz/SUSE/policies/policies/policies/deprecated-api-versions-policy/crates/versions" }

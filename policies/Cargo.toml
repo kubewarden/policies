@@ -1,0 +1,58 @@
+[workspace]
+resolver = "3"
+members = [
+  "allow-privilege-escalation-psp-policy",
+  "allowed-fsgroups-psp-policy",
+  "allowed-proc-mount-types-psp-policy",
+  "annotations-policy",
+  "apparmor-psp-policy",
+  "capabilities-psp-policy",
+  "deprecated-api-versions-policy",
+  "do-not-expose-admission-controller-webhook-services-policy",
+  "echo",
+  "env-variable-secrets-scanner-policy",
+  "environment-variable-policy",
+  "flexvolume-drivers-psp-policy",
+  "host-namespaces-psp-policy",
+  "image-cve-policy",
+  "labels-policy",
+  "persistentvolumeclaim-storageclass-policy",
+  "pod-ndots-policy",
+  "pod-privileged-policy",
+  "pod-runtime-class-policy",
+  "priority-class-policy",
+  "probes-policy",
+  "psa-label-enforcer-policy",
+  "raw-validation-policy",
+  "readonly-root-filesystem-psp-policy",
+  "seccomp-psp-policy",
+  "selinux-psp-policy",
+  "share-pid-namespace-policy",
+  "sleeping-policy",
+  "trusted-repos-policy",
+  "unique-service-selector-policy",
+  "user-group-psp-policy",
+  "verify-image-signatures",
+  "volumeMounts-policy",
+]
+
+
+[workspace.dependencies]
+anyhow = "1.0"
+k8s-openapi = { version = "0.26.0", features = ["latest"] }
+kubewarden-policy-sdk = "0.15.0"
+serde = "1.0"
+serde_json = "1.0"
+serde_yaml = "0.9"
+assert-json-diff = "2.0.2"
+criteria_policy_base = { path = "/home/jvanz/SUSE/policies/policies/policies/environment-variable-policy/crates/criteria_policy_base" }
+regex = "1"
+rstest = "0.26.0"
+lazy_static = "1.5"
+mockall = "0.14"
+serial_test = "3.2"
+slog = "2.7"
+thiserror = "2.0.17"
+jmespath = "0.4"
+oci-spec = "0.8"
+jsonpath_lib = "0.3.0"
