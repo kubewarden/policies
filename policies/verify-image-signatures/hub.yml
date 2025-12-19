@@ -1,0 +1,18 @@
+name: verify-image-signatures
+description: A Kubewarden Policy that verifies all the signatures of the container images referenced by a Pod
+homepage: https://github.com/kubewarden/verify-image-signatures
+author:
+  name: "Raul Cabello Martin <raul.cabello@suse.com>, Victor Cuadrado Juan <vcuadradojuan@suse.de>"
+  homepage: https://github.com/kubewarden/verify-image-signatures
+download:
+  registry: ghcr.io/kubewarden/policies/verify-image-signatures:__TAG__
+  url: https://github.com/kubewarden/verify-image-signatures/releases/download/__TAG__/policy.wasm
+keywords:
+  - Pod
+  - signature
+  - sigstore
+  - trusted
+resources:
+  - Pod
+mutation: true
+contextAware: false

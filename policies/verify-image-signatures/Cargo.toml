@@ -1,0 +1,29 @@
+[package]
+name = "verify-image-signatures"
+version = "1.0.5"
+authors = ["Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1.0"
+k8s-openapi = { version = "0.26.0", default-features = false, features = [
+  "v1_32",
+] }
+kubewarden-policy-sdk = "0.15"
+lazy_static = "1.4"
+pem = "3.0.4"
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+slog = "2.7"
+validator = { version = "0.20", features = ["derive"] }
+wildmatch = "2.5.0"
+
+[dev-dependencies]
+mockall = "0.14"
+rstest = "0.26.0"
+serial_test = "3.1.1"
