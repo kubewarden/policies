@@ -4,17 +4,13 @@ version = "1.0.8"
 authors = ["Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-k8s-openapi = { version = "0.26.0", default-features = false, features = [
-  "v1_32",
-] }
-kubewarden-policy-sdk = "0.15.0"
-serde = { version = "1.0", features = ["derive"] }
+k8s-openapi = { workspace = true }
+kubewarden-policy-sdk = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
-rstest = "0.26.0"
+rstest = { workspace = true }

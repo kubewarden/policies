@@ -1,25 +1,22 @@
-
 [package]
+name = "labels-policy"
+version = "0.1.4"
 authors = ["Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2018"
-name    = "labels-policy"
-version = "0.1.4"
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1.0"
-criteria_policy_base = { git = "https://github.com/kubewarden/environment-variable-policy.git", tag = "criteria_policy_base-0.1.1", package = "criteria_policy_base", features = [
+k8s-openapi = { workspace = true }
+anyhow = { workspace = true }
+criteria_policy_base = { path = "../../crates/criteria_policy_base", features = [
   "labels",
 ] }
-k8s-openapi = { version = "0.26.0", default-features = false, features = [
-  "v1_32",
-] }
-regex = "1"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+regex = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
 
 [dev-dependencies]
-rstest     = "0.26.0"
-serde_yaml = "0.9"
+rstest = { workspace = true }
+serde_yaml = { workspace = true }
