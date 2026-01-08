@@ -27,7 +27,7 @@ jobs:
           policies_working_dirs=($(find policies -maxdepth 2 -name Makefile -exec dirname '{}' \;))
           if [ "${{github.event_name}}" == "pull_request" ]; then
             # list only changes of files in `policies/`:
-            git_files="$(git diff --no-color --find-renames --find-copies --name-only origin/${{ github.base_ref }} ${{ github.sha }} -- policies)"
+            git_files="$(git diff --no-color --find-renames --find-copies --name-only origin/${{ github.base_ref }} ${{ github.sha }} -- policies | grep -v '^policies/crates/')"
 
             # build policy_working_dirs:
             policies_working_dirs=($(echo "$git_files" | cut -d/ -f1,2 ))
