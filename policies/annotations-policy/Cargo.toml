@@ -9,9 +9,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = { workspace = true }
-criteria_policy_base = { path = "../../crates/criteria_policy_base", features = [
-  "annotations",
-] }
+criteria_policy_base = { workspace = true, features = ["annotations"] }
 k8s-openapi = { workspace = true }
 regex = { workspace = true }
 serde = { features = ["derive"], workspace = true }

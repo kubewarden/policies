@@ -10,9 +10,7 @@ crate-type = ["cdylib"]
 [dependencies]
 k8s-openapi = { workspace = true }
 anyhow = { workspace = true }
-criteria_policy_base = { path = "../../crates/criteria_policy_base", features = [
-  "labels",
-] }
+criteria_policy_base = { workspace = true, features = ["labels"] }
 regex = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }

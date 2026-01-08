@@ -17,4 +17,4 @@ serde_json = { workspace = true }
 
 [dev-dependencies]
 assert-json-diff = { workspace = true }
-test_helpers = { path = "/home/jvanz/SUSE/policies/policies/policies/capabilities-psp-policy/test_helpers" }
+test_helpers = { workspace = true }
