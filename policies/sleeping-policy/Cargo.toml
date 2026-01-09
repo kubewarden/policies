@@ -10,6 +10,7 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = { workspace = true }
 jmespath = { workspace = true }
+k8s-openapi = { workspace = true }
 kubewarden-policy-sdk = { workspace = true }
 lazy_static = { workspace = true }
 serde = { workspace = true, features = ["derive"] }

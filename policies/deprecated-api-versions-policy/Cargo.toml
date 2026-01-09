@@ -9,6 +9,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = { workspace = true }
+k8s-openapi = { workspace = true }
 kubewarden-policy-sdk = { workspace = true }
 lazy_static = { workspace = true }
 semver = "1.0"

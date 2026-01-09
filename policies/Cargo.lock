@@ -302,6 +302,7 @@ name = "deprecated-api-versions"
 version = "1.0.5"
 dependencies = [
  "anyhow",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "semver",
@@ -400,6 +401,7 @@ dependencies = [
  "anyhow",
  "assert-json-diff",
  "jmespath",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -1345,6 +1347,7 @@ dependencies = [
 name = "raw-validation-policy"
 version = "0.1.0"
 dependencies = [
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "serde",
@@ -1702,6 +1705,7 @@ version = "0.1.2"
 dependencies = [
  "anyhow",
  "jmespath",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
