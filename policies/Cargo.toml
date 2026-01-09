@@ -39,7 +39,7 @@ members = [
 
 [workspace.dependencies]
 anyhow = "1.0"
-k8s-openapi = { version = "0.26.0", features = ["v1_34"] }
+k8s-openapi = { version = "0.26.0", features = ["latest"] }
 kubewarden-policy-sdk = "0.15.0"
 serde = "1.0"
 serde_json = "1.0"
