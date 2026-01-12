@@ -211,3 +211,14 @@ jobs:
               prerelease: isPreRelease,
               make_latest: !isPreRelease
             });
+
+  release-catalog:
+    needs: [calculate-policy-from-tag, release]
+    uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@247608f0b5a1562a6fd2576e5b2e6cbe62551baf # v4.5.15
+    with:
+      policy-name: ${{ needs.calculate-policy-from-tag.outputs.policy-name }}
+      policy-working-dir: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
+    secrets:
+      # Required to dispatch the release event to the policy-catalog repository
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
