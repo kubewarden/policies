@@ -212,6 +212,61 @@ jobs:
               make_latest: !isPreRelease
             });
 
+  push-artifacthub:
+    needs: [calculate-policy-from-tag, release]
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0 # fetch all history for all branches and tags
+
+      - name: install dependencies
+        uses: ./.github/actions/install-dependencies
+
+      - name: generate artifacthub-pkg.yml
+        shell: bash
+        working-directory: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
+        run: |
+          kwctl scaffold artifacthub --output ${{ runner.temp }}/artifacthub-pkg.yml
+
+      - name: Push up-to-date artifacthub-pkg.yml
+        shell: bash
+        run: |
+          set -x
+          git config user.name "Update artifacthub branch"
+          git config user.email github-actions@github.com
+
+          git checkout -b main --track origin/main
+          git checkout -b artifacthub --track origin/artifacthub || git checkout --orphan artifacthub
+          git reset HEAD -- .
+          # we need to replicate the policy-working-dir structure,
+          # see https://artifacthub.io/docs/topics/repositories/kubewarden-policies
+          #   path/to/packages
+          #   └── policies
+          #       └── <policy name>
+          #           ├── artifacthub-pkg.yml
+          #           └── README.md
+            
+          # checkout the specific files we need from the specific tag that triggered this workflow:
+          git checkout ${{ github.ref_name }} -- artifacthub-repo.yml
+          mkdir -p ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
+          mv ${{ runner.temp }}/artifacthub-pkg.yml ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/artifacthub-pkg.yml
+          git checkout ${{ github.ref_name }} -- ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/README.md
+
+          # add and commit the needed files:
+          git add artifacthub-repo.yml
+          git add ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/artifacthub-pkg.yml
+          git add ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/README.md # used if artifacthub-pkg.yml.readme is missing
+          VERSION=$(sed --posix -n 's,^version: \(.*\),\1,p' ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/artifacthub-pkg.yml)
+          git commit -m "Bump ArtifactHub files for ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}, version $VERSION"
+
+          git push origin artifacthub
+
   release-catalog:
     needs: [calculate-policy-from-tag, release]
     uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@247608f0b5a1562a6fd2576e5b2e6cbe62551baf # v4.5.15
