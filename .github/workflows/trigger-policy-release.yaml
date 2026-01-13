@@ -72,17 +72,7 @@ jobs:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
-      # - name: Restore cargo-set-version from cache
-      #   id: restore-cache
-      #   uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-      #   with:
-      #     path: ~/.cargo/bin
-      #     key: cargo-edit-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
-      #     restore-keys: |
-      #       cargo-edit-${{ runner.os }}-
-
       - name: Install cargo-set-version
-        # if: ! steps.restore-cache.outputs.cache-hit
         run: cargo install cargo-edit
 
       - name: Get policy metadata
