@@ -22,12 +22,15 @@ jobs:
         id: calculate-policy-dirs
         shell: bash
         run: |
+          set -
           git remote -v
 
           policies_working_dirs=($(find policies -maxdepth 2 -name Makefile -exec dirname '{}' \;))
           if [ "${{github.event_name}}" == "pull_request" ]; then
             # list only changes of files in `policies/`:
-            git_files="$(git diff --no-color --find-renames --find-copies --name-only origin/${{ github.base_ref }} ${{ github.sha }} -- policies | grep -v '^policies/crates/')"
+            # it's necessary to add the `|| true` in the pipe because if the CI is running in a PR with no changes under
+            # the policies directory, the script will fail in the grep command.
+            git_files="$(git diff --no-color --find-renames --find-copies --name-only origin/${{ github.base_ref }} ${{ github.sha }} -- policies | grep -v '^policies/crates/' || true)"
 
             # build policy_working_dirs:
             policies_working_dirs=($(echo "$git_files" | cut -d/ -f1,2 ))
