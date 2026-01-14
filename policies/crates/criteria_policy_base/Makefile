@@ -14,7 +14,7 @@ lint:
 
 .PHONY: check
 check:
-	@for feature in $$(cargo $(CARGO_GLOBAL_OPTIONS) read-manifest --manifest-path cargo $(CARGO_GLOBAL_OPTIONS).toml | jq -r '.features | keys[]'); do \
+	@for feature in $$(cargo $(CARGO_GLOBAL_OPTIONS) read-manifest --manifest-path Cargo.toml | jq -r '.features | keys[]'); do \
 		cargo $(CARGO_GLOBAL_OPTIONS) check --no-default-features --features "$$feature"; \
 	done
 	
