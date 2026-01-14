@@ -10,6 +10,8 @@ members = [
   "context-aware-demo",
   "crates/criteria_policy_base",
   "crates/test_helpers",
+  "crates/policy-metadata-helper",
+  "crates/versions",
   "deprecated-api-versions-policy",
   "do-not-expose-admission-controller-webhook-services-policy",
   "echo",
@@ -49,6 +51,7 @@ serde_json = "1.0"
 serde_yaml = "0.9"
 assert-json-diff = "2.0.2"
 criteria_policy_base = { path = "crates/criteria_policy_base" }
+versions = { path = "crates/versions" }
 regex = "1"
 rstest = "0.26.0"
 lazy_static = "1.5"

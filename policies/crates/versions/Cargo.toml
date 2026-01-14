@@ -1,19 +1,17 @@
 [package]
-name = "deprecated-api-versions"
+name = "versions"
 version = "1.0.5"
 authors = ["Flavio Castelli <fcastelli@suse.com>"]
-edition = "2021"
+edition = "2018"
 
-[lib]
-crate-type = ["cdylib"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 anyhow = { workspace = true }
 k8s-openapi = { workspace = true }
 kubewarden-policy-sdk = { workspace = true }
 lazy_static = { workspace = true }
-semver = "1.0"
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 serde_yaml = { workspace = true }
-versions = { workspace = true }
+semver = "1.0"

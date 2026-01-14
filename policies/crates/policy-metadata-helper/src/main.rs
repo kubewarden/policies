@@ -12,7 +12,7 @@ fn generate_metadata_rules() -> Vec<PolicyMetadataRule> {
 
     let mut relevant_versions: HashMap<String, HashSet<String>> = HashMap::new();
 
-    let versions: Versions = serde_yaml::from_slice(include_bytes!("../../../versions.yaml"))
+    let versions: Versions = serde_yaml::from_slice(include_bytes!("../../versions/versions.yaml"))
         .expect("Cannot decode versions.yml");
 
     for rule in &versions.deprecated_versions {

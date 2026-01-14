@@ -13,7 +13,7 @@ use deprecations::{DeprecationRule, DeprecationRules};
 
 lazy_static! {
     pub static ref DEPRECATION_CHECKER: DeprecationChecker = {
-        DeprecationChecker::from_yaml(include_bytes!("../../../versions.yaml")).expect(
+        DeprecationChecker::from_yaml(include_bytes!("../versions.yaml")).expect(
             "Cannot deserialize the embedded versions. Check the 'versions.yaml' file for errors",
         )
     };
