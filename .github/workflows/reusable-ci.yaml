@@ -18,7 +18,7 @@ jobs:
         with:
           version: "latest"
           install-only: true
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
       - name: Policy linter
@@ -35,7 +35,7 @@ jobs:
         with:
           version: "latest"
           install-only: true
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
       - name: Build policy
@@ -52,7 +52,7 @@ jobs:
         with:
           version: "latest"
           install-only: true
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
       - name: Policy unit tests
@@ -69,7 +69,7 @@ jobs:
         with:
           version: "latest"
           install-only: true
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
       - name: Policy integration test
