@@ -2,6 +2,14 @@ on:
   pull_request:
     types:
       - closed
+    paths:
+      # This workflow is run when a PR is closed to trigger policy release. If
+      # the PR does not change any file under policies directory there is no
+      # need to run it.
+      - "policies/**"
+      # If a PR has changes inside the policies/crates only. There is no need to
+      # trigger this job to release policies
+      - "!policies/crates/**"
   workflow_dispatch:
     inputs:
       policy-working-dir:
