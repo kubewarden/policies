@@ -1,0 +1,87 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 1.0.9
+name: sysctl-psp
+displayName: Sysctl PSP
+createdAt: 2025-12-12T15:45:59.997414149Z
+description: A Pod Security Policy that controls usage of sysctls in pods
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/sysctl-psp-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/sysctl-psp:v1.0.9
+keywords:
+- sysctl
+- psp
+- pod
+links:
+- name: policy
+  url: https://github.com/kubewarden/sysctl-psp-policy/releases/download/v1.0.9/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/sysctl-psp-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/sysctl-psp:v1.0.9
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/sysctl-psp:v1.0.9
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+    - default: null
+      description: >-
+        This policy validates which sysctls can get set in pods by specifying lists
+        of sysctls or sysctl patterns to be allowed or forbidden. You can then
+        modify the securityContext of Pods to make use of the Sysctls as permitted
+        by this policy.
+      group: Settings
+      label: Description
+      required: false
+      hide_input: true
+      type: string
+      variable: description
+    - default: []
+      description: >-
+        A list of plain sysctl names or sysctl patterns (which end with *) to be
+        forbidden. You can forbid a combination of safe and unsafe sysctls in the
+        list. To forbid setting any sysctls, use * on its own.
+      group: Settings
+      label: Forbidden sysctls
+      required: false
+      type: array[
+      variable: forbiddenSysctls
+    - default: []
+      description: >-
+        A list of plain sysctl names that can be used in Pods. * cannot be used. Has
+        precedence over forbiddenSysctls.
+      group: Settings
+      label: Allowed unsafe sysctls
+      required: false
+      type: array[
+      variable: allowedUnsafeSysctls
+  kubewarden/resources: Pod
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+      - UPDATE
