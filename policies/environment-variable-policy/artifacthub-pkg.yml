@@ -1,0 +1,115 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 3.0.3
+name: environment-variable-policy
+displayName: Environment Variable Policy
+createdAt: 2025-12-12T15:42:21.368748302Z
+description: A Kubewarden Policy that controls the usage of environment variables
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/environment-variable-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/environment-variable-policy:v3.0.3
+keywords:
+- deployment
+- replicaset
+- statefulset
+- daemonset
+- replicationcontroller
+- job
+- cronjob
+- pod
+- container
+- environment-variables
+links:
+- name: policy
+  url: https://github.com/kubewarden/environment-variable-policy/releases/download/v3.0.3/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/environment-variable-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/environment-variable-policy:v3.0.3
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/environment-variable-policy:v3.0.3
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+      - default: "containsAnyOf"
+        description: "Environment variable validation criteria"
+        group: Settings
+        required: true
+        label: "Criteria"
+        variable: "criteria"
+        type: enum
+        options:
+          - "containsAnyOf"
+          - "doesNotContainAnyOf"
+          - "containsAllOf"
+          - "doesNotContainAllOf"
+          - "containsOtherThan"
+          - "doesNotContainOtherThan"
+      - default: []
+        label: "Environment variables"
+        description: "Environment variables names to be validated with the resources definition"
+        group: Settings
+        variable: values
+        required: true
+        type: array[
+  kubewarden/resources: Deployment,Replicaset,Statefulset,Daemonset,Replicationcontroller,Job,Cronjob,Pod
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
