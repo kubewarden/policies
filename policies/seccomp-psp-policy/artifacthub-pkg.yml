@@ -1,0 +1,97 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 1.0.8
+name: seccomp-psp
+displayName: Seccomp PSP
+createdAt: 2025-11-13T13:32:12.586688235Z
+description: Pod Security Policy that controls usage of Seccomp profile
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/seccomp-psp-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/seccomp-psp:v1.0.8
+keywords:
+- psp
+- seccomp
+links:
+- name: policy
+  url: https://github.com/kubewarden/seccomp-psp-policy/releases/download/v1.0.8/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/seccomp-psp-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/seccomp-psp:v1.0.8
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/seccomp-psp:v1.0.8
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+    - default: null
+      description: >-
+        This policy provides a replacement for the Pod Security Policy that deals
+        with seccomp profiles. Prior to Kubernetes 1.19, seccomp profiles could be
+        defined only via Pod annotations. Starting from Kubernetes 1.19 the seccomp
+        profiles can be managed via the securityContext field of Pods and
+        Containers. Note: the seccomp annotations are deprecated and will be dropped
+        starting from Kubernetes 1.25.
+      group: Settings
+      label: Description
+      required: false
+      hide_input: true
+      type: map
+      variable: description
+    - default: []
+      tooltip: >-
+        Define the accecpted profile values for the annotations
+        container.seccomp.security.alpha.kubernetes.io/<container> and
+        seccomp.security.alpha.kubernetes.io/pod.
+      group: Settings
+      label: Allowed profiles
+      required: false
+      type: array[
+      variable: allowed_profiles
+    - default: []
+      tooltip: >-
+        Define the allowed values to be set in the seccomp type in the security
+        context of a container or of the Pod.
+      group: Settings
+      label: Profile types
+      required: false
+      type: array[
+      variable: profile_types
+    - default: []
+      tooltip: >-
+        Define the allowed localhost profiles. This is used only when the
+        'Localhost' type is allowed inside of the security context.
+      group: Settings
+      label: Localhost profiles
+      required: false
+      type: array[
+      variable: localhost_profiles
+  kubewarden/resources: Pod
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+      - UPDATE
