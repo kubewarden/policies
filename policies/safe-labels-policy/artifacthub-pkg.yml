@@ -1,0 +1,88 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 1.0.7
+name: safe-labels
+displayName: Safe Labels
+createdAt: 2025-12-12T15:46:11.71703533Z
+description: A policy that validates Kubernetes' resource labels
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/safe-labels-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/safe-labels:v1.0.7
+keywords:
+- labels
+links:
+- name: policy
+  url: https://github.com/kubewarden/safe-labels-policy/releases/download/v1.0.7/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/safe-labels-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/safe-labels:v1.0.7
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/safe-labels:v1.0.7
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+    - default: null
+      description: >-
+        This policy validates the labels of generic Kubernetes objects. It rejects
+        all the resources that use one or more labels on the deny list. It also
+        allows you to put constraints on specific labels. The constraints are
+        expressed as regular expression. It will also allow you to require specific
+        labels to be part of the resource.
+      group: Settings
+      label: Description
+      required: false
+      hide_input: true
+      type: map
+      variable: description
+    - default: []
+      description: A list of labels that cannot be used
+      group: Settings
+      label: Denied labels
+      required: false
+      type: array[
+      variable: denied_labels
+    - default: []
+      description: A list of labels that must be defined
+      group: Settings
+      label: Mandatory labels
+      required: false
+      type: array[
+      variable: mandatory_labels
+    - default: {}
+      tooltip: Annotations that are validated with user-defined RegExp
+      group: Settings
+      label: Constrained labels
+      target: true
+      type: map[
+      variable: constrained_labels
+  kubewarden/resources: '*'
+  kubewarden/rules: |
+    - apiGroups:
+      - '*'
+      apiVersions:
+      - '*'
+      resources:
+      - '*'
+      operations:
+      - CREATE
+      - UPDATE
