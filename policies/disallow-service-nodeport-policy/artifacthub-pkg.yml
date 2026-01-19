@@ -1,0 +1,48 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.1.7
+name: disallow-service-nodeport
+displayName: Disallow Service Nodeport
+createdAt: 2023-07-07T18:33:05.742165346Z
+description: A policy that prevents the creation of Service resources of type `NodePort`
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/disallow-service-nodeport-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/disallow-service-nodeport:v0.1.7
+keywords:
+- service
+links:
+- name: policy
+  url: https://github.com/kubewarden/disallow-service-nodeport-policy/releases/download/v0.1.7/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/disallow-service-nodeport-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/disallow-service-nodeport:v0.1.7
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/resources: Service
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - services
+      operations:
+      - CREATE
+      - UPDATE
