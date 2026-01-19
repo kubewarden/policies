@@ -1,0 +1,123 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 1.1.3
+name: priority-class-policy
+displayName: Priority class policy
+createdAt: 2025-12-12T15:41:42.382940772Z
+description: Validates Pod's priority class
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/priority-class-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/priority-class-policy:v1.1.3
+keywords:
+- pod
+- priority-class
+links:
+- name: policy
+  url: https://github.com/kubewarden/priority-class-policy/releases/download/v1.1.3/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/priority-class-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/priority-class-policy:v1.1.3
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/priority-class-policy:v1.1.3
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'true'
+  kubewarden/questions-ui: |
+    questions:
+      - default: null
+        description: >-
+          This policy ensures that the priorityClassName defined in a pod is only
+          one of the expected ones. Enforce a set of specific `PriorityClass` names, rejecting
+          deployments if users try to create a Pod with an unexpected `priorityClassName`.
+        group: Settings
+        required: false
+        hide_input: true
+        type: string
+        variable: description
+      - default: []
+        description: "Cannot be set in conjunction with denied_priority_classes"
+        tooltip: >-
+          List of the PriorityClass names that users can use in the Pod's priorityClassName field
+        group: Settings
+        label: Allowed priority classes
+        required: false
+        type: array[
+        variable: allowed_priority_classes
+      - default: []
+        description: "Cannot be set in conjunction with allowed_priority_classes"
+        tooltip: >-
+          List of the PriorityClass names that users can not use in the Pod's priorityClassName field
+        group: Settings
+        label: Denied priority classes
+        required: false
+        type: array[
+        variable: denied_priority_classes
+      - default: ""
+        description: "If used together with the Allowed priority class list, the name must be provided in the list as well. However, if used together with Denied priority classes list the name must not be listed."
+        tooltip: >-
+          Priority class name to be used when resource does not define it.
+        group: Settings
+        label: Default priority class
+        required: false
+        type: string
+        variable: default_priority_class
+  kubewarden/resources: Pod, Replicationcontroller, Deployments, Replicaset, Statefulset, Daemonset, Job, Cronjob
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
