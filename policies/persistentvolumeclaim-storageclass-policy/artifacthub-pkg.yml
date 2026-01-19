@@ -1,0 +1,79 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 1.1.1
+name: persistentvolumeclaim-storageclass-policy
+displayName: PVC StorageClass Validator
+createdAt: 2025-09-15T08:03:38.8685876Z
+description: Policy that validates and adjusts the usage of StorageClasses in PersistentVolumeClaims
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/persistentvolumeclaim-storageclass-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/persistentvolumeclaim-storageclass-policy:v1.1.1
+keywords:
+- persistentvolumeclaim
+- pvc
+- kubewarden
+links:
+- name: policy
+  url: https://github.com/kubewarden/persistentvolumeclaim-storageclass-policy/releases/download/v1.1.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/persistentvolumeclaim-storageclass-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/persistentvolumeclaim-storageclass-policy:v1.1.1
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/persistentvolumeclaim-storageclass-policy:v1.1.1
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'true'
+  kubewarden/questions-ui: |
+    questions:
+    - default: null
+      description: >-
+         Policy that validates and adjusts the usage of StorageClasses in PersistentVolumeClaims
+      group: Settings
+      label: Description
+      required: false
+      hide_input: true
+      type: string
+      variable: description
+    - default: []
+      description: List of StorageClasses that cannot be used
+      group: Settings
+      label: Denied StorageClass names
+      required: true
+      type: array[
+      value_multiline: false
+      variable: deniedStorageClasses
+    - default: null
+      description: StorageClass to be used when a denied one is requested
+      group: Settings
+      label: Fallback StorageClass
+      required: false
+      type: string
+      variable: fallbackStorageClass
+  kubewarden/resources: PersistentVolumeClaim
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - persistentvolumeclaims
+      operations:
+      - CREATE
