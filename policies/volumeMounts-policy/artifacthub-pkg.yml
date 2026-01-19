@@ -1,0 +1,120 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 1.0.6
+name: volumemounts
+displayName: volumeMounts
+createdAt: 2025-11-13T13:30:59.216818149Z
+description: Policy that inspects containers, init containers, and ephemeral containers, and restricts their usage of volumes by  checking the `volume` name being used in `volumeMounts[*].name`
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/volumemounts-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/volumemounts:v1.0.6
+keywords:
+- container
+- volumeMounts
+- volume
+- pod
+- workload resources
+links:
+- name: policy
+  url: https://github.com/kubewarden/volumemounts-policy/releases/download/v1.0.6/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/volumemounts-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/volumemounts:v1.0.6
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/volumemounts:v1.0.6
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+    - default: null
+      description: >-
+        This policy inspects containers, init containers, or ephemeral containers,
+        and will restrict their usage of volumes by checking the volume name being
+        used in volumeMounts[*].name. The policy can target either Pods or workload
+        resources (Deployments, ReplicaSets, DaemonSets, ReplicationControllers,
+        Jobs, CronJobs) by setting the policy's spec.rules accordingly.
+      group: Settings
+      label: Description
+      required: false
+      hide_input: true
+      type: string
+      variable: description
+    - default: anyIn
+      group: Settings
+      label: Reject
+      options:
+        - anyIn
+        - anyNotIn
+        - allAreUsed
+        - notAllAreUsed
+      required: false
+      type: enum
+      variable: reject
+    - default: []
+      description: A list of Volume Mount names to match using the defined reject operator.
+      group: Settings
+      label: Volume Mount Names
+      required: false
+      type: array[
+      variable: volumeMountsNames
+  kubewarden/resources: Pod,Deployment,Replicaset,Statefulset,Daemonset,Replicationcontroller,Job,Cronjob
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
