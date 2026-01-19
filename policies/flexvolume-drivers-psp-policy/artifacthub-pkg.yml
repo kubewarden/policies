@@ -1,0 +1,76 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 1.0.9
+name: flexvolume-drivers-psp
+displayName: Flexvolume Drivers Psp
+createdAt: 2025-12-12T15:39:37.485632636Z
+description: Replacement for the Kubernetes Pod Security Policy that controls the allowed `flexVolume` drivers
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/flexvolume-drivers-psp-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.9
+keywords:
+- psp
+- container
+- runtime
+- flex volume
+- flex
+links:
+- name: policy
+  url: https://github.com/kubewarden/flexvolume-drivers-psp-policy/releases/download/v1.0.9/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/flexvolume-drivers-psp-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.9
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.9
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+    - default: []
+      description: >-
+        This policy provides a list of allowed Flex Volume drivers. If the pod to be
+        evaluated has a different driver on any `flexVolume` volume, it will be
+        rejected.
+      tooltip: >-
+        Provide a flex volume driver as the `Value`. (e.g. `driver: example/lvm`)
+      group: Settings
+      label: Allowed flex volumes
+      hide_input: true
+      type: sequence[
+      variable: allowedFlexVolumes
+      sequence_questions:
+        - default: ''
+          group: Settings
+          label: Driver
+          type: string
+          variable: driver
+  kubewarden/resources: Pod
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+      - UPDATE
