@@ -8,7 +8,7 @@ contextAware: false
 executionMode: wasi
 annotations:
   io.kubewarden.policy.title: kyverno-validator
-  io.kubewarden.policy.version: 0.1.6
+  io.kubewarden.policy.version: 0.1.7
   io.artifacthub.displayName: Kyverno validator
   io.artifacthub.resources: Pod
   io.artifacthub.keywords: psp, container, runtime
