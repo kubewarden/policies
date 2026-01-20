@@ -18,7 +18,7 @@ annotations:
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/tests/context-aware-policy-demo
   # kubewarden specific:
   io.kubewarden.policy.title: context-aware-policy
-  io.kubewarden.policy.version: 0.1.9
+  io.kubewarden.policy.version: 0.1.10
   io.kubewarden.policy.description: A policy demonstrating context-aware policy features
   io.kubewarden.policy.url: https://github.com/kubewarden/context-aware-demo
   io.kubewarden.policy.source: https://github.com/kubewarden/context-aware-demo
