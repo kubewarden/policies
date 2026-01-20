@@ -22,7 +22,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/echo
   io.kubewarden.policy.title: echo
-  io.kubewarden.policy.version: 0.1.14
+  io.kubewarden.policy.version: 0.1.15
   io.kubewarden.policy.description: A policy that echoes back Kubernetes' AdmissionReview - useful for Policy Authors
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/echo
