@@ -1,0 +1,129 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.1.2
+name: high-risk-service-account
+displayName: High Risk Service Account
+createdAt: 2025-07-28T08:50:24.482797865Z
+description: Policy to prevent the usage of serviceaccount with too many permissions
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/high-risk-service-account-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.2
+keywords:
+- pod
+- security
+- serviceaccount
+links:
+- name: policy
+  url: https://github.com/kubewarden/high-risk-service-account-policy/releases/download/v0.1.2/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/high-risk-service-account-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.2
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.2
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+      - default: null
+        description: >-
+          This policy allow operator to check if a service account used in some workload has some forbidden permissions
+        group: Settings
+        label: Description
+        required: false
+        hide_input: true
+        type: string
+        variable: description
+      - default: []
+        description: A list of the blocked rules permissions
+        groups: Settings
+        label: Blocked rules
+        required: true
+        type: sequence[
+        variable: blockRules
+        sequence_questions:
+          - group: Settings
+            label: API Groups
+            tooltip: API Group of the resource that you want to block
+            type: array[
+            default: []
+            variable: apiGroups
+            required: true
+          - group: Settings
+            label: Resources
+            tooltip: Resources from the API Groups that you want to block
+            type: array[
+            default: []
+            variable: "resources"
+            required: true
+          - group: Settings
+            label: Verbs
+            tooltip: Verbs of the resources that you want to block
+            type: array[
+            default: []
+            variable: "verbs"
+            required: true
+          - group: Settings
+            default: ""
+            type: string
+            variable: "namespace"
+            tooltip: Scope the block rule to a namespace. Empty namespace means all namespace
+  kubewarden/resources: Pod
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
