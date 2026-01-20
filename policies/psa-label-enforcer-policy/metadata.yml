@@ -19,7 +19,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/psa-label-enforcer
   io.kubewarden.policy.title: psa-label-enforcer
-  io.kubewarden.policy.version: 1.0.8
+  io.kubewarden.policy.version: 1.0.9
   io.kubewarden.policy.description: Policy to ensure that namespaces have the required PSA labels configuration for deployment in the cluster.
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/psa-label-enforcer-policy
