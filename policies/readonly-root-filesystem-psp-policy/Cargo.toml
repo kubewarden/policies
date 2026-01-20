@@ -1,6 +1,6 @@
 [package]
 name = "readonly-root-filesystem-psp-policy"
-version = "1.0.8"
+version = "1.0.9"
 authors = ["Flavio Castelli <fcastelli@suse.com>"]
 edition = "2018"
 
