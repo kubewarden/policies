@@ -1,6 +1,6 @@
 [package]
 name = "unique-service-selector-policy"
-version = "1.0.7"
+version = "1.0.8"
 authors = ["Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2021"
 

@@ -2011,7 +2011,7 @@ checksum = "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853"
 
 [[package]]
 name = "unique-service-selector-policy"
-version = "1.0.7"
+version = "1.0.8"
 dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
