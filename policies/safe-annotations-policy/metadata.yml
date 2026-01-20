@@ -19,7 +19,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/safe-annotations
   io.kubewarden.policy.title: safe-annotations
-  io.kubewarden.policy.version: 1.0.2
+  io.kubewarden.policy.version: 1.0.3
   io.kubewarden.policy.description: A policy that validates Kubernetes' resource annotations
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/safe-annotations-policy
