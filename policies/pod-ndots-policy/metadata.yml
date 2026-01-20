@@ -19,7 +19,7 @@ annotations:
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/pod-ndots
   # kubewarden specific:
   io.kubewarden.policy.title: pod-ndots
-  io.kubewarden.policy.version: 1.0.7
+  io.kubewarden.policy.version: 1.0.8
   io.kubewarden.policy.description: Enforce a minimum value for the ndots option in the resolv.conf file of a Pod.
   io.kubewarden.policy.author: Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/pod-ndots
