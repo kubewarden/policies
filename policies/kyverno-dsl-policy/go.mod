@@ -4,7 +4,7 @@ go 1.23.4
 
 replace (
 	github.com/google/go-containerregistry => ./stubs/github.com/google/go-containerregistry
-	github.com/jmespath/go-jmespath => github.com/kyverno/go-jmespath v0.4.1-0.20230204162932-3ee946b9433d
+	github.com/jmespath/go-jmespath => github.com/kyverno/go-jmespath v0.4.1-0.20231124160150-95e59c162877
 	github.com/kyverno/kyverno => ./third_party/github.com/kyverno/kyverno
 
 	github.com/sigstore/k8s-manifest-sigstore => ./stubs/github.com/sigstore/k8s-manifest-sigstore
