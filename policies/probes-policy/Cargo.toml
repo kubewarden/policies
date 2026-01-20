@@ -1,6 +1,6 @@
 [package]
 name = "probes-policy"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["Nicolas Lamirault <nicolas.lamirault@gmail.com>", "Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2024"
 
