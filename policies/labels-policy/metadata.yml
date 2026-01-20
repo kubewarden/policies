@@ -50,7 +50,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/labels
   io.kubewarden.policy.title: labels
-  io.kubewarden.policy.version: 0.1.4
+  io.kubewarden.policy.version: 0.1.5
   io.kubewarden.policy.description: A policy that validates labels of Kubernetes' resources
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/labels-policy
