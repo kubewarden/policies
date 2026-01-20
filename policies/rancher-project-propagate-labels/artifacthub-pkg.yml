@@ -1,0 +1,52 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml
+version: 0.1.1
+name: rancher-project-propagate-labels
+displayName: Rancher Project propagate labels
+createdAt: 2023-07-10T08:53:20.168260313Z
+description: Propagate labels from a Rancher Project to all the Namespace that belong to it
+license: Apache-2.0
+homeURL: https://github.com/kubewaden/rancher-project-propagate-labels
+containersImages:
+  - name: policy
+    image: ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.1
+keywords:
+  - namespace
+  - rancher project
+links:
+  - name: policy
+    url: https://github.com/kubewarden/rancher-project-propagate-labels/releases/download/v0.1.1/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/rancher-project-propagate-labels
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.1
+  ```
+maintainers:
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/contextAwareResources: |
+    - apiVersion: management.cattle.io/v3
+      kind: Project
+  kubewarden/mutation: "true"
+  kubewarden/resources: Namespace
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - namespaces
+      operations:
+      - CREATE
+      - UPDATE
