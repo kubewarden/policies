@@ -20,7 +20,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/rancher-project-quotas-namespace-validator
   io.kubewarden.policy.title: rancher-project-quotas-namespace-validator
-  io.kubewarden.policy.version: 1.0.7
+  io.kubewarden.policy.version: 1.0.8
   io.kubewarden.policy.description: Prevent the creation of Namespace under a Rancher Project that doesn't have any resource quota left
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/rancher-project-quotas-namespace-validator
