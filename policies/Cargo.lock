@@ -397,7 +397,7 @@ dependencies = [
 
 [[package]]
 name = "do-not-expose-admission-controller-webhook-services"
-version = "1.1.3"
+version = "1.1.4"
 dependencies = [
  "anyhow",
  "k8s-openapi",
