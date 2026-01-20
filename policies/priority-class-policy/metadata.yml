@@ -51,7 +51,7 @@ annotations:
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/priority-class-policy
   # kubewarden specific:
   io.kubewarden.policy.title: priority-class-policy
-  io.kubewarden.policy.version: 1.1.3
+  io.kubewarden.policy.version: 1.1.4
   io.kubewarden.policy.description: Validates Pod's priority class
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/priority-class-policy
