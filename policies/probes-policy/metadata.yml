@@ -15,4 +15,4 @@ annotations:
   io.kubewarden.policy.source: https://github.com/kubewarden/probes-policy
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/probes
-  io.kubewarden.policy.version: 1.0.2
+  io.kubewarden.policy.version: 1.0.3
