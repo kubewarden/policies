@@ -1,6 +1,6 @@
 [package]
 name = "context-aware-policy-demo"
-version = "0.1.9"
+version = "0.1.10"
 authors = ["Flavio Castelli <fcastelli@suse.com>"]
 edition = "2021"
 
