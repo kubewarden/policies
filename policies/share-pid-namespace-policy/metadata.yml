@@ -55,7 +55,7 @@ annotations:
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/share-pid-namespace-policy
   # kubewarden specific:
   io.kubewarden.policy.title: share-pid-namespace-policy
-  io.kubewarden.policy.version: 1.0.8
+  io.kubewarden.policy.version: 1.0.9
   io.kubewarden.policy.description: Policy validates pods sharing processes PID namespace
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/share-pid-namespace-policy
