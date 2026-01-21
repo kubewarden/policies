@@ -7,7 +7,7 @@
 version: 1.0.6
 name: ingress-policy
 displayName: Ingress Policy
-createdAt: 2026-01-21T11:03:31.164085974Z
+createdAt: 2026-01-21T18:34:53.787610277Z
 description: Enforce requirements on Ingress resources
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/ingress-policy
