@@ -4,32 +4,32 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.8
+version: 1.0.9
 name: share-pid-namespace-policy
 displayName: Share PID namespace
-createdAt: 2025-12-12T15:44:12.981914343Z
+createdAt: 2026-01-21T11:11:18.051044611Z
 description: Policy validates pods sharing processes PID namespace
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/share-pid-namespace-policy
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/share-pid-namespace-policy:v1.0.8
+  image: ghcr.io/kubewarden/policies/share-pid-namespace-policy:v1.0.9
 keywords:
 - pod
 - pid
 links:
 - name: policy
-  url: https://github.com/kubewarden/share-pid-namespace-policy/releases/download/v1.0.8/policy.wasm
+  url: https://github.com/kubewarden/share-pid-namespace-policy/releases/download/v1.0.9/policy.wasm
 - name: source
   url: https://github.com/kubewarden/share-pid-namespace-policy
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/share-pid-namespace-policy:v1.0.8
+  kwctl pull ghcr.io/kubewarden/policies/share-pid-namespace-policy:v1.0.9
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/share-pid-namespace-policy:v1.0.8
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/share-pid-namespace-policy:v1.0.9
   ```
 maintainers:
 - name: Kubewarden developers
