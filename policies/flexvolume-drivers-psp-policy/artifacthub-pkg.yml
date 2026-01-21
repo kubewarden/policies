@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.11
+version: 1.0.12
 name: flexvolume-drivers-psp
 displayName: Flexvolume Drivers Psp
-createdAt: 2026-01-21T08:39:52.284460415Z
+createdAt: 2026-01-21T10:43:02.384223494Z
 description: Replacement for the Kubernetes Pod Security Policy that controls the allowed `flexVolume` drivers
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/flexvolume-drivers-psp-policy
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.11
+  image: ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.12
 keywords:
 - psp
 - container
@@ -22,17 +22,17 @@ keywords:
 - flex
 links:
 - name: policy
-  url: https://github.com/kubewarden/flexvolume-drivers-psp-policy/releases/download/v1.0.11/policy.wasm
+  url: https://github.com/kubewarden/flexvolume-drivers-psp-policy/releases/download/v1.0.12/policy.wasm
 - name: source
   url: https://github.com/kubewarden/flexvolume-drivers-psp-policy
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.11
+  kwctl pull ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.12
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.11
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/flexvolume-drivers-psp:v1.0.12
   ```
 maintainers:
 - name: Kubewarden developers
