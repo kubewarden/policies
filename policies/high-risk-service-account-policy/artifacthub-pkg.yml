@@ -7,7 +7,7 @@
 version: 0.1.4
 name: high-risk-service-account
 displayName: High Risk Service Account
-createdAt: 2026-01-21T11:33:15.493434995Z
+createdAt: 2026-01-21T18:32:06.198677693Z
 description: Policy to prevent the usage of serviceaccount with too many permissions
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/high-risk-service-account-policy
