@@ -7,7 +7,7 @@
 version: 1.5.4
 name: cel-policy
 displayName: CEL Policy
-createdAt: 2026-01-21T11:31:35.712791949Z
+createdAt: 2026-01-21T18:23:07.968512904Z
 description: A policy that evaluates CEL expressions
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/cel-policy
