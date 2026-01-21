@@ -7,7 +7,7 @@
 version: 1.0.10
 name: env-variable-secrets-scanner
 displayName: Environment Variable Secrets Scanner
-createdAt: 2026-01-21T10:39:01.197805225Z
+createdAt: 2026-01-21T18:32:54.664268966Z
 description: Policy that inspects env vars and rejects a request if a secret was found
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/env-variable-secrets-scanner-policy
