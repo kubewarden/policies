@@ -7,7 +7,7 @@
 version: 1.0.9
 name: psp-apparmor
 displayName: Apparmor PSP
-createdAt: 2026-01-21T11:35:00.098757846Z
+createdAt: 2026-01-21T18:17:35.011990647Z
 description: Replacement for the Kubernetes Pod Security Policy that controls the usage of AppArmor profiles
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/apparmor-psp-policy
