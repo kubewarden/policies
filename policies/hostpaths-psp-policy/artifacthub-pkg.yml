@@ -7,7 +7,7 @@
 version: 1.1.5
 name: hostpaths-psp
 displayName: Hostpaths PSP
-createdAt: 2026-01-21T11:29:27.628576098Z
+createdAt: 2026-01-21T18:17:06.963470424Z
 description: A Pod Security Policy that controls usage of hostPath volumes
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/hostpaths-psp-policy
