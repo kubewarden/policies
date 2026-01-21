@@ -11,30 +11,49 @@
 The policy can be configured to define a list of resources and operations that
 are considered privileged (for example, `LIST, GET` Secret resources).
 
-When a workload is defined (a Pod, Deployment, CronJob,...) the policy will use
-the [Kubernetes Authorization
+When a resource workload (a Pod, Deployment, CronJob,...) is created or
+updated, the policy will use the [Kubernetes Authorization
 API](https://kubernetes.io/docs/reference/access-authn-authz/authorization/#checking-api-access)
 to assess whether the ServiceAccount used by the workload has the rights to
 perform any of the sensitive operations defined by the user.
 
 Workloads that use a high-privileged ServiceAccount are rejected.
 
-Every time a resource that uses a service account is submitted to the cluster,
+The policy rejects a workload as soon as it found a blocked operation to reduce
+the load on the Kubernetes API server.
+
+## How it works
+
+Every time a workload resource that uses a service account is submitted to the cluster,
 the policy will query the Kubernetes authorization API to check if the given
 ServiceAccount has some permissions that it shouldn't. To perform this
 verification, the policy will create a
 [SubjectAccessReview](https://kubernetes.io/docs/reference/kubernetes-api/authorization-resources/subject-access-review-v1/)
-and apply it to check the service account permissions. If the result returned
-that the service account can perform such operation, the request is rejected.
+and apply it to check the service account permissions. If the
+service account can perform such operation, the request is rejected.
 
-When the policy builds the `SubjectAccessReview` the user set in in the
+When the policy builds the `SubjectAccessReview`, the user set in in the
 resource is defined by `system:serviceaccount:<namespace>:<service-account>`.
-Where the `namespace` is the namespace from the request and the
+Here, the `namespace` is the namespace from the request and the
 `service-account` is the service account from the resource being deployed or
 the `default` one.
 
-The policy rejects a workload as soon as it found a blocked operation to reduce
-the load on the Kubernetes API server.
+## Access to Kubernetes resources
+
+The PolicyServer where the this policy runs must have RBAC permissions to
+create `authorization.k8s.io/v1/SubjectAccessReviews`. This is already the case
+for the Kubewarden default PolicyServer.
+
+To do this for other PolicyServers, set their `spec.serviceAccountName` to
+the name of ServiceAccount that is bound to a ClusterRole with a rule:
+
+```yaml
+- apiGroup: "authorization.k8s.io"
+  resources:
+    - "subjectaccessreviews"
+  verbs:
+    - create
+```
 
 ## Settings
 
