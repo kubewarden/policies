@@ -7,7 +7,7 @@
 version: 1.0.6
 name: deprecated-api-versions
 displayName: Deprecated API Versions
-createdAt: 2026-01-21T11:24:09.247013244Z
+createdAt: 2026-01-21T18:33:37.593538667Z
 description: Find deprecated and removed Kubernetes resources
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/deprecated-api-versions-policy
