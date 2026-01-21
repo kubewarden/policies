@@ -57,3 +57,34 @@ On the other hand, it would be blocked with this configuration:
 kubernetes_version: "1.19.0"
 deny_on_deprecation: true # note: this is set to true by default
 ```
+
+## Usage Examples
+
+### Valid Ingress (Allowed)
+This resource uses the stable `networking.k8s.io/v1` API and will be allowed:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: valid-ingress
+spec:
+  defaultBackend:
+    service:
+      name: test
+      port:
+        number: 80
+```
+### Deprecated Ingress (Blocked)
+This resource uses the deprecated extensions/v1beta1 API and will be blocked:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: deprecated-ingress
+spec:
+  backend:
+    serviceName: test
+    servicePort: 80
+```
