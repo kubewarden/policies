@@ -4,33 +4,33 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.7
+version: 1.0.8
 name: rancher-project-quotas-namespace-validator
 displayName: Rancher Project quotas namespace validator
-createdAt: 2025-12-12T15:47:04.811022863Z
+createdAt: 2026-01-21T19:29:50.322983156Z
 description: Prevent the creation of Namespace under a Rancher Project that doesn't have any resource quota left
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/rancher-project-quotas-namespace-validator
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/rancher-project-quotas-namespace-validator:v1.0.7
+  image: ghcr.io/kubewarden/policies/rancher-project-quotas-namespace-validator:v1.0.8
 keywords:
 - rancher
 - project
 - quotas
 links:
 - name: policy
-  url: https://github.com/kubewarden/rancher-project-quotas-namespace-validator/releases/download/v1.0.7/policy.wasm
+  url: https://github.com/kubewarden/rancher-project-quotas-namespace-validator/releases/download/v1.0.8/policy.wasm
 - name: source
   url: https://github.com/kubewarden/rancher-project-quotas-namespace-validator
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/rancher-project-quotas-namespace-validator:v1.0.7
+  kwctl pull ghcr.io/kubewarden/policies/rancher-project-quotas-namespace-validator:v1.0.8
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/rancher-project-quotas-namespace-validator:v1.0.7
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/rancher-project-quotas-namespace-validator:v1.0.8
   ```
 maintainers:
 - name: Kubewarden developers
