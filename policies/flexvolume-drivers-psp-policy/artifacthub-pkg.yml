@@ -7,7 +7,7 @@
 version: 1.0.12
 name: flexvolume-drivers-psp
 displayName: Flexvolume Drivers Psp
-createdAt: 2026-01-21T10:43:02.384223494Z
+createdAt: 2026-01-21T18:21:36.22273443Z
 description: Replacement for the Kubernetes Pod Security Policy that controls the allowed `flexVolume` drivers
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/flexvolume-drivers-psp-policy
