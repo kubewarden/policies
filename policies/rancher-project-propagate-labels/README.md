@@ -26,8 +26,8 @@ The policy requires only `GET` access to Projects defined inside of the
 
 Given the following assumptions:
 
-- Kubewarden is deployed inside of the `kubewarden` Namespace
-- The policy is hosted by a PolicyServer that uses the `policy-server` ServiceAccount
+* Kubewarden is deployed inside of the `kubewarden` Namespace
+* The policy is hosted by a PolicyServer that uses the `policy-server` ServiceAccount
 
 The following snippet will allow the policy to operate:
 
@@ -38,9 +38,9 @@ metadata:
   name: rancher-project-reader
   namespace: local
 rules:
-  - apiGroups: ["management.cattle.io"]
-    resources: ["projects"]
-    verbs: ["get"]
+- apiGroups: ["management.cattle.io"]
+  resources: ["projects"]
+  verbs: ["get"]
 ---
 # Allows the policy-server ServiceAccount defined inside of the
 # kubewarden namespace to read Project resources defined inside
@@ -51,9 +51,9 @@ metadata:
   name: read-rancher-projects-local
   namespace: local
 subjects:
-  - kind: ServiceAccount
-    name: policy-server
-    namespace: kubewarden
+- kind: ServiceAccount
+  name: policy-server
+  namespace: kubewarden
 roleRef:
   kind: Role
   name: rancher-project-reader
@@ -64,23 +64,23 @@ roleRef:
 
 Given a Project that defines the following labels:
 
-- `propagate.kubewarden-profile` with value `strict`
-- `cost-center` with value `123`
+* `propagate.kubewarden-profile` with value `strict`
+* `cost-center` with value `123`
 
 The creation of a Namespace without labels would be changed to ensure
 these labels are defined:
 
-- `kubewarden-profile` with value `strict`
+* `kubewarden-profile` with value `strict`
 
 The creation of a Namespace that has the following labels:
 
-- `kubewarden-profile` with value `low`
-- `team` with value `hacking`
+* `kubewarden-profile` with value `low`
+* `team` with value `hacking`
 
 Would be changed by the policy to ensure these labels are defined:
 
-- `kubewarden-profile` with value `strict`
-- `team` with value `hacking`
+* `kubewarden-profile` with value `strict`
+* `team` with value `hacking`
 
 ### Use case
 
@@ -92,10 +92,10 @@ then we will use Kubewarden policies to enforce them.
 
 For example, let's assume we want to have this security levels:
 
-| Security level | Policies                                                                           |
-| -------------- | ---------------------------------------------------------------------------------- |
-| moderate       | do not allow privilege escalation, do not allow privileged pods                    |
-| strict         | do not allow privilege escalation, do not allow privileged pods, restrict fsgroups |
+| Security level | Policies |
+|----------------|----------|
+| moderate       | do not allow privilege escalation, do not allow privileged pods |
+| strict | do not allow privilege escalation, do not allow privileged pods, restrict fsgroups |
 
 We start by defining the Kubewarden policies that are required
 by the `strict` and `moderate` profiles:
@@ -113,20 +113,20 @@ spec:
   settings:
     default_allow_privilege_escalation: false
   rules:
-    - apiGroups:
-        - ""
-      apiVersions:
-        - v1
-      resources:
-        - pods
-      operations:
-        - CREATE
+  - apiGroups:
+    - ''
+    apiVersions:
+    - v1
+    resources:
+    - pods
+    operations:
+    - CREATE
   mutating: true
   namespaceSelector:
     matchExpressions:
-      - key: "security-posture"
-        operator: "In"
-        values: ["strict", "moderate"]
+    - key: "security-posture"
+      operator: "In"
+      values: [ "strict", "moderate" ]
 ---
 apiVersion: policies.kubewarden.io/v1
 kind: ClusterAdmissionPolicy
@@ -136,20 +136,20 @@ spec:
   module: registry://ghcr.io/kubewarden/policies/pod-privileged:v0.2.5
   settings: {}
   rules:
-    - apiGroups:
-        - ""
-      apiVersions:
-        - v1
-      resources:
-        - pods
-      operations:
-        - CREATE
+  - apiGroups:
+    - ''
+    apiVersions:
+    - v1
+    resources:
+    - pods
+    operations:
+    - CREATE
   mutating: false
   namespaceSelector:
     matchExpressions:
-      - key: "security-posture"
-        operator: "In"
-        values: ["strict", "moderate"]
+    - key: "security-posture"
+      operator: "In"
+      values: [ "strict", "moderate" ]
 ```
 
 Then we define the policy that belongs only to the
@@ -165,24 +165,24 @@ spec:
   settings:
     rule: MustRunAs
     ranges:
-      - min: 1000
-        max: 2000
+    - min: 1000
+      max: 2000
   rules:
-    - apiGroups:
-        - ""
-      apiVersions:
-        - v1
-      resources:
-        - pods
-      operations:
-        - CREATE
-        - UPDATE
+  - apiGroups:
+    - ''
+    apiVersions:
+    - v1
+    resources:
+    - pods
+    operations:
+    - CREATE
+    - UPDATE
   mutating: true
   namespaceSelector:
     matchExpressions:
-      - key: "security-posture"
-        operator: "In"
-        values: ["strict"]
+    - key: "security-posture"
+      operator: "In"
+      values: [ "strict" ]
 ```
 
 Finally, we deploy the `rancher-project-propagate-labels` policy:
@@ -196,29 +196,30 @@ spec:
   module: registry://ghcr.io/kubewarden/policies/rancher-project-propagate-labels:latest
   settings: {}
   rules:
-    - apiGroups:
-        - ""
-      apiVersions:
-        - v1
-      resources:
-        - namespaces
-      operations:
-        - CREATE
-        - UPDATE
+  - apiGroups:
+    - ''
+    apiVersions:
+    - v1
+    resources:
+    - namespaces
+    operations:
+    - CREATE
+    - UPDATE
   mutating: true
   contextAwareResources:
-    - apiVersion: management.cattle.io/v3
-      kind: Project
+  - apiVersion: management.cattle.io/v3
+    kind: Project
 ```
 
 Now, we can define a new Rancher project that has the following label:
 
-- `propagate.security-posture`: `moderate`
+* `propagate.security-posture`: `moderate`
 
 All the Namespaces created under this project will have the label
 `{"security-posture": "moderate"}` set. Hence the
 `do-not-allow-privilege-escalation-psp` and the
 `pod-privileged-policy` policies will be enforced inside of it.
+
 
 ## Limitations
 
@@ -249,8 +250,8 @@ cluster.
 As explained before, the policy cannot evaluate Namespace defined inside of a
 downstream cluster. This configuration has two possible values:
 
-- `ignore`: accept the Namespace CREATE/UPDATE event. This is the default value
-- `fail`: reject the Namespace CREATE/UPDATE event
+* `ignore`: accept the Namespace CREATE/UPDATE event. This is the default value
+* `fail`: reject the Namespace CREATE/UPDATE event
 
 For example, given the following configuration:
 
