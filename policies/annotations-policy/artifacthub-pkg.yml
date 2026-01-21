@@ -7,7 +7,7 @@
 version: 0.1.6
 name: annotations
 displayName: Annotations
-createdAt: 2026-01-21T10:25:12.254848873Z
+createdAt: 2026-01-21T18:22:20.654183494Z
 description: A policy that validates annotations of Kubernetes' resources
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/annotations-policy
