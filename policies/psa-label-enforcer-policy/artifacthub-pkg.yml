@@ -7,7 +7,7 @@
 version: 1.0.9
 name: psa-label-enforcer
 displayName: PSA Label Enforcer
-createdAt: 2026-01-21T11:33:52.460314353Z
+createdAt: 2026-01-21T19:08:33.35624364Z
 description: Policy to ensure that namespaces have the required PSA labels configuration for deployment in the cluster.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/psa-label-enforcer-policy
