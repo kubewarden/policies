@@ -7,7 +7,7 @@
 version: 1.0.9
 name: share-pid-namespace-policy
 displayName: Share PID namespace
-createdAt: 2026-01-21T11:11:18.051044611Z
+createdAt: 2026-01-21T18:35:45.162386207Z
 description: Policy validates pods sharing processes PID namespace
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/share-pid-namespace-policy
