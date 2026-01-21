@@ -7,7 +7,7 @@
 version: 0.1.5
 name: labels
 displayName: Labels
-createdAt: 2026-01-21T11:30:18.632866709Z
+createdAt: 2026-01-21T18:18:29.664312545Z
 description: A policy that validates labels of Kubernetes' resources
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/labels-policy
