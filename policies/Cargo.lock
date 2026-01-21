@@ -156,7 +156,7 @@ checksum = "5dd9dc738b7a8311c7ade152424974d8115f2cdad61e8dab8dac9f2362298510"
 
 [[package]]
 name = "capabilities-psp"
-version = "1.0.7"
+version = "1.0.9"
 dependencies = [
  "anyhow",
  "assert-json-diff",
