@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.8
+version: 1.0.9
 name: pod-privileged-policy
 displayName: Pod Privileged Policy
-createdAt: 2025-11-13T13:28:11.927708695Z
+createdAt: 2026-01-24T01:30:44.145280656Z
 description: Limit the ability to create privileged containers
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/pod-privileged-policy
+homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-privileged:v1.0.8
+  image: ghcr.io/kubewarden/policies/pod-privileged:v1.0.9
 keywords:
 - psp
 - pod
@@ -21,17 +21,17 @@ keywords:
 - privileged
 links:
 - name: policy
-  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v1.0.8/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/v1.0.9/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/pod-privileged-policy
+  url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v1.0.8
+  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v1.0.9
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-privileged:v1.0.8
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-privileged:v1.0.9
   ```
 maintainers:
 - name: Kubewarden developers
