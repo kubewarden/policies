@@ -4,33 +4,33 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.1.5
+version: 1.1.6
 name: hostpaths-psp
 displayName: Hostpaths PSP
-createdAt: 2026-01-21T18:17:06.963470424Z
+createdAt: 2026-01-24T01:45:02.106397143Z
 description: A Pod Security Policy that controls usage of hostPath volumes
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/hostpaths-psp-policy
+homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/hostpaths-psp:v1.1.5
+  image: ghcr.io/kubewarden/policies/hostpaths-psp:v1.1.6
 keywords:
 - psp
 - hostpaths
 - pod
 links:
 - name: policy
-  url: https://github.com/kubewarden/hostpaths-psp-policy/releases/download/v1.1.5/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/v1.1.6/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/hostpaths-psp-policy
+  url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/hostpaths-psp:v1.1.5
+  kwctl pull ghcr.io/kubewarden/policies/hostpaths-psp:v1.1.6
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/hostpaths-psp:v1.1.5
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/hostpaths-psp:v1.1.6
   ```
 maintainers:
 - name: Kubewarden developers
