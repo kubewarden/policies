@@ -4,33 +4,33 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.7
+version: 1.0.8
 name: pod-runtime
 displayName: Pod Runtime
-createdAt: 2025-12-12T15:40:31.806706877Z
+createdAt: 2026-01-24T01:48:48.107579455Z
 description: Policy that controls the usage of Pod runtimeClass
 license: Apache-2.0
-homeURL: https://github.com/kubewarden/pod-runtime-class-policy
+homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-runtime:v1.0.7
+  image: ghcr.io/kubewarden/policies/pod-runtime:v1.0.8
 keywords:
 - pod
 - runtime
 - container runtime
 links:
 - name: policy
-  url: https://github.com/kubewarden/pod-runtime-class-policy/releases/download/v1.0.7/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/v1.0.8/policy.wasm
 - name: source
-  url: https://github.com/kubewarden/pod-runtime-class-policy
+  url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/pod-runtime:v1.0.7
+  kwctl pull ghcr.io/kubewarden/policies/pod-runtime:v1.0.8
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-runtime:v1.0.7
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-runtime:v1.0.8
   ```
 maintainers:
 - name: Kubewarden developers
