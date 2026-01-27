@@ -4,40 +4,40 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.11
+version: 1.0.12
 name: seccomp-psp
 displayName: Seccomp PSP
-createdAt: 2026-01-24T02:01:31.123253243Z
+createdAt: 2026-01-27T14:38:46.343941932Z
 description: Pod Security Policy that controls usage of Seccomp profile
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-- name: policy
-  image: ghcr.io/kubewarden/policies/seccomp-psp:v1.0.11
+  - name: policy
+    image: ghcr.io/kubewarden/policies/seccomp-psp:v1.0.12
 keywords:
-- psp
-- seccomp
+  - psp
+  - seccomp
 links:
-- name: policy
-  url: https://github.com/kubewarden/policies/releases/download/v1.0.11/policy.wasm
-- name: source
-  url: https://github.com/kubewarden/policies
+  - name: policy
+    url: https://github.com/kubewarden/policies/releases/download/seccomp-psp-policy/v1.0.12/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/seccomp-psp:v1.0.11
+  kwctl pull ghcr.io/kubewarden/policies/seccomp-psp:v1.0.12
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/seccomp-psp:v1.0.11
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/seccomp-psp:v1.0.12
   ```
 maintainers:
-- name: Kubewarden developers
-  email: cncf-kubewarden-maintainers@lists.cncf.io
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/mutation: 'false'
   kubewarden/questions-ui: |
