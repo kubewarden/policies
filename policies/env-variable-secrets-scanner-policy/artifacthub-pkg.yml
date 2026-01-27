@@ -4,44 +4,44 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.11
+version: 1.0.12
 name: env-variable-secrets-scanner
 displayName: Environment Variable Secrets Scanner
-createdAt: 2026-01-24T01:38:54.230335443Z
+createdAt: 2026-01-27T14:30:48.869245448Z
 description: Policy that inspects env vars and rejects a request if a secret was found
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-- name: policy
-  image: ghcr.io/kubewarden/policies/env-variable-secrets-scanner:v1.0.11
+  - name: policy
+    image: ghcr.io/kubewarden/policies/env-variable-secrets-scanner:v1.0.12
 keywords:
-- secrets
-- api keys
-- tokens
-- secret leak
-- confidential data
-- confidential data leak
+  - secrets
+  - api keys
+  - tokens
+  - secret leak
+  - confidential data
+  - confidential data leak
 links:
-- name: policy
-  url: https://github.com/kubewarden/policies/releases/download/v1.0.11/policy.wasm
-- name: source
-  url: https://github.com/kubewarden/policies
+  - name: policy
+    url: https://github.com/kubewarden/policies/releases/download/env-variable-secrets-scanner-policy/v1.0.12/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/env-variable-secrets-scanner:v1.0.11
+  kwctl pull ghcr.io/kubewarden/policies/env-variable-secrets-scanner:v1.0.12
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/env-variable-secrets-scanner:v1.0.11
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/env-variable-secrets-scanner:v1.0.12
   ```
 maintainers:
-- name: Kubewarden developers
-  email: cncf-kubewarden-maintainers@lists.cncf.io
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/mutation: 'false'
   kubewarden/resources: Pod,Deployment,Replicaset,Statefulset,Daemonset,Replicationcontroller,Job,Cronjob
