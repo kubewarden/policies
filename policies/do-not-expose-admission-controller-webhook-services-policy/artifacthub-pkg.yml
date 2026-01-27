@@ -4,39 +4,39 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.1.4
+version: 1.1.5
 name: do-not-expose-admission-controller-webhook-services
 displayName: Do not expose admission controller webhook services
-createdAt: 2026-01-24T01:33:32.121222245Z
+createdAt: 2026-01-27T13:21:40.737793973Z
 description: A policy that detects webhook services used by admission controllers that are accidentally exposed outside of the cluster
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-- name: policy
-  image: ghcr.io/kubewarden/policies/do-not-expose-admission-controller-webhook-services:v1.1.4
+  - name: policy
+    image: ghcr.io/kubewarden/policies/do-not-expose-admission-controller-webhook-services:v1.1.5
 keywords:
-- webhooks
+  - webhooks
 links:
-- name: policy
-  url: https://github.com/kubewarden/policies/releases/download/v1.1.4/policy.wasm
-- name: source
-  url: https://github.com/kubewarden/policies
+  - name: policy
+    url: https://github.com/kubewarden/policies/releases/download/do-not-expose-admission-controller-webhook-services-policy/v1.1.5/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/do-not-expose-admission-controller-webhook-services:v1.1.4
+  kwctl pull ghcr.io/kubewarden/policies/do-not-expose-admission-controller-webhook-services:v1.1.5
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/do-not-expose-admission-controller-webhook-services:v1.1.4
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/do-not-expose-admission-controller-webhook-services:v1.1.5
   ```
 maintainers:
-- name: Kubewarden developers
-  email: cncf-kubewarden-maintainers@lists.cncf.io
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/contextAwareResources: |
     - apiVersion: networking.k8s.io/v1
