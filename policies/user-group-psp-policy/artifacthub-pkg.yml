@@ -4,42 +4,42 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.1.4
+version: 1.1.5
 name: user-group-psp
 displayName: User Group PSP
-createdAt: 2026-01-24T00:09:18.394523758Z
+createdAt: 2026-01-27T13:36:19.178569975Z
 description: Kubewarden Policy that controls containers user and groups
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-- name: policy
-  image: ghcr.io/kubewarden/policies/user-group-psp:v1.1.4
+  - name: policy
+    image: ghcr.io/kubewarden/policies/user-group-psp:v1.1.5
 keywords:
-- psp
-- container
-- user
-- group
+  - psp
+  - container
+  - user
+  - group
 links:
-- name: policy
-  url: https://github.com/kubewarden/policies/releases/download/v1.1.4/policy.wasm
-- name: source
-  url: https://github.com/kubewarden/policies
+  - name: policy
+    url: https://github.com/kubewarden/policies/releases/download/user-group-psp-policy/v1.1.5/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/user-group-psp:v1.1.4
+  kwctl pull ghcr.io/kubewarden/policies/user-group-psp:v1.1.5
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/user-group-psp:v1.1.4
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/user-group-psp:v1.1.5
   ```
 maintainers:
-- name: Kubewarden developers
-  email: cncf-kubewarden-maintainers@lists.cncf.io
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/mutation: 'true'
   kubewarden/questions-ui: |
