@@ -4,39 +4,39 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.7
+version: 1.0.8
 name: ingress-policy
 displayName: Ingress Policy
-createdAt: 2026-01-24T01:55:07.187916245Z
+createdAt: 2026-01-27T14:52:34.523820345Z
 description: Enforce requirements on Ingress resources
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-- name: policy
-  image: ghcr.io/kubewarden/policies/ingress:v1.0.7
+  - name: policy
+    image: ghcr.io/kubewarden/policies/ingress:v1.0.8
 keywords:
-- ingress
+  - ingress
 links:
-- name: policy
-  url: https://github.com/kubewarden/policies/releases/download/v1.0.7/policy.wasm
-- name: source
-  url: https://github.com/kubewarden/policies
+  - name: policy
+    url: https://github.com/kubewarden/policies/releases/download/ingress-policy/v1.0.8/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/ingress:v1.0.7
+  kwctl pull ghcr.io/kubewarden/policies/ingress:v1.0.8
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/ingress:v1.0.7
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/ingress:v1.0.8
   ```
 maintainers:
-- name: Kubewarden developers
-  email: cncf-kubewarden-maintainers@lists.cncf.io
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/mutation: 'false'
   kubewarden/questions-ui: |
