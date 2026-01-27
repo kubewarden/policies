@@ -4,39 +4,39 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.1.7
+version: 0.1.8
 name: annotations
 displayName: Annotations
-createdAt: 2026-01-24T01:36:37.910832023Z
+createdAt: 2026-01-27T13:17:12.310161774Z
 description: A policy that validates annotations of Kubernetes' resources
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-- name: policy
-  image: ghcr.io/kubewarden/policies/annotations:v0.1.7
+  - name: policy
+    image: ghcr.io/kubewarden/policies/annotations:v0.1.8
 keywords:
-- annotations
+  - annotations
 links:
-- name: policy
-  url: https://github.com/kubewarden/policies/releases/download/v0.1.7/policy.wasm
-- name: source
-  url: https://github.com/kubewarden/policies
+  - name: policy
+    url: https://github.com/kubewarden/policies/releases/download/annotations-policy/v0.1.8/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/annotations:v0.1.7
+  kwctl pull ghcr.io/kubewarden/policies/annotations:v0.1.8
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/annotations:v0.1.7
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/annotations:v0.1.8
   ```
 maintainers:
-- name: Kubewarden developers
-  email: cncf-kubewarden-maintainers@lists.cncf.io
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/mutation: 'false'
   kubewarden/questions-ui: |
