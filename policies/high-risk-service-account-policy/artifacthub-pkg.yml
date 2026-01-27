@@ -4,41 +4,41 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.1.5
+version: 0.1.6
 name: high-risk-service-account
 displayName: High Risk Service Account
-createdAt: 2026-01-24T01:51:05.597707235Z
+createdAt: 2026-01-27T13:26:17.17623101Z
 description: Policy to prevent the usage of serviceaccount with too many permissions
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-- name: policy
-  image: ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.5
+  - name: policy
+    image: ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.6
 keywords:
-- pod
-- security
-- serviceaccount
+  - pod
+  - security
+  - serviceaccount
 links:
-- name: policy
-  url: https://github.com/kubewarden/policies/releases/download/v0.1.5/policy.wasm
-- name: source
-  url: https://github.com/kubewarden/policies
+  - name: policy
+    url: https://github.com/kubewarden/policies/releases/download/high-risk-service-account-policy/v0.1.6/policy.wasm
+  - name: source
+    url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.5
+  kwctl pull ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.6
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.5
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/high-risk-service-account:v0.1.6
   ```
 maintainers:
-- name: Kubewarden developers
-  email: cncf-kubewarden-maintainers@lists.cncf.io
+  - name: Kubewarden developers
+    email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/mutation: 'false'
   kubewarden/questions-ui: |
