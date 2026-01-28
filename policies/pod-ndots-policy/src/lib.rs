@@ -1,8 +1,8 @@
 use guest::prelude::*;
 use kubewarden_policy_sdk::wapc_guest as guest;
 
-use k8s_openapi::api::core::v1::{self as apicore, PodSpec};
 use k8s_openapi::Resource;
+use k8s_openapi::api::core::v1::{self as apicore, PodSpec};
 
 extern crate kubewarden_policy_sdk as kubewarden;
 use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_settings};
@@ -10,7 +10,7 @@ use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_se
 mod settings;
 use settings::Settings;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
