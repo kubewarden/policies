@@ -10,7 +10,7 @@ use kubewarden_policy_sdk::{
 use kubewarden_policy_sdk::{response::ValidationResponse, wapc_guest as guest};
 use lazy_static::lazy_static;
 use serde::de::DeserializeOwned;
-use slog::{o, warn, Logger};
+use slog::{Logger, o, warn};
 
 mod validation_result;
 
@@ -30,7 +30,7 @@ lazy_static! {
     );
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -52,7 +52,10 @@ fn validate(payload: &[u8]) -> CallResult {
         _ => {
             // We were forwarded a request we cannot unmarshal or
             // understand, just accept it
-            warn!(LOG_DRAIN, "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it");
+            warn!(
+                LOG_DRAIN,
+                "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it"
+            );
             accept_request()
         }
     }
@@ -67,7 +70,10 @@ fn validate_resource<T: ValidatingResource + DeserializeOwned>(
         Err(_) => {
             // We were forwarded a request we cannot unmarshal or
             // understand, just accept it
-            warn!(LOG_DRAIN, "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it");
+            warn!(
+                LOG_DRAIN,
+                "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it"
+            );
             return accept_request();
         }
     };
