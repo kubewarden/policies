@@ -2,7 +2,7 @@
 name = "seccomp-psp-policy"
 version = "1.0.12"
 authors = ["José Guilherme Vanz <jvanz@jvanz.com>"]
-edition = "2018"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]
