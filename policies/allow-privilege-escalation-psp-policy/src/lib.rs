@@ -12,7 +12,7 @@ use kubewarden_policy_sdk::{
 
 use k8s_openapi::api::core::v1 as apicore;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -169,8 +169,7 @@ mod tests {
 
     #[test]
     fn reject_pod_with_init_container_with_allow_privilege_escalation_enabled() -> Result<()> {
-        let request_file =
-            "test_data/req_pod_with_init_container_with_security_context_and_allowPrivilegeEscalation.json";
+        let request_file = "test_data/req_pod_with_init_container_with_security_context_and_allowPrivilegeEscalation.json";
         let tc = Testcase {
             name: String::from("Accept"),
             fixture_file: String::from(request_file),
