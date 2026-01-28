@@ -4,7 +4,7 @@ use kubewarden_policy_sdk::wapc_guest as guest;
 use lazy_static::lazy_static;
 extern crate kubewarden_policy_sdk as kubewarden;
 use kubewarden::{logging, protocol_version_guest, request::ValidationRequest, validate_settings};
-use slog::{error, o, warn, Logger};
+use slog::{Logger, error, o, warn};
 
 use settings::Settings;
 mod settings;
@@ -22,7 +22,7 @@ lazy_static! {
     );
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -97,8 +97,8 @@ fn validate_pod_priority_class(
 
 #[cfg(test)]
 mod tests {
-    use super::validate_pod_priority_class;
     use super::Settings;
+    use super::validate_pod_priority_class;
     use super::*;
     use rstest::rstest;
 
