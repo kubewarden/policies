@@ -36,10 +36,10 @@ impl kubewarden::settings::Validatable for Settings {
                 return Err(ERR_DENIED_CANNOT_BE_EMPTY.to_string());
             }
 
-            if let Some(fallback_storage_class) = &self.fallback_storage_class {
-                if denied_storage_classes.contains(fallback_storage_class) {
-                    return Err(ERR_FALLBACK_IN_DENIED.to_string());
-                }
+            if let Some(fallback_storage_class) = &self.fallback_storage_class
+                && denied_storage_classes.contains(fallback_storage_class)
+            {
+                return Err(ERR_FALLBACK_IN_DENIED.to_string());
             }
         }
 
@@ -48,10 +48,10 @@ impl kubewarden::settings::Validatable for Settings {
                 return Err(ERR_ALLOWED_CANNOT_BE_EMPTY.to_string());
             }
 
-            if let Some(fallback_storage_class) = &self.fallback_storage_class {
-                if !allowed_storage_classes.contains(fallback_storage_class) {
-                    return Err(ERR_FALLBACK_NOT_IN_ALLOWED.to_string());
-                }
+            if let Some(fallback_storage_class) = &self.fallback_storage_class
+                && !allowed_storage_classes.contains(fallback_storage_class)
+            {
+                return Err(ERR_FALLBACK_NOT_IN_ALLOWED.to_string());
             }
         }
 
