@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use lazy_static::lazy_static;
 
 use guest::prelude::*;
@@ -12,7 +12,7 @@ use kubewarden::{logging, protocol_version_guest, request::ValidationRequest, va
 mod settings;
 use settings::Settings;
 
-use slog::{info, o, Logger};
+use slog::{Logger, info, o};
 
 lazy_static! {
     static ref LOG_DRAIN: Logger = Logger::root(
@@ -21,7 +21,7 @@ lazy_static! {
     );
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -60,23 +60,23 @@ fn validate_pod(pod: &apicore::PodSpec, settings: &Settings) -> Result<bool> {
             return Err(anyhow!("Privileged container is not allowed"));
         }
     }
-    if !settings.skip_init_containers {
-        if let Some(init_containers) = &pod.init_containers {
-            for container in init_containers {
-                let container_valid = validate_container(container);
-                if !container_valid {
-                    return Err(anyhow!("Privileged init container is not allowed"));
-                }
+    if !settings.skip_init_containers
+        && let Some(init_containers) = &pod.init_containers
+    {
+        for container in init_containers {
+            let container_valid = validate_container(container);
+            if !container_valid {
+                return Err(anyhow!("Privileged init container is not allowed"));
             }
         }
     }
-    if !settings.skip_ephemeral_containers {
-        if let Some(ephemeral_containers) = &pod.ephemeral_containers {
-            for container in ephemeral_containers {
-                let container_valid = validate_ephemeral_container(container);
-                if !container_valid {
-                    return Err(anyhow!("Privileged ephemeral container is not allowed"));
-                }
+    if !settings.skip_ephemeral_containers
+        && let Some(ephemeral_containers) = &pod.ephemeral_containers
+    {
+        for container in ephemeral_containers {
+            let container_valid = validate_ephemeral_container(container);
+            if !container_valid {
+                return Err(anyhow!("Privileged ephemeral container is not allowed"));
             }
         }
     }
@@ -205,7 +205,11 @@ mod tests {
         false,
         "Privileged container should be rejected by the validator"
     )]
-    #[case::accept_privileged_container_when_privileged_is_none_test(container_factory(None), true, "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers")]
+    #[case::accept_privileged_container_when_privileged_is_none_test(
+        container_factory(None),
+        true,
+        "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers"
+    )]
     fn validate_container_test(
         #[case] container: apicore::Container,
         #[case] expected_result: bool,
@@ -241,7 +245,11 @@ mod tests {
         false,
         "Privileged container should be rejected by the validator"
     )]
-    #[case::accept_privileged_ephemeral_container_when_privileged_is_none_test(ephemeral_container_factory(None), true, "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers")]
+    #[case::accept_privileged_ephemeral_container_when_privileged_is_none_test(
+        ephemeral_container_factory(None),
+        true,
+        "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers"
+    )]
     fn validate_ephemeral_container_test(
         #[case] container: apicore::EphemeralContainer,
         #[case] expected_result: bool,
