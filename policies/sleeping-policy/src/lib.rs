@@ -1,8 +1,8 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use guest::prelude::*;
 use kubewarden_policy_sdk::wapc_guest as guest;
 use lazy_static::lazy_static;
-use slog::{o, warn, Logger};
+use slog::{Logger, o, warn};
 use std::{thread, time};
 
 extern crate kubewarden_policy_sdk as kubewarden;
@@ -18,7 +18,7 @@ lazy_static! {
     );
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
