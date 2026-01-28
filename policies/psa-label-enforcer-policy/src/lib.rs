@@ -9,7 +9,7 @@ use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_se
 mod settings;
 use settings::Settings;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -76,8 +76,8 @@ fn validate(payload: &[u8]) -> CallResult {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use k8s_openapi::apimachinery::pkg::apis::meta::v1::ObjectMeta;
     use k8s_openapi::Resource;
+    use k8s_openapi::apimachinery::pkg::apis::meta::v1::ObjectMeta;
     use kubewarden::request::{KubernetesAdmissionRequest, ValidationRequest};
     use kubewarden_policy_sdk::request::GroupVersionKind;
     use kubewarden_policy_sdk::response::ValidationResponse;

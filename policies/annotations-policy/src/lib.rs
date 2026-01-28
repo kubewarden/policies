@@ -13,7 +13,7 @@ use settings::Settings;
 
 mod settings;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<settings::Settings>);

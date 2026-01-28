@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -22,30 +22,30 @@ pub struct DeprecationRule {
 
 impl DeprecationRule {
     pub fn includes(&self, kubernetes_version: &semver::Version) -> bool {
-        if let Some(removed_in) = &self.removed_in {
-            if kubernetes_version >= removed_in {
-                return true;
-            }
+        if let Some(removed_in) = &self.removed_in
+            && kubernetes_version >= removed_in
+        {
+            return true;
         }
-        if let Some(deprecated_in) = &self.deprecated_in {
-            if kubernetes_version >= deprecated_in {
-                return true;
-            }
+        if let Some(deprecated_in) = &self.deprecated_in
+            && kubernetes_version >= deprecated_in
+        {
+            return true;
         }
 
         false
     }
 
     pub fn is_only_deprecated(&self, kubernetes_version: &semver::Version) -> Result<bool> {
-        if let Some(removed_in) = &self.removed_in {
-            if kubernetes_version >= removed_in {
-                return Ok(false);
-            }
+        if let Some(removed_in) = &self.removed_in
+            && kubernetes_version >= removed_in
+        {
+            return Ok(false);
         }
-        if let Some(deprecated_in) = &self.deprecated_in {
-            if kubernetes_version >= deprecated_in {
-                return Ok(true);
-            }
+        if let Some(deprecated_in) = &self.deprecated_in
+            && kubernetes_version >= deprecated_in
+        {
+            return Ok(true);
         }
 
         Err(anyhow!(

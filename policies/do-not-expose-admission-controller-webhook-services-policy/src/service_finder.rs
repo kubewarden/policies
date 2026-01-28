@@ -99,15 +99,15 @@ impl ServiceFinder for Service {
     fn get_services(&self) -> HashSet<ServiceDetails> {
         let mut services = HashSet::new();
         let namespace = self.metadata.namespace.clone().unwrap_or_default();
-        if let Some(spec) = &self.spec {
-            if let Some(ports) = &spec.ports {
-                for port in ports {
-                    services.insert(ServiceDetails {
-                        name: self.metadata.name.clone().unwrap_or_default(),
-                        namespace: namespace.clone(),
-                        port_number: Some(port.port),
-                    });
-                }
+        if let Some(spec) = &self.spec
+            && let Some(ports) = &spec.ports
+        {
+            for port in ports {
+                services.insert(ServiceDetails {
+                    name: self.metadata.name.clone().unwrap_or_default(),
+                    namespace: namespace.clone(),
+                    port_number: Some(port.port),
+                });
             }
         }
         services

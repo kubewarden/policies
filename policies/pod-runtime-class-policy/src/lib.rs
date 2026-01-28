@@ -10,7 +10,7 @@ use kubewarden::{accept_request, mutate_pod_spec_from_request, reject_request};
 mod settings;
 use settings::Settings;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -34,31 +34,29 @@ fn validate(payload: &[u8]) -> CallResult {
     let validation_request: ValidationRequest<Settings> = ValidationRequest::new(payload)?;
     let pod = validation_request.extract_pod_spec_from_object()?;
     if let Some(pod_spec) = pod {
-        if let Some(ref runtime_class_name) = pod_spec.runtime_class_name {
-            if validation_request
+        if let Some(ref runtime_class_name) = pod_spec.runtime_class_name
+            && validation_request
                 .settings
                 .reserved_runtimes
                 .contains(runtime_class_name)
-            {
-                return mutate_or_reject(
-                    validation_request,
-                    &pod_spec,
-                    format!("runtime '{runtime_class_name}' is reserved"),
-                );
-            }
+        {
+            return mutate_or_reject(
+                validation_request,
+                &pod_spec,
+                format!("runtime '{runtime_class_name}' is reserved"),
+            );
         }
 
         // The object does not define the runtime. Therefore, the default one will
         // be used. Update the object to use the fallback runtime.
         if let Some(default_runtime_reserved) = validation_request.settings.default_runtime_reserved
+            && default_runtime_reserved
         {
-            if default_runtime_reserved {
-                return mutate_or_reject(
-                    validation_request,
-                    &pod_spec,
-                    "Usage of the default runtime is reserved".to_string(),
-                );
-            }
+            return mutate_or_reject(
+                validation_request,
+                &pod_spec,
+                "Usage of the default runtime is reserved".to_string(),
+            );
         }
         // The default runtime is not reserved, but a fallback is specified. Therefore
         // the Pod is mutated to use the fallback runtime.
@@ -74,8 +72,8 @@ fn validate(payload: &[u8]) -> CallResult {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use k8s_openapi::api::core::v1::{Pod, PodSpec};
     use k8s_openapi::Resource;
+    use k8s_openapi::api::core::v1::{Pod, PodSpec};
     use kubewarden::request::{KubernetesAdmissionRequest, ValidationRequest};
     use kubewarden_policy_sdk::request::GroupVersionKind;
     use kubewarden_policy_sdk::response::ValidationResponse;

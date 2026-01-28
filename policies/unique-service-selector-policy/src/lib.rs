@@ -1,7 +1,7 @@
-use k8s_openapi::api::core::v1::{self as apicore, Service};
 use k8s_openapi::Resource;
+use k8s_openapi::api::core::v1::{self as apicore, Service};
 use kubewarden_policy_sdk::host_capabilities::kubernetes::{
-    list_resources_by_namespace, ListResourcesByNamespaceRequest,
+    ListResourcesByNamespaceRequest, list_resources_by_namespace,
 };
 
 extern crate kubewarden_policy_sdk as kubewarden;
@@ -13,7 +13,7 @@ use settings::Settings;
 use guest::prelude::*;
 use kubewarden_policy_sdk::wapc_guest as guest;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);

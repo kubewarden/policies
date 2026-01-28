@@ -2,7 +2,7 @@
 name = "raw-validation-policy"
 version = "0.1.2"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]

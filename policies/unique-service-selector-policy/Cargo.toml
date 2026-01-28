@@ -2,7 +2,7 @@
 name = "unique-service-selector-policy"
 version = "1.0.10"
 authors = ["Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]

@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 
 use guest::prelude::*;
 use kubewarden_policy_sdk::wapc_guest as guest;
@@ -11,7 +11,7 @@ use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_se
 mod settings;
 use settings::{Ranges, Rule, Settings};
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);

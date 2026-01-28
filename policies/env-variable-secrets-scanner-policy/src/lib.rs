@@ -2,7 +2,7 @@ use guest::prelude::*;
 use kubewarden_policy_sdk::wapc_guest as guest;
 extern crate kubewarden_policy_sdk as kubewarden;
 
-use base64::{engine::general_purpose::STANDARD as BASE64_STD_ENGINE, Engine as _};
+use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64_STD_ENGINE};
 use k8s_openapi::api::core::v1::{EnvVar, PodSpec};
 use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_settings};
 use rusty_hog_scanner::{SecretScanner, SecretScannerBuilder};
@@ -11,7 +11,7 @@ use std::{collections::HashSet, fmt, string::String};
 mod settings;
 use settings::Settings;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -206,21 +206,24 @@ mod tests {
         };
 
         let res = tc.eval(validate).unwrap();
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("The following secrets were found in environment variables"),);
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("container: nginx, key: email, reason: Email address"),);
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("container: nginx, key: rsa, reason: RSA private key"),);
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("The following secrets were found in environment variables"),
+        );
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("container: nginx, key: email, reason: Email address"),
+        );
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("container: nginx, key: rsa, reason: RSA private key"),
+        );
 
         assert!(
             res.mutated_object.is_none(),
@@ -242,16 +245,18 @@ mod tests {
         };
 
         let res = tc.eval(validate).unwrap();
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("The following secrets were found in environment variables"),);
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("container: nginx, key: rsa, reason: RSA private key"),);
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("The following secrets were found in environment variables"),
+        );
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("container: nginx, key: rsa, reason: RSA private key"),
+        );
 
         assert!(
             res.mutated_object.is_none(),
@@ -273,21 +278,24 @@ mod tests {
         };
 
         let res = tc.eval(validate).unwrap();
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("The following secrets were found in environment variables"),);
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("container: busybox, key: email, reason: Email address"),);
-        assert!(res
-            .message
-            .clone()
-            .unwrap_or_default()
-            .contains("container: nginx, key: rsa, reason: RSA private key"),);
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("The following secrets were found in environment variables"),
+        );
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("container: busybox, key: email, reason: Email address"),
+        );
+        assert!(
+            res.message
+                .clone()
+                .unwrap_or_default()
+                .contains("container: nginx, key: rsa, reason: RSA private key"),
+        );
 
         assert!(
             res.mutated_object.is_none(),

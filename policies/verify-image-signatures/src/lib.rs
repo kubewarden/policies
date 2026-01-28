@@ -28,7 +28,7 @@ mod settings;
 use settings::Settings;
 
 use crate::settings::Signature;
-use slog::{o, warn, Logger};
+use slog::{Logger, o, warn};
 use wildmatch::WildMatch;
 
 lazy_static! {
@@ -38,7 +38,7 @@ lazy_static! {
     );
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -221,7 +221,10 @@ fn validate(payload: &[u8]) -> CallResult {
         _ => {
             // We were forwarded a request we cannot unmarshal or
             // understand, just accept it
-            warn!(LOG_DRAIN, "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it");
+            warn!(
+                LOG_DRAIN,
+                "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it"
+            );
             kubewarden::accept_request()
         }
     }
@@ -237,7 +240,10 @@ fn validate_resource<T: ValidatingResource + DeserializeOwned + Serialize>(
         Err(_) => {
             // We were forwarded a request we cannot unmarshal or
             // understand, just accept it
-            warn!(LOG_DRAIN, "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it");
+            warn!(
+                LOG_DRAIN,
+                "cannot unmarshal resource: this policy does not know how to evaluate this resource; accept it"
+            );
             return kubewarden::accept_request();
         }
     };
@@ -299,23 +305,22 @@ fn verify_all_images_in_pod(
         spec_images_with_digest.containers = containers_with_digest;
         is_modified_with_digest = true;
     }
-    if let Some(init_containers) = &spec.init_containers {
-        if let Some(init_containers_with_digest) =
+    if let Some(init_containers) = &spec.init_containers
+        && let Some(init_containers_with_digest) =
             verify_container_images(init_containers, &mut policy_verification_errors, signatures)
-        {
-            spec_images_with_digest.init_containers = Some(init_containers_with_digest);
-            is_modified_with_digest = true;
-        }
+    {
+        spec_images_with_digest.init_containers = Some(init_containers_with_digest);
+        is_modified_with_digest = true;
     }
-    if let Some(ephemeral_containers) = &spec.ephemeral_containers {
-        if let Some(ephemeral_containers_with_digest) = verify_container_images(
+    if let Some(ephemeral_containers) = &spec.ephemeral_containers
+        && let Some(ephemeral_containers_with_digest) = verify_container_images(
             ephemeral_containers,
             &mut policy_verification_errors,
             signatures,
-        ) {
-            spec_images_with_digest.ephemeral_containers = Some(ephemeral_containers_with_digest);
-            is_modified_with_digest = true;
-        }
+        )
+    {
+        spec_images_with_digest.ephemeral_containers = Some(ephemeral_containers_with_digest);
+        is_modified_with_digest = true;
     }
 
     if !policy_verification_errors.is_empty() {
@@ -456,8 +461,8 @@ fn add_digest_if_not_present<T>(
 mod tests {
     use super::*;
     use crate::settings::{
-        github_actions::KeylessGithubActionsInfo, Certificate, GithubActions, Keyless,
-        KeylessPrefix, PubKeys,
+        Certificate, GithubActions, Keyless, KeylessPrefix, PubKeys,
+        github_actions::KeylessGithubActionsInfo,
     };
     use anyhow::anyhow;
     use kubewarden::{
@@ -940,7 +945,9 @@ mod tests {
         };
 
         let tc = Testcase {
-            name: String::from("It should fail when validating the ghcr.io/kubewarden/test-verify-image-signatures container"),
+            name: String::from(
+                "It should fail when validating the ghcr.io/kubewarden/test-verify-image-signatures container",
+            ),
             fixture_file: String::from("test_data/pod_creation_signed.json"),
             settings,
             expected_validation_result: false,
@@ -978,7 +985,9 @@ mod tests {
         };
 
         let tc = Testcase {
-            name: String::from("It should successfully validate the ghcr.io/kubewarden/test-verify-image-signatures container"),
+            name: String::from(
+                "It should successfully validate the ghcr.io/kubewarden/test-verify-image-signatures container",
+            ),
             fixture_file: String::from("test_data/pod_creation_signed.json"),
             settings,
             expected_validation_result: true,
@@ -1017,7 +1026,9 @@ mod tests {
         };
 
         let tc = Testcase {
-            name: String::from("It should successfully validate the ghcr.io/kubewarden/test-verify-image-signatures container"),
+            name: String::from(
+                "It should successfully validate the ghcr.io/kubewarden/test-verify-image-signatures container",
+            ),
             fixture_file: String::from("test_data/pod_creation_signed.json"),
             settings,
             expected_validation_result: true,

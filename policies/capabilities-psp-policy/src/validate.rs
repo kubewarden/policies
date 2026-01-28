@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use k8s_openapi::api::core::v1::PodSpec;
 use std::collections::HashSet;
 
@@ -52,27 +52,25 @@ fn get_caps(pod_spec: &PodSpec) -> Result<HashSet<String>> {
     let mut caps = HashSet::<String>::new();
 
     for c in pod_spec.containers.iter() {
-        if let Some(sc) = &c.security_context {
-            if let Some(capabilities) = &sc.capabilities {
-                if let Some(add) = &capabilities.add {
-                    add.iter().for_each(|c| {
-                        caps.insert(c.to_owned());
-                    });
-                }
-            }
+        if let Some(sc) = &c.security_context
+            && let Some(capabilities) = &sc.capabilities
+            && let Some(add) = &capabilities.add
+        {
+            add.iter().for_each(|c| {
+                caps.insert(c.to_owned());
+            });
         }
     }
 
     if let Some(ics) = &pod_spec.init_containers {
         for c in ics.iter() {
-            if let Some(sc) = &c.security_context {
-                if let Some(capabilities) = &sc.capabilities {
-                    if let Some(add) = &capabilities.add {
-                        add.iter().for_each(|c| {
-                            caps.insert(c.to_owned());
-                        });
-                    }
-                }
+            if let Some(sc) = &c.security_context
+                && let Some(capabilities) = &sc.capabilities
+                && let Some(add) = &capabilities.add
+            {
+                add.iter().for_each(|c| {
+                    caps.insert(c.to_owned());
+                });
             }
         }
     }
@@ -230,10 +228,12 @@ mod tests {
         let validation_req = ValidationRequest::<Settings>::new(payload.to_string().as_bytes())?;
         let validation_result = validate_added_caps(&validation_req);
         assert!(validation_result.is_err());
-        assert!(validation_result
-            .unwrap_err()
-            .to_string()
-            .contains("NET_ADMIN"));
+        assert!(
+            validation_result
+                .unwrap_err()
+                .to_string()
+                .contains("NET_ADMIN")
+        );
 
         Ok(())
     }

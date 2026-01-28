@@ -11,7 +11,7 @@ mod settings;
 use request::RawValidationRequest;
 use settings::Settings;
 
-use slog::{info, o, Logger};
+use slog::{Logger, info, o};
 
 lazy_static! {
     static ref LOG_DRAIN: Logger = Logger::root(
@@ -20,7 +20,7 @@ lazy_static! {
     );
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);

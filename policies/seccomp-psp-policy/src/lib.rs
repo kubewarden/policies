@@ -1,7 +1,7 @@
 use guest::prelude::*;
 use kubewarden_policy_sdk::wapc_guest as guest;
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use k8s_openapi::api::core::v1 as apicore;
 
 extern crate kubewarden_policy_sdk as kubewarden;
@@ -10,7 +10,7 @@ use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_se
 mod settings;
 use settings::Settings;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);
@@ -99,12 +99,12 @@ fn localhost_profile_defined_in_allowed_profiles(
     // Unfortunately, we cannot store the allowed_profiles settings parsed to
     // avoid this iteration in every evaluation.
     for profile in &settings.allowed_profiles {
-        if seccomp_profile.type_ == "Localhost" && profile.starts_with("localhost/") {
-            if let Some(localhost_profile) = &seccomp_profile.localhost_profile {
-                if profile.ends_with(localhost_profile) {
-                    return true;
-                }
-            }
+        if seccomp_profile.type_ == "Localhost"
+            && profile.starts_with("localhost/")
+            && let Some(localhost_profile) = &seccomp_profile.localhost_profile
+            && profile.ends_with(localhost_profile)
+        {
+            return true;
         }
     }
     false
@@ -120,30 +120,30 @@ where
     let mut invalid_seccomp_profile_types = vec![];
     let mut invalid_seccomp_profile = vec![];
     for container in containers {
-        if let Some(security_context) = container.security_context() {
-            if let Some(seccomp_profile) = security_context.seccomp_profile.clone() {
-                if !settings.profile_types.contains(&seccomp_profile.type_)
-                    && !allowed_profiles_has_profile_type(settings, &seccomp_profile)
-                {
-                    invalid_seccomp_profile_types.push(seccomp_profile.type_.clone())
-                }
-                if seccomp_profile.type_ == "Localhost" {
-                    match &seccomp_profile.localhost_profile {
-                        Some(localhost_profile) => {
-                            if !settings.localhost_profiles.contains(localhost_profile)
-                                && !localhost_profile_defined_in_allowed_profiles(
-                                    settings,
-                                    &seccomp_profile,
-                                )
-                            {
-                                invalid_seccomp_profile.push(localhost_profile.clone())
-                            }
+        if let Some(security_context) = container.security_context()
+            && let Some(seccomp_profile) = security_context.seccomp_profile.clone()
+        {
+            if !settings.profile_types.contains(&seccomp_profile.type_)
+                && !allowed_profiles_has_profile_type(settings, &seccomp_profile)
+            {
+                invalid_seccomp_profile_types.push(seccomp_profile.type_.clone())
+            }
+            if seccomp_profile.type_ == "Localhost" {
+                match &seccomp_profile.localhost_profile {
+                    Some(localhost_profile) => {
+                        if !settings.localhost_profiles.contains(localhost_profile)
+                            && !localhost_profile_defined_in_allowed_profiles(
+                                settings,
+                                &seccomp_profile,
+                            )
+                        {
+                            invalid_seccomp_profile.push(localhost_profile.clone())
                         }
-                        None => {
-                            return Err(anyhow!(
-                                "The container localhost seccomp profile must be set.".to_string(),
-                            ));
-                        }
+                    }
+                    None => {
+                        return Err(anyhow!(
+                            "The container localhost seccomp profile must be set.".to_string(),
+                        ));
                     }
                 }
             }
@@ -172,36 +172,36 @@ fn do_validate_pod_security_context(
     pod: &apicore::PodSpec,
     settings: &settings::Settings,
 ) -> Result<()> {
-    if let Some(security_context) = &pod.security_context {
-        if let Some(seccomp_profile) = security_context.seccomp_profile.clone() {
-            if !settings.profile_types.contains(&seccomp_profile.type_)
-                && !allowed_profiles_has_profile_type(settings, &seccomp_profile)
-            {
-                return Err(anyhow!(format!(
-                    "Invalid podspec seccomp profile types: {}",
-                    &seccomp_profile.type_
-                )));
-            }
-            if seccomp_profile.type_ == "Localhost" {
-                match &seccomp_profile.localhost_profile {
-                    Some(localhost_profile) => {
-                        if !settings.localhost_profiles.contains(localhost_profile)
-                            && !localhost_profile_defined_in_allowed_profiles(
-                                settings,
-                                &seccomp_profile,
-                            )
-                        {
-                            return Err(anyhow!(format!(
-                                "Invalid podspec seccomp profile: {}",
-                                &localhost_profile
-                            )));
-                        }
+    if let Some(security_context) = &pod.security_context
+        && let Some(seccomp_profile) = security_context.seccomp_profile.clone()
+    {
+        if !settings.profile_types.contains(&seccomp_profile.type_)
+            && !allowed_profiles_has_profile_type(settings, &seccomp_profile)
+        {
+            return Err(anyhow!(format!(
+                "Invalid podspec seccomp profile types: {}",
+                &seccomp_profile.type_
+            )));
+        }
+        if seccomp_profile.type_ == "Localhost" {
+            match &seccomp_profile.localhost_profile {
+                Some(localhost_profile) => {
+                    if !settings.localhost_profiles.contains(localhost_profile)
+                        && !localhost_profile_defined_in_allowed_profiles(
+                            settings,
+                            &seccomp_profile,
+                        )
+                    {
+                        return Err(anyhow!(format!(
+                            "Invalid podspec seccomp profile: {}",
+                            &localhost_profile
+                        )));
                     }
-                    None => {
-                        return Err(anyhow!(
-                            "The podspec localhost seccomp profile must be set.".to_string(),
-                        ));
-                    }
+                }
+                None => {
+                    return Err(anyhow!(
+                        "The podspec localhost seccomp profile must be set.".to_string(),
+                    ));
                 }
             }
         }
@@ -226,16 +226,16 @@ fn do_validate(pod: &apicore::Pod, settings: &settings::Settings) -> Result<Poli
             violations.push(error.to_string());
         }
 
-        if let Some(init_containers) = &podspec.init_containers {
-            if let Err(error) = do_validate_containers(init_containers, settings) {
-                violations.push(error.to_string());
-            }
+        if let Some(init_containers) = &podspec.init_containers
+            && let Err(error) = do_validate_containers(init_containers, settings)
+        {
+            violations.push(error.to_string());
         }
 
-        if let Some(ephemeral_containers) = &podspec.ephemeral_containers {
-            if let Err(error) = do_validate_containers(ephemeral_containers, settings) {
-                violations.push(error.to_string());
-            }
+        if let Some(ephemeral_containers) = &podspec.ephemeral_containers
+            && let Err(error) = do_validate_containers(ephemeral_containers, settings)
+        {
+            violations.push(error.to_string());
         }
     }
     if violations.is_empty() {
@@ -1197,8 +1197,8 @@ mod tests {
     }
 
     #[test]
-    fn security_context_validation_should_not_fail_when_just_allowed_profiles_are_provided(
-    ) -> Result<()> {
+    fn security_context_validation_should_not_fail_when_just_allowed_profiles_are_provided()
+    -> Result<()> {
         assert_eq!(
             do_validate(
                 &apicore::Pod {

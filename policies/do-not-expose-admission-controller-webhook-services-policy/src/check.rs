@@ -7,10 +7,10 @@ use crate::service_finder::ServiceFinder;
 
 #[cfg(test)]
 use crate::check::tests::mock_kubernetes_sdk::list_resources_by_namespace;
-use k8s_openapi::{api::networking::v1::Ingress, Resource};
+use k8s_openapi::{Resource, api::networking::v1::Ingress};
+use kubewarden::host_capabilities::kubernetes::ListResourcesByNamespaceRequest;
 #[cfg(not(test))]
 use kubewarden::host_capabilities::kubernetes::list_resources_by_namespace;
-use kubewarden::host_capabilities::kubernetes::ListResourcesByNamespaceRequest;
 
 /// Given a list of services being used by (Validating|Mutating)WebhookConfiguration, find all
 /// the ones that are exposed by an Ingress resource, or by NodePort/LoadBalancer services.
@@ -103,12 +103,11 @@ fn find_webhook_services_exposed_by_nodeport_loadbalancer_inside_of_namespace(
     // pairs to correctly compare against webhook_services
     let mut svcs_exposed: HashSet<ServiceDetails> = HashSet::new();
     for service in services.items.iter() {
-        if let Some(spec) = &service.spec {
-            if let Some(ref type_) = spec.type_ {
-                if type_ == "NodePort" || type_ == "LoadBalancer" {
-                    svcs_exposed.extend(service.get_services());
-                }
-            }
+        if let Some(spec) = &service.spec
+            && let Some(ref type_) = spec.type_
+            && (type_ == "NodePort" || type_ == "LoadBalancer")
+        {
+            svcs_exposed.extend(service.get_services());
         }
     }
 

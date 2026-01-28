@@ -15,12 +15,12 @@ pub(crate) struct Settings {
 
 impl kubewarden::settings::Validatable for Settings {
     fn validate(&self) -> Result<(), String> {
-        if let Some(fallback_runtime) = &self.fallback_runtime {
-            if self.reserved_runtimes.contains(fallback_runtime) {
-                return Err(format!(
-                    "fallback runtime {fallback_runtime} cannot be part of the reserved runtimes"
-                ));
-            }
+        if let Some(fallback_runtime) = &self.fallback_runtime
+            && self.reserved_runtimes.contains(fallback_runtime)
+        {
+            return Err(format!(
+                "fallback runtime {fallback_runtime} cannot be part of the reserved runtimes"
+            ));
         }
         Ok(())
     }

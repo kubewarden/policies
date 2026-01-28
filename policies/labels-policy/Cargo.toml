@@ -2,7 +2,7 @@
 name = "labels-policy"
 version = "0.1.7"
 authors = ["Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
-edition = "2018"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]

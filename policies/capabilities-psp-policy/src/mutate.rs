@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use k8s_openapi::api::core::v1::{Capabilities, PodSpec, SecurityContext};
 use kubewarden_policy_sdk::request::ValidationRequest;
 use std::collections::HashSet;
@@ -108,11 +108,7 @@ fn patch_container_security_context(
 
     sc.capabilities = Some(capabilities);
 
-    if changed {
-        Some(sc)
-    } else {
-        None
-    }
+    if changed { Some(sc) } else { None }
 }
 
 #[cfg(test)]

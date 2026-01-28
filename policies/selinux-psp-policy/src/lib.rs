@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use std::convert::TryInto;
 
 use guest::prelude::*;
@@ -12,7 +12,7 @@ use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_se
 mod settings;
 use settings::{ExternalSettings, SELinuxLevel, SELinuxOptions, Settings};
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<ExternalSettings>);
@@ -153,15 +153,15 @@ fn is_selinux_compliant(
     selinux_options: &apicore::SELinuxOptions,
     expected_selinux_options: &SELinuxOptions,
 ) -> bool {
-    if let Some(ref expected_level) = expected_selinux_options.level {
-        if let Some(ref level) = selinux_options.level {
-            if let Ok(ref level) = SELinuxLevel::new(level.clone()) {
-                if level != expected_level {
-                    return false;
-                }
-            } else {
+    if let Some(ref expected_level) = expected_selinux_options.level
+        && let Some(ref level) = selinux_options.level
+    {
+        if let Ok(ref level) = SELinuxLevel::new(level.clone()) {
+            if level != expected_level {
                 return false;
             }
+        } else {
+            return false;
         }
     }
     selinux_options.role == expected_selinux_options.role
@@ -759,8 +759,8 @@ mod tests {
     }
 
     #[test]
-    fn must_run_as_rejects_with_empty_selinux_options_and_unmatching_existing_container(
-    ) -> Result<()> {
+    fn must_run_as_rejects_with_empty_selinux_options_and_unmatching_existing_container()
+    -> Result<()> {
         let selinux_options = SELinuxOptions {
             user: Some("user".to_string()),
             role: Some("role".to_string()),

@@ -2,7 +2,7 @@
 name = "verify-image-signatures"
 version = "1.0.8"
 authors = ["Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]

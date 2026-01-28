@@ -2,7 +2,7 @@
 name = "rancher-project-propagate-labels"
 version = "0.1.4"
 authors = ["Flavio Castelli <fcastelli@suse.com>"]
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

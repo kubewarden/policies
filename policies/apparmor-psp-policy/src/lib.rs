@@ -13,7 +13,7 @@ use kubewarden_policy_sdk::{
 
 use k8s_openapi::api::core::v1 as apicore;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);

@@ -66,11 +66,13 @@ volumeMountsNames:
             settings.as_ref().unwrap().operator,
             Reject::AnyNotIn
         ));
-        assert!(settings
-            .as_ref()
-            .unwrap()
-            .volume_mounts_names
-            .contains(&"test1".to_string()));
+        assert!(
+            settings
+                .as_ref()
+                .unwrap()
+                .volume_mounts_names
+                .contains(&"test1".to_string())
+        );
         Ok(())
     }
 }

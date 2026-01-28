@@ -2,7 +2,7 @@
 name = "deprecated-api-versions"
 version = "1.0.8"
 authors = ["Flavio Castelli <fcastelli@suse.com>"]
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]

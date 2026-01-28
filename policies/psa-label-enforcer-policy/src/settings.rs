@@ -64,7 +64,9 @@ impl kubewarden::settings::Validatable for Settings {
         if let Some(version) = &self.modes.enforce_version {
             let matches: Vec<_> = VERSION_REGEXES.matches(version).into_iter().collect();
             if matches.is_empty() {
-                return Err(format!("Version {version} is invalid. It must follow the v<major>.<minor> pattern or be 'latest' value"));
+                return Err(format!(
+                    "Version {version} is invalid. It must follow the v<major>.<minor> pattern or be 'latest' value"
+                ));
             }
             if self.modes.enforce.is_none() {
                 return Err("cannot define enforce version with no enforce mode.".to_string());
@@ -73,7 +75,9 @@ impl kubewarden::settings::Validatable for Settings {
         if let Some(version) = &self.modes.audit_version {
             let matches: Vec<_> = VERSION_REGEXES.matches(version).into_iter().collect();
             if matches.is_empty() {
-                return Err(format!("Version {version} is invalid. It must follow the v<major>.<minor> pattern or be 'latest' value"));
+                return Err(format!(
+                    "Version {version} is invalid. It must follow the v<major>.<minor> pattern or be 'latest' value"
+                ));
             }
             if self.modes.audit.is_none() {
                 return Err("cannot define audit version with no audit mode.".to_string());
@@ -82,7 +86,9 @@ impl kubewarden::settings::Validatable for Settings {
         if let Some(version) = &self.modes.warn_version {
             let matches: Vec<_> = VERSION_REGEXES.matches(version).into_iter().collect();
             if matches.is_empty() {
-                return Err(format!("Version {version} is invalid. It must follow the v<major>.<minor> pattern or be 'latest' value"));
+                return Err(format!(
+                    "Version {version} is invalid. It must follow the v<major>.<minor> pattern or be 'latest' value"
+                ));
             }
             if self.modes.warn.is_none() {
                 return Err("cannot define warn version with no warn mode.".to_string());

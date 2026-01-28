@@ -1,10 +1,10 @@
 use guest::prelude::*;
 use kubewarden_policy_sdk::wapc_guest as guest;
 
+use k8s_openapi::Resource;
 use k8s_openapi::api::admissionregistration::v1::{
     MutatingWebhookConfiguration, ValidatingWebhookConfiguration,
 };
-use k8s_openapi::Resource;
 
 extern crate kubewarden_policy_sdk as kubewarden;
 use kubewarden::{protocol_version_guest, request::ValidationRequest, validate_settings};
@@ -20,7 +20,7 @@ use service_finder::ServiceFinder;
 mod check;
 use check::find_webhook_services_exposed;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn wapc_init() {
     register_function("validate", validate);
     register_function("validate_settings", validate_settings::<Settings>);

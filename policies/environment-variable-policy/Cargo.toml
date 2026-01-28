@@ -5,7 +5,7 @@ authors = [
   "José Guilherme Vanz <jguilhermevanz@suse.com>",
   "Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>",
 ]
-edition = "2018"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]
