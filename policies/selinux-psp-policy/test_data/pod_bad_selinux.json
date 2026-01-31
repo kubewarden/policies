@@ -1,0 +1,54 @@
+{
+  "uid": "705ab4f5-6393-11e8-b7cc-42010a800002",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Pod"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "this-is-the-plural-name-of-the-resource-this-information-is-not-used-by-policies-and-requires-a-connection-to-an-api-server-to-be-obtained"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Pod"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "this-is-the-plural-name-of-the-resource-this-information-is-not-used-by-policies-and-requires-a-connection-to-an-api-server-to-be-obtained"
+  },
+  "name": "bad-selinux",
+  "operation": "CREATE",
+  "userInfo": {
+    "groups": [
+      "system:masters"
+    ],
+    "username": "test-user"
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+      "name": "bad-selinux"
+    },
+    "spec": {
+      "containers": [
+        {
+          "image": "nginx",
+          "name": "nginx",
+          "securityContext": {
+            "seLinuxOptions": {
+              "level": "s0:c123",
+              "role": "wrong_role",
+              "type": "wrong_type",
+              "user": "wrong_user"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
