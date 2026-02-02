@@ -5,6 +5,11 @@
     -r test_data/pod_plain.json \
     -s '{"rule": "RunAsAny"}'
 
+  # --- DEBUG START ---
+  echo "Status: $status"
+  echo "Output: $output"
+  # --- DEBUG END ---
+
   [ "$status" -eq 0 ]
   [[ "$output" == *"allowed\":true"* ]]
 }
@@ -13,6 +18,9 @@
   run kwctl run annotated-policy.wasm \
     -r test_data/pod_plain.json \
     -s '{"rule": "MustRunAs", "user": "system_u", "role": "system_r", "type": "spc_t", "level": "s0"}'
+
+  echo "Status: $status"
+  echo "Output: $output"
 
   [ "$status" -eq 0 ]
   [[ "$output" == *"allowed\":true"* ]]
@@ -23,6 +31,9 @@
   run kwctl run annotated-policy.wasm \
     -r test_data/pod_bad_selinux.json \
     -s '{"rule": "MustRunAs", "user": "system_u", "role": "system_r", "type": "spc_t", "level": "s0"}'
+
+  echo "Status: $status"
+  echo "Output: $output"
 
   [ "$status" -eq 0 ]
   [[ "$output" == *"allowed\":false"* ]]
