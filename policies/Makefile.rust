@@ -3,7 +3,10 @@ POLICY_DIR := $(notdir $(patsubst %/,%,$(ROOT_DIR)))
 TARGET_DIR ?= $(CURDIR)/target
 CARGO_GLOBAL_OPTIONS ?= --locked
 
-policy.wasm: 
+# Find all Rust source files to track as dependencies
+RUST_SOURCES := $(shell find $(CURDIR)/src -name "*.rs" 2>/dev/null)
+
+policy.wasm: Cargo.toml Cargo.lock $(RUST_SOURCES)
 	cargo $(CARGO_GLOBAL_OPTIONS) build --target=wasm32-wasip1 --target-dir=$(TARGET_DIR) --release 
 	cp $(TARGET_DIR)/wasm32-wasip1/release/*.wasm $(CURDIR)/policy.wasm
 
