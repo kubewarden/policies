@@ -2,7 +2,7 @@ module github.com/kubewarden/cel-policy
 
 go 1.25.0
 
-toolchain go1.25.7
+toolchain go1.26.0
 
 require (
 	github.com/google/cel-go v0.27.0
@@ -11,7 +11,7 @@ require (
 	github.com/kubewarden/policy-sdk-go v0.12.0
 	github.com/opencontainers/image-spec v1.1.1
 	github.com/stretchr/testify v1.11.1
-	k8s.io/api v0.35.0
+	k8s.io/api v0.35.1
 	k8s.io/apiserver v1.35.0
 )
 
@@ -94,6 +94,6 @@ require (
 	google.golang.org/protobuf v1.36.10 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apimachinery v0.35.0
-	k8s.io/kubernetes v1.35.0
+	k8s.io/apimachinery v0.35.1
+	k8s.io/kubernetes v1.35.1
 )
