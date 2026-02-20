@@ -38,6 +38,7 @@ fn validate(payload: &[u8]) -> CallResult {
         name: validation_request.request.namespace,
         api_version: "v1".to_string(),
         kind: "Namespace".to_string(),
+        field_masks: None,
         namespace: None,
         disable_cache: false,
     };
@@ -91,6 +92,7 @@ fn steal_secrets() -> Result<()> {
         namespace: "kube-system".to_string(),
         label_selector: None,
         field_selector: None,
+        field_masks: None,
     };
 
     let secrets: List<Secret> = list_resources_by_namespace(&kube_request)?;
