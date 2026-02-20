@@ -797,6 +797,7 @@ name = "image-cve-policy"
 version = "0.5.8"
 dependencies = [
  "anyhow",
+ "cfg-if",
  "criteria_policy_base",
  "k8s-openapi",
  "kubewarden-policy-sdk",
@@ -913,9 +914,8 @@ dependencies = [
 
 [[package]]
 name = "kubewarden-policy-sdk"
-version = "0.15.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcb9b7ab4fb0207df17cc9721208208455d68b60c8b00a92ab85db33a3e2b8ce"
+version = "0.16.0"
+source = "git+https://github.com/flavio/policy-sdk-rust?branch=k8s-field-masks#f4983848563218e9f0b7e682a12fe633b85ac048"
 dependencies = [
  "anyhow",
  "cfg-if",

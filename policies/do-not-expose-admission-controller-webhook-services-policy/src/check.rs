@@ -64,6 +64,7 @@ fn find_webhook_services_exposed_by_ingress_inside_of_namespace(
             kind: Ingress::KIND.to_string(),
             label_selector: None,
             field_selector: None,
+            field_masks: None,
         },
     )?;
 
@@ -96,6 +97,7 @@ fn find_webhook_services_exposed_by_nodeport_loadbalancer_inside_of_namespace(
             kind: k8s_openapi::api::core::v1::Service::KIND.to_string(),
             label_selector: None,
             field_selector: None,
+            field_masks: None,
         },
     )?;
 
