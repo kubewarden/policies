@@ -27,6 +27,7 @@ fn list_services(namespace: String) -> Result<Vec<Service>, String> {
         namespace,
         label_selector: None,
         field_selector: None,
+        field_masks: None,
     };
     match list_resources_by_namespace(&request) {
         Ok(response) => Ok(response.items),

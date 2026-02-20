@@ -112,6 +112,7 @@ fn propagate_labels(
         name: project_id.to_string(),
         namespace: Some(cluster_id.to_string()),
         disable_cache: true,
+        field_masks: None,
     };
     let project: Project = get_resource(&req)?;
 
