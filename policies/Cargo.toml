@@ -63,5 +63,5 @@ slog = "2.7"
 test_helpers = { path = "crates/test_helpers" }
 thiserror = "2.0.17"
 jmespath = "0.5"
-oci-spec = "0.8"
+oci-spec = "0.9"
 jsonpath_lib = "0.3.0"

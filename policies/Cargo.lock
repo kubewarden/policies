@@ -99,9 +99,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.101"
+version = "1.0.102"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
+checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 
 [[package]]
 name = "apparmor-psp"
@@ -185,9 +185,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.58"
+version = "4.5.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63be97961acde393029492ce0be7a1af7e323e6bae9511ebfac33751be5e6806"
+checksum = "2797f34da339ce31042b27d23607e051786132987f595b02ba4f6a6dffb7030a"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -195,9 +195,9 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.5.58"
+version = "4.5.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f13174bda5dfd69d7e947827e5af4b0f2f94a4a3ee92912fba07a66150f21e2"
+checksum = "24a241312cea5059b13574bb9b3861cabf758b879c15190b37b6d6fd63ab6876"
 dependencies = [
  "anstream",
  "anstyle",
@@ -802,7 +802,7 @@ dependencies = [
  "kubewarden-policy-sdk",
  "lazy_static",
  "mockall",
- "oci-spec",
+ "oci-spec 0.9.0",
  "rstest",
  "schemars",
  "serde",
@@ -925,7 +925,7 @@ dependencies = [
  "num",
  "num-derive",
  "num-traits",
- "oci-spec",
+ "oci-spec 0.8.4",
  "serde",
  "serde_json",
  "serde_yaml",
@@ -1117,6 +1117,23 @@ name = "oci-spec"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc3da52b83ce3258fbf29f66ac784b279453c2ac3c22c5805371b921ede0d308"
+dependencies = [
+ "const_format",
+ "derive_builder",
+ "getset",
+ "regex",
+ "serde",
+ "serde_json",
+ "strum",
+ "strum_macros",
+ "thiserror",
+]
+
+[[package]]
+name = "oci-spec"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8445a2631507cec628a15fdd6154b54a3ab3f20ed4fe9d73a3b8b7a4e1ba03a"
 dependencies = [
  "const_format",
  "derive_builder",
@@ -1983,7 +2000,7 @@ dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
- "oci-spec",
+ "oci-spec 0.9.0",
  "rstest",
  "serde",
  "serde_json",
@@ -2041,7 +2058,7 @@ dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
- "oci-spec",
+ "oci-spec 0.9.0",
  "rstest",
  "serde",
  "serde_json",
