@@ -7,7 +7,7 @@ toolchain go1.25.0
 require (
 	github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4
 	github.com/kubewarden/k8s-objects v1.29.0-kw1
-	github.com/kubewarden/policy-sdk-go v0.12.0
+	github.com/kubewarden/policy-sdk-go v0.13.1
 	github.com/wapc/wapc-guest-tinygo v0.3.3
 )
 
@@ -17,7 +17,7 @@ require (
 	github.com/go-openapi/strfmt v0.21.3 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/stretchr/testify v1.10.0 // indirect
+	github.com/stretchr/testify v1.11.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
