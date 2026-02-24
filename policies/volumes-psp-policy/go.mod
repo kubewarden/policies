@@ -1,8 +1,6 @@
 module github.com/kubewarden/go-policy-template
 
-go 1.22
-
-toolchain go1.26.0
+go 1.25
 
 require (
 	github.com/deckarep/golang-set/v2 v2.8.0
