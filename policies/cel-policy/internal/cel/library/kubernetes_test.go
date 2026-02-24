@@ -106,6 +106,102 @@ func TestKubernetes(t *testing.T) {
 			},
 			"bar",
 		},
+		{
+			"list with field masks",
+			"kw.k8s.apiVersion('v1').kind('Pod').fieldMask('metadata.name').fieldMask('metadata.namespace').list().items[0].metadata.name",
+			"list_resources_all",
+			kubernetes.ListAllResourcesRequest{
+				APIVersion:    "v1",
+				Kind:          "Pod",
+				LabelSelector: nil,
+				FieldSelector: nil,
+				FieldMasks:    []string{"metadata.name", "metadata.namespace"},
+			},
+			&corev1.PodList{
+				Items: []*corev1.Pod{
+					{
+						Kind: "Pod",
+						Metadata: &metav1.ObjectMeta{
+							Name:      "app1",
+							Namespace: "default",
+						},
+					},
+				},
+			},
+			"app1",
+		},
+		{
+			"list (namespace) with field masks",
+			"kw.k8s.apiVersion('v1').kind('Pod').namespace('default').fieldMask('spec.containers.image').fieldMask('metadata.name').list().items[0].metadata.name",
+			"list_resources_by_namespace",
+			kubernetes.ListResourcesByNamespaceRequest{
+				APIVersion:    "v1",
+				Kind:          "Pod",
+				Namespace:     "default",
+				LabelSelector: nil,
+				FieldSelector: nil,
+				FieldMasks:    []string{"spec.containers.image", "metadata.name"},
+			},
+			&corev1.PodList{
+				Items: []*corev1.Pod{
+					{
+						Kind: "Pod",
+						Metadata: &metav1.ObjectMeta{
+							Name:      "app1",
+							Namespace: "default",
+						},
+					},
+				},
+			},
+			"app1",
+		},
+		{
+			"get with field masks",
+			"kw.k8s.apiVersion('v1').kind('Pod').namespace('default').fieldMask('metadata.labels').get('app').metadata.labels.foo",
+			"get_resource",
+			kubernetes.GetResourceRequest{
+				APIVersion: "v1",
+				Kind:       "Pod",
+				Name:       "app",
+				Namespace:  stringPtr("default"),
+				FieldMasks: []string{"metadata.labels"},
+			},
+			&corev1.Pod{
+				Kind: "Pod",
+				Metadata: &metav1.ObjectMeta{
+					Labels: map[string]string{
+						"foo": "bar",
+					},
+					Name:      "app",
+					Namespace: "default",
+				},
+			},
+			"bar",
+		},
+		{
+			"list with field masks and selectors",
+			"kw.k8s.apiVersion('v1').kind('Pod').labelSelector('app=nginx').fieldSelector('status.phase=Running').fieldMask('metadata.name').fieldMask('status.phase').list().items[0].metadata.name",
+			"list_resources_all",
+			kubernetes.ListAllResourcesRequest{
+				APIVersion:    "v1",
+				Kind:          "Pod",
+				LabelSelector: stringPtr("app=nginx"),
+				FieldSelector: stringPtr("status.phase=Running"),
+				FieldMasks:    []string{"metadata.name", "status.phase"},
+			},
+			&corev1.PodList{
+				Items: []*corev1.Pod{
+					{
+						Kind: "Pod",
+						Metadata: &metav1.ObjectMeta{
+							Name:      "nginx-pod",
+							Namespace: "default",
+						},
+					},
+				},
+			},
+			"nginx-pod",
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
