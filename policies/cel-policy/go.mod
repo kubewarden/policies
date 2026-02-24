@@ -2,8 +2,6 @@ module github.com/kubewarden/cel-policy
 
 go 1.25.0
 
-toolchain go1.26.0
-
 require (
 	github.com/google/cel-go v0.27.0
 	github.com/hashicorp/go-multierror v1.1.1
