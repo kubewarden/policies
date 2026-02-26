@@ -1,7 +1,10 @@
 SOURCE_FILES := $(shell find . -type f -name '*.go')
 
+# Allow policies to customize build flags
+EXTRA_GCFLAGS ?=
+
 policy.wasm: $(SOURCE_FILES) go.mod go.sum
-	GOOS=wasip1 GOARCH=wasm go build -gcflags=all="-B" -ldflags="-w -s" -o policy.wasm
+	GOOS=wasip1 GOARCH=wasm go build -gcflags=all="-B $(EXTRA_GCFLAGS)" -ldflags="-w -s" -o policy.wasm
 	wasm-opt --enable-bulk-memory -Oz -o policy.wasm policy.wasm 
 
 
@@ -10,13 +13,21 @@ annotated-policy.wasm: policy.wasm metadata.yml
 
 
 .PHONY: lint
-lint:
+lint: golangci-lint
 	go vet ./...
-	golangci-lint run
+	$(GOLANGCI_LINT) run --verbose
+
+.PHONY: lint-fix
+lint-fix: golangci-lint
+	$(GOLANGCI_LINT) run --verbose --fix
+
+.PHONY: fmt
+fmt:
+	go fmt ./...
 
 .PHONY: test
 test:
-	go test -v
+	go test -v ./...
 
 .PHONY: clean
 clean:
@@ -26,3 +37,6 @@ clean:
 .PHONY: e2e-tests
 e2e-tests: annotated-policy.wasm
 	bats e2e.bats
+
+
+include ../go-common.mk

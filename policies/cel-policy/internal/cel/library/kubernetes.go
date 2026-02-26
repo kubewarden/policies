@@ -67,6 +67,28 @@ import (
 //
 //	kw.k8s.apiVersion('v1').kind('Pod').fieldSelector('status.phase=Running') // returns a Client for the 'Pod' resources in the core group with the field selector 'status.phase=Running'
 //
+// fieldMask
+//
+// Returns a client configured to include only specific fields in the response.
+// This function can be called multiple times to add multiple field paths to the mask.
+// Field masks reduce memory usage and serialization overhead by pruning the Kubernetes resource
+// to contain only the specified fields.
+//
+//	<Client>.fieldMask(<string>) <Client>
+//
+// Field mask behavior:
+//   - Dot Notation: Use '.' to traverse nested objects (e.g., 'metadata.name').
+//   - Implicit Arrays: Paths automatically traverse through arrays. A path like 'spec.containers.image'
+//     will include the 'image' field for every item in the 'spec.containers' list.
+//   - Allow-List: Fields not specified in the mask are discarded. If no field masks are set,
+//     the full resource is returned.
+//
+// Examples:
+//
+//	kw.k8s.apiVersion('v1').kind('Pod').fieldMask('metadata.name').fieldMask('metadata.namespace').list() // returns a list of 'Pod' resources with only metadata.name and metadata.namespace fields
+//	kw.k8s.apiVersion('v1').kind('Pod').namespace('default').fieldMask('spec.containers.image').list() // returns a list of 'Pod' resources in 'default' namespace with only spec.containers.image field
+//	kw.k8s.apiVersion('v1').kind('Pod').namespace('default').fieldMask('metadata.labels').get('nginx') // returns the 'nginx' Pod with only metadata.labels field
+//
 // list
 //
 // Returns a list of Kubernetes resources matching the client configuration.
@@ -139,6 +161,13 @@ func (*kubernetesLib) CompileOptions() []cel.EnvOption {
 				[]*cel.Type{k8sClientType, cel.StringType},
 				k8sClientType,
 				cel.BinaryBinding(k8sClientFieldSelector),
+			),
+		),
+		cel.Function("fieldMask",
+			cel.MemberOverload("kw_k8s_field_mask",
+				[]*cel.Type{k8sClientType, cel.StringType},
+				k8sClientType,
+				cel.BinaryBinding(k8sClientFieldMask),
 			),
 		),
 		cel.Function("list",
@@ -233,6 +262,22 @@ func k8sClientFieldSelector(arg1, arg2 ref.Val) ref.Val {
 	return client
 }
 
+func k8sClientFieldMask(arg1, arg2 ref.Val) ref.Val {
+	client, ok := arg1.(k8sClient)
+	if !ok {
+		return types.MaybeNoSuchOverloadErr(arg1)
+	}
+
+	fieldMask, ok := arg2.Value().(string)
+	if !ok {
+		return types.MaybeNoSuchOverloadErr(arg2)
+	}
+
+	client.fieldMasks = append(client.fieldMasks, fieldMask)
+
+	return client
+}
+
 func k8sClientList(arg ref.Val) ref.Val {
 	client, ok := arg.(k8sClient)
 	if !ok {
@@ -276,6 +321,7 @@ type k8sClient struct {
 	namespace     *string
 	labelSelector *string
 	fieldSelector *string
+	fieldMasks    []string
 }
 
 // list returns a list of Kubernetes resources.
@@ -289,6 +335,7 @@ func (c *k8sClient) list() ref.Val {
 			Namespace:     *c.namespace,
 			LabelSelector: c.labelSelector,
 			FieldSelector: c.fieldSelector,
+			FieldMasks:    c.fieldMasks,
 		}
 
 		responseBytes, err = kubernetes.ListResourcesByNamespace(&host, request)
@@ -298,6 +345,7 @@ func (c *k8sClient) list() ref.Val {
 			Kind:          c.kind,
 			LabelSelector: c.labelSelector,
 			FieldSelector: c.fieldSelector,
+			FieldMasks:    c.fieldMasks,
 		}
 
 		responseBytes, err = kubernetes.ListResources(&host, request)
@@ -322,6 +370,7 @@ func (c *k8sClient) get(name string) ref.Val {
 		Kind:       c.kind,
 		Name:       name,
 		Namespace:  c.namespace,
+		FieldMasks: c.fieldMasks,
 	}
 
 	responseBytes, err := kubernetes.GetResource(&host, request)
