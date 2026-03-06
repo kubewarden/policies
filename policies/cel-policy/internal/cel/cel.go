@@ -9,7 +9,7 @@ import (
 	"github.com/google/cel-go/common/types"
 	"github.com/google/cel-go/common/types/ref"
 	"github.com/google/cel-go/ext"
-	"github.com/kubewarden/cel-policy/internal/cel/library"
+	"github.com/kubewarden/policies/policies/cel-policy/internal/cel/library"
 	k8sLibrary "k8s.io/apiserver/pkg/cel/library"
 )
 

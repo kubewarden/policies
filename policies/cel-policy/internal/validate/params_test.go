@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kubewarden/cel-policy/internal/settings"
 	corev1 "github.com/kubewarden/k8s-objects/api/core/v1"
 	metav1 "github.com/kubewarden/k8s-objects/apimachinery/pkg/apis/meta/v1"
+	"github.com/kubewarden/policies/policies/cel-policy/internal/settings"
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/kubernetes"
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 	kubewardenProtocol "github.com/kubewarden/policy-sdk-go/protocol"

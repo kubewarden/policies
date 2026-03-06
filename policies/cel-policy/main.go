@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/kubewarden/cel-policy/internal/settings"
-	"github.com/kubewarden/cel-policy/internal/validate"
+	"github.com/kubewarden/policies/policies/cel-policy/internal/settings"
+	"github.com/kubewarden/policies/policies/cel-policy/internal/validate"
 )
 
 const expectedArgsCount = 2

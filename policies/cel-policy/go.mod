@@ -1,4 +1,4 @@
-module github.com/kubewarden/cel-policy
+module github.com/kubewarden/policies/policies/cel-policy
 
 go 1.25.0
 

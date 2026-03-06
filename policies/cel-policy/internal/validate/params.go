@@ -6,8 +6,8 @@ import (
 
 	"github.com/google/cel-go/common/types"
 	"github.com/google/cel-go/common/types/ref"
-	"github.com/kubewarden/cel-policy/internal/cel"
-	"github.com/kubewarden/cel-policy/internal/settings"
+	"github.com/kubewarden/policies/policies/cel-policy/internal/cel"
+	"github.com/kubewarden/policies/policies/cel-policy/internal/settings"
 	kubewarden "github.com/kubewarden/policy-sdk-go"
 	"github.com/kubewarden/policy-sdk-go/protocol"
 	"k8s.io/kubernetes/pkg/apis/admissionregistration"
