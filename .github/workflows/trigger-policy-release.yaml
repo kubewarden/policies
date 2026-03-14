@@ -66,7 +66,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
 
-      - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+      - uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
         id: generate-token
         with:
           app-id: ${{ secrets.APP_ID }}
@@ -110,7 +110,7 @@ jobs:
 
       - name: Create draft release and calculate version
         id: create-release
-        uses: release-drafter/release-drafter@6db134d15f3909ccc9eefd369f02bd1e9cffdf97 # v6.2.0
+        uses: release-drafter/release-drafter@3a7fb5c85b80b1dda66e1ccb94009adbbd32fce3 # v7.0.0
         with:
           config-name: "release-drafter-${{ steps.policy-info.outputs.policy-basename }}.yml"
           disable-autolabeler: true
