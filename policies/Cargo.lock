@@ -914,11 +914,10 @@ dependencies = [
 
 [[package]]
 name = "kubewarden-policy-sdk"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd52ce9fe2a1edafc6855e89a314392bb5f1ded9f27a78878bc7c173edb16499"
+checksum = "c2ae4e00b1dfe10c84e2246b2402da8b3709fee3bfa1bafbd7fa86b70a583871"
 dependencies = [
- "anyhow",
  "cfg-if",
  "chrono",
  "hex",
@@ -931,6 +930,7 @@ dependencies = [
  "serde_json",
  "serde_yaml",
  "slog",
+ "thiserror",
  "url",
  "wapc-guest",
 ]
