@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use std::str::FromStr;
 
 use crate::{
-    settings::{ImageRef, Settings},
+    settings::{ImageMatcher, ImageRef, RegistryMatcher, Settings, TagMatcher},
     validation_result::{PodRejectionReasons, PodSpecValidationResult},
 };
 
@@ -86,6 +86,13 @@ fn discover_images(pod_spec: &apicore::PodSpec) -> HashSet<&str> {
         .collect()
 }
 
+fn registry_matches_any(registry: &str, matchers: &HashSet<RegistryMatcher>) -> bool {
+    matchers.iter().any(|m| match m {
+        RegistryMatcher::Exact(exact) => exact == registry,
+        RegistryMatcher::Pattern { pattern, .. } => pattern.matches(registry),
+    })
+}
+
 fn is_allowed_registry(registry: &str, settings: &Settings) -> bool {
     // Keep in mind the settings are validate to prevent both allow and reject
     // lists to be populated at the same time
@@ -96,15 +103,24 @@ fn is_allowed_registry(registry: &str, settings: &Settings) -> bool {
     }
 
     // if the registry is explicitly rejected, it is not allowed
-    if !settings.registries.reject.is_empty() && settings.registries.reject.contains(registry) {
+    if !settings.registries.reject.is_empty()
+        && registry_matches_any(registry, &settings.registries.reject)
+    {
         return false;
     }
 
     if !settings.registries.allow.is_empty() {
-        return settings.registries.allow.contains(registry);
+        return registry_matches_any(registry, &settings.registries.allow);
     }
 
     true
+}
+
+fn tag_matches_any(tag: &str, matchers: &HashSet<TagMatcher>) -> bool {
+    matchers.iter().any(|m| match m {
+        TagMatcher::Exact(exact) => exact == tag,
+        TagMatcher::Pattern { pattern, .. } => pattern.matches(tag),
+    })
 }
 
 fn is_allowed_tag(tag: &str, settings: &Settings) -> bool {
@@ -112,7 +128,58 @@ fn is_allowed_tag(tag: &str, settings: &Settings) -> bool {
         return true;
     }
 
-    !settings.tags.reject.contains(tag)
+    !tag_matches_any(tag, &settings.tags.reject)
+}
+
+fn image_matches_any(image_ref: &ImageRef, matchers: &HashSet<ImageMatcher>) -> bool {
+    matchers.iter().any(|m| match m {
+        ImageMatcher::Exact(exact_ref) => {
+            // Exact match
+            if exact_ref == image_ref {
+                return true;
+            }
+
+            // Loose match: repository only (without registry, tag, or digest)
+            let contained_in_set_with_same_repo = Reference::from_str(image_ref.repository())
+                .ok()
+                .map(|r| &ImageRef::new(r) == exact_ref)
+                .unwrap_or(false);
+            if contained_in_set_with_same_repo {
+                return true;
+            }
+
+            // Loose match: registry + repository (without tag or digest)
+            let registry_repo = format!("{}/{}", image_ref.registry(), image_ref.repository());
+            Reference::from_str(&registry_repo)
+                .ok()
+                .map(|r| &ImageRef::new(r) == exact_ref)
+                .unwrap_or(false)
+        }
+        ImageMatcher::Pattern { pattern, raw } => {
+            let whole = image_ref.whole();
+
+            // Match against fully normalized image reference
+            if pattern.matches(&whole) {
+                return true;
+            }
+
+            // If pattern has no tag/digest component, also match against registry/repository
+            let has_tag_or_digest = raw.contains(':') || raw.contains('@');
+            if !has_tag_or_digest {
+                let registry_repo = format!("{}/{}", image_ref.registry(), image_ref.repository());
+                if pattern.matches(&registry_repo) {
+                    return true;
+                }
+
+                // Also try matching against just the repository for Docker Hub shorthand
+                if pattern.matches(image_ref.repository()) {
+                    return true;
+                }
+            }
+
+            false
+        }
+    })
 }
 
 fn is_allowed_image(image_ref: &ImageRef, settings: &Settings) -> bool {
@@ -128,40 +195,20 @@ fn is_allowed_image(image_ref: &ImageRef, settings: &Settings) -> bool {
     // - The image registry+repository, without tag nor digest:
     //   allow "quay.io/coreos/etcd" matches "quay.io/coreos/etcd:1.21", "quay.io/coreos/etcd:latest"
     //   allow "nginx" matches "nginx:1.21", "nginx:latest", "docker.io/library:nginx:1.21"
+    //
+    // - A wildcard pattern matching the normalized image reference
 
     // If no configuration has been given for images, we allow all
     if settings.images.allow.is_empty() && settings.images.reject.is_empty() {
         return true;
     }
 
-    // helper closure for matching against repository or registry+repository
-    let matches_loose = |set: &std::collections::HashSet<ImageRef>| {
-        let contained_in_set_with_same_repo = Reference::from_str(image_ref.repository())
-            .ok()
-            .map(|r| set.contains(&ImageRef::new(r)))
-            .unwrap_or(false);
-
-        let contained_in_set_with_registry_plus_repo = {
-            let registry_repo = format!("{}/{}", image_ref.registry(), image_ref.repository());
-            Reference::from_str(&registry_repo)
-                .ok()
-                .map(|r| set.contains(&ImageRef::new(r)))
-                .unwrap_or(false)
-        };
-
-        contained_in_set_with_same_repo || contained_in_set_with_registry_plus_repo
-    };
-
-    if !settings.images.reject.is_empty() {
-        let reject = &settings.images.reject;
-        if reject.contains(image_ref) || matches_loose(reject) {
-            return false;
-        }
+    if !settings.images.reject.is_empty() && image_matches_any(image_ref, &settings.images.reject) {
+        return false;
     }
 
     if !settings.images.allow.is_empty() {
-        let allow = &settings.images.allow;
-        if allow.contains(image_ref) || matches_loose(allow) {
+        if image_matches_any(image_ref, &settings.images.allow) {
             return true;
         }
         return false;
@@ -176,6 +223,40 @@ mod tests {
     use rstest::*;
 
     use crate::settings::{Images, Registries, Tags};
+    use wildmatch::WildMatch;
+
+    fn exact_registry(s: &str) -> RegistryMatcher {
+        RegistryMatcher::Exact(s.to_string())
+    }
+
+    fn pattern_registry(s: &str) -> RegistryMatcher {
+        RegistryMatcher::Pattern {
+            pattern: WildMatch::new(s),
+            raw: s.to_string(),
+        }
+    }
+
+    fn exact_tag(s: &str) -> TagMatcher {
+        TagMatcher::Exact(s.to_string())
+    }
+
+    fn pattern_tag(s: &str) -> TagMatcher {
+        TagMatcher::Pattern {
+            pattern: WildMatch::new(s),
+            raw: s.to_string(),
+        }
+    }
+
+    fn exact_image(s: &str) -> ImageMatcher {
+        ImageMatcher::Exact(ImageRef::new(Reference::from_str(s).unwrap()))
+    }
+
+    fn pattern_image(s: &str) -> ImageMatcher {
+        ImageMatcher::Pattern {
+            pattern: WildMatch::new(s),
+            raw: s.to_string(),
+        }
+    }
 
     #[rstest]
     #[case::empty_pod_spec(
@@ -266,31 +347,38 @@ mod tests {
     #[rstest]
     #[case::block_implicit_latest(
         vec!["busybox"],
-        vec!["latest"],
+        vec![exact_tag("latest")],
         Err(vec!["latest"]),
     )]
     #[case::tag_part_of_reject_list(
         vec!["busybox:latest"],
-        vec!["latest"],
+        vec![exact_tag("latest")],
         Err(vec!["latest"]),
     )]
     #[case::tag_not_part_of_reject_list(
         vec!["busybox:1.0.0"],
-        vec!["latest"],
+        vec![exact_tag("latest")],
+        Ok(()),
+    )]
+    #[case::tag_pattern_reject_rc(
+        vec!["busybox:1.0.0-rc1"],
+        vec![pattern_tag("*-rc*")],
+        Err(vec!["1.0.0-rc1"]),
+    )]
+    #[case::tag_pattern_no_match(
+        vec!["busybox:1.0.0"],
+        vec![pattern_tag("*-rc*")],
         Ok(()),
     )]
     fn validation_with_rejected_tags_constraint(
         #[case] images: Vec<&str>,
-        #[case] settings_tags_rejected: Vec<&str>,
+        #[case] settings_tags_rejected: Vec<TagMatcher>,
         #[case] expected_result: Result<(), Vec<&str>>,
     ) {
         let images: HashSet<&str> = images.into_iter().collect();
         let settings = Settings {
             tags: Tags {
-                reject: settings_tags_rejected
-                    .into_iter()
-                    .map(|t| t.to_string())
-                    .collect(),
+                reject: settings_tags_rejected.into_iter().collect(),
             },
             ..Settings::default()
         };
@@ -317,26 +405,33 @@ mod tests {
     #[rstest]
     #[case::image_from_registry_part_of_the_reject_list(
         vec!["busybox:1.0.0", "ghcr.io/kubewarden/policy-server:1.0.0"],
-        vec!["docker.io", "ghcr.io"],
+        vec![exact_registry("docker.io"), exact_registry("ghcr.io")],
         Err(vec!["docker.io", "ghcr.io"]),
     )]
     #[case::image_from_registry_not_part_of_the_reject_list(
         vec!["ghcr.io/kubewarden/policy-server:1.0.0"],
-        vec!["docker.io"],
+        vec![exact_registry("docker.io")],
+        Ok(()),
+    )]
+    #[case::registry_pattern_reject(
+        vec!["ghcr.io/kubewarden/policy-server:1.0.0"],
+        vec![pattern_registry("ghcr.*")],
+        Err(vec!["ghcr.io"]),
+    )]
+    #[case::registry_pattern_no_match(
+        vec!["ghcr.io/kubewarden/policy-server:1.0.0"],
+        vec![pattern_registry("*.example.com")],
         Ok(()),
     )]
     fn validation_with_registry_reject_constraint(
         #[case] images: Vec<&str>,
-        #[case] settings_registries_to_reject: Vec<&str>,
+        #[case] settings_registries_to_reject: Vec<RegistryMatcher>,
         #[case] expected_result: Result<(), Vec<&str>>,
     ) {
         let images: HashSet<&str> = images.into_iter().collect();
         let settings = Settings {
             registries: Registries {
-                reject: settings_registries_to_reject
-                    .into_iter()
-                    .map(|t| t.to_string())
-                    .collect(),
+                reject: settings_registries_to_reject.into_iter().collect(),
                 ..Registries::default()
             },
             ..Settings::default()
@@ -365,26 +460,33 @@ mod tests {
     #[rstest]
     #[case::image_from_registry_not_part_of_the_allow_list(
         vec!["busybox:1.0.0", "docker.io/alpine:1.0.0", "ghcr.io/kubewarden/policy-server:1.0.0"],
-        vec!["ghcr.io"],
+        vec![exact_registry("ghcr.io")],
         Err(vec!["docker.io"]),
     )]
     #[case::image_from_registry_part_of_the_allow_list(
         vec!["busybox:1.0.0", "docker.io/alpine:1.0.0", "ghcr.io/kubewarden/policy-server:1.0.0"],
-        vec!["ghcr.io", "docker.io"],
+        vec![exact_registry("ghcr.io"), exact_registry("docker.io")],
         Ok(()),
+    )]
+    #[case::registry_pattern_allow(
+        vec!["busybox:1.0.0", "docker.io/alpine:1.0.0", "ghcr.io/kubewarden/policy-server:1.0.0"],
+        vec![pattern_registry("*.io")],
+        Ok(()),
+    )]
+    #[case::registry_pattern_allow_partial(
+        vec!["busybox:1.0.0", "registry.my-corp.com/app:1.0.0"],
+        vec![pattern_registry("*.my-corp.com")],
+        Err(vec!["docker.io"]),
     )]
     fn validation_with_registry_allow_constraint(
         #[case] images: Vec<&str>,
-        #[case] settings_registries_to_allow: Vec<&str>,
+        #[case] settings_registries_to_allow: Vec<RegistryMatcher>,
         #[case] expected_result: Result<(), Vec<&str>>,
     ) {
         let images: HashSet<&str> = images.into_iter().collect();
         let settings = Settings {
             registries: Registries {
-                allow: settings_registries_to_allow
-                    .into_iter()
-                    .map(|t| t.to_string())
-                    .collect(),
+                allow: settings_registries_to_allow.into_iter().collect(),
                 ..Registries::default()
             },
             ..Settings::default()
@@ -420,9 +522,9 @@ mod tests {
             "quay.io/coreos/etcd:v3.4.12",
         ],
         vec![
-            "ghcr.io/kubewarden/policy-server:1.0.0",
-            "quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079",
-            "quay.io/coreos/etcd:v3.4.12@sha256:7ed2739c96eb16de3d7169e2a0aa4ccf3a1f44af24f2bb6cad826935a51bcb3d",
+            exact_image("ghcr.io/kubewarden/policy-server:1.0.0"),
+            exact_image("quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079"),
+            exact_image("quay.io/coreos/etcd:v3.4.12@sha256:7ed2739c96eb16de3d7169e2a0aa4ccf3a1f44af24f2bb6cad826935a51bcb3d"),
         ],
         Err(
             vec![
@@ -437,9 +539,9 @@ mod tests {
             "quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079",
         ],
         vec![
-            "ghcr.io/kubewarden/policy-server:1.0.0",
-            "quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079",
-            "quay.io/coreos/etcd:v3.4.12@sha256:7ed2739c96eb16de3d7169e2a0aa4ccf3a1f44af24f2bb6cad826935a51bcb3d",
+            exact_image("ghcr.io/kubewarden/policy-server:1.0.0"),
+            exact_image("quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079"),
+            exact_image("quay.io/coreos/etcd:v3.4.12@sha256:7ed2739c96eb16de3d7169e2a0aa4ccf3a1f44af24f2bb6cad826935a51bcb3d"),
         ],
         Ok(()),
     )]
@@ -448,22 +550,22 @@ mod tests {
             "nginx:1.21",
             "docker.io/library/nginx:1.21",
         ],
-        vec!["nginx"],
+        vec![exact_image("nginx")],
         Ok(()),
     )]
     #[case::image_with_any_tag_part_of_the_allow_list(
         vec!["quay.io/coreos/etcd:v3.4.12"],
-        vec!["quay.io/coreos/etcd"],
+        vec![exact_image("quay.io/coreos/etcd")],
         Ok(()),
     )]
     #[case::image_with_implicit_tag_latest_part_of_the_allow_list(
         vec!["nginx", "quay.io/coreos/etcd"],
-        vec!["nginx", "quay.io/coreos/etcd"],
+        vec![exact_image("nginx"), exact_image("quay.io/coreos/etcd")],
         Ok(()),
     )]
     #[case::image_with_implicit_tag_latest_not_part_of_the_allow_list(
         vec!["coreos/etcd", "coreos/etcd:v3.4.12"],
-        vec!["quay.io/coreos/etcd"],
+        vec![exact_image("quay.io/coreos/etcd")],
         Err(
             vec![
                 "coreos/etcd",
@@ -472,16 +574,13 @@ mod tests {
     )]
     fn validation_with_image_allow_constraint(
         #[case] images: Vec<&str>,
-        #[case] settings_images_to_allow: Vec<&str>,
+        #[case] settings_images_to_allow: Vec<ImageMatcher>,
         #[case] expected_result: Result<(), Vec<&str>>,
     ) {
         let images: HashSet<&str> = images.into_iter().collect();
         let settings = Settings {
             images: Images {
-                allow: settings_images_to_allow
-                    .into_iter()
-                    .map(|image| Reference::from_str(image).unwrap().into())
-                    .collect(),
+                allow: settings_images_to_allow.into_iter().collect(),
                 ..Images::default()
             },
             ..Settings::default()
@@ -516,9 +615,9 @@ mod tests {
             "quay.io/coreos/etcd:v3.4.12",
         ],
         vec![
-            "ghcr.io/kubewarden/policy-server:1.0.0",
-            "quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079",
-            "quay.io/coreos/etcd:v3.4.12@sha256:7ed2739c96eb16de3d7169e2a0aa4ccf3a1f44af24f2bb6cad826935a51bcb3d",
+            exact_image("ghcr.io/kubewarden/policy-server:1.0.0"),
+            exact_image("quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079"),
+            exact_image("quay.io/coreos/etcd:v3.4.12@sha256:7ed2739c96eb16de3d7169e2a0aa4ccf3a1f44af24f2bb6cad826935a51bcb3d"),
         ],
         Err(
           vec![
@@ -532,9 +631,9 @@ mod tests {
             "quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079",
         ],
         vec![
-            "ghcr.io/kubewarden/policy-server:1.0.0",
-            "quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079",
-            "quay.io/coreos/etcd",
+            exact_image("ghcr.io/kubewarden/policy-server:1.0.0"),
+            exact_image("quay.io/bitnami/redis:6.0@sha256:82dfd9ac433eacb5f89e5bf2601659bbc78893c1a9e3e830c5ef4eb489fde079"),
+            exact_image("quay.io/coreos/etcd"),
         ],
         Err(
           vec![
@@ -547,7 +646,7 @@ mod tests {
             "nginx:1.21",
             "docker.io/library/nginx:1.21",
         ],
-        vec!["nginx"],
+        vec![exact_image("nginx")],
         Err(
           vec![
             "nginx:1.21",
@@ -555,18 +654,18 @@ mod tests {
         ]),
     )]
     #[case::image_from_dockerio_no_match_part_of_the_reject_list(
-        vec!["quay.io/coreos/etcd"], 
-        vec!["etcd"], // this is actually docker.io/library/etcd
+        vec!["quay.io/coreos/etcd"],
+        vec![exact_image("etcd")], // this is actually docker.io/library/etcd
         Ok(()),
     )]
     #[case::image_with_any_tag_part_of_the_reject_list(
         vec!["quay.io/coreos/etcd:v3.4.12"],
-        vec!["quay.io/coreos/etcd"],
+        vec![exact_image("quay.io/coreos/etcd")],
         Err(vec!["quay.io/coreos/etcd:v3.4.12"]),
     )]
     #[case::image_with_implicit_tag_latest_part_of_the_reject_list(
         vec!["nginx", "quay.io/coreos/etcd"],
-        vec!["nginx", "quay.io/coreos/etcd"],
+        vec![exact_image("nginx"), exact_image("quay.io/coreos/etcd")],
         Err(
           vec![
             "nginx",
@@ -575,21 +674,18 @@ mod tests {
     )]
     #[case::image_with_implicit_tag_latest_not_part_of_the_reject_list(
         vec!["coreos/etcd", "coreos/etcd:v3.4.12"], // these actually are docker.io/library/coreos/etcd
-        vec!["quay.io/coreos/etcd"],
+        vec![exact_image("quay.io/coreos/etcd")],
         Ok(()),
     )]
     fn validation_with_image_reject_constraint(
         #[case] images: Vec<&str>,
-        #[case] settings_images_to_reject: Vec<&str>,
+        #[case] settings_images_to_reject: Vec<ImageMatcher>,
         #[case] expected_result: Result<(), Vec<&str>>,
     ) {
         let images: HashSet<&str> = images.into_iter().collect();
         let settings = Settings {
             images: Images {
-                reject: settings_images_to_reject
-                    .into_iter()
-                    .map(|image| Reference::from_str(image).unwrap().into())
-                    .collect(),
+                reject: settings_images_to_reject.into_iter().collect(),
                 ..Images::default()
             },
             ..Settings::default()
@@ -623,11 +719,11 @@ mod tests {
         vec!["busybox"],
         Settings{
             registries: Registries {
-                allow: vec!["docker.io".to_string()].into_iter().collect(),
+                allow: vec![exact_registry("docker.io")].into_iter().collect(),
                 ..Registries::default()
             },
             tags: Tags {
-                reject: vec!["latest".to_string()].into_iter().collect(),
+                reject: vec![exact_tag("latest")].into_iter().collect(),
             },
             ..Settings::default()
         },
@@ -640,11 +736,11 @@ mod tests {
         vec!["busybox:1.0.0"],
         Settings{
             registries: Registries {
-                allow: vec!["docker.io".to_string()].into_iter().collect(),
+                allow: vec![exact_registry("docker.io")].into_iter().collect(),
                 ..Registries::default()
             },
             images: Images {
-                reject: vec![Reference::from_str("busybox:1.0.0").unwrap().into()].into_iter().collect(),
+                reject: vec![exact_image("busybox:1.0.0")].into_iter().collect(),
                 ..Images::default()
             },
             ..Settings::default()
@@ -658,11 +754,11 @@ mod tests {
         vec!["busybox:2.0.0"],
         Settings{
             registries: Registries {
-                allow: vec!["docker.io".to_string()].into_iter().collect(),
+                allow: vec![exact_registry("docker.io")].into_iter().collect(),
                 ..Registries::default()
             },
             images: Images {
-                reject: vec![Reference::from_str("busybox:1.0.0").unwrap().into()].into_iter().collect(),
+                reject: vec![exact_image("busybox:1.0.0")].into_iter().collect(),
                 ..Images::default()
             },
             ..Settings::default()
@@ -675,6 +771,211 @@ mod tests {
         #[case] expected_result: PodSpecValidationResult,
     ) {
         let images: HashSet<&str> = images.into_iter().collect();
+        let result = validate_images(&images, &settings);
+        assert_eq!(
+            result, expected_result,
+            "got: {result:?} instead of {expected_result:?}"
+        );
+    }
+
+    // --- Wildcard/glob pattern tests ---
+
+    #[rstest]
+    #[case::image_wildcard_allow_bitnami(
+        vec!["docker.io/bitnami/redis:6.0"],
+        vec![pattern_image("docker.io/bitnami/*")],
+        Ok(()),
+    )]
+    #[case::image_wildcard_allow_no_match(
+        vec!["quay.io/coreos/etcd:v3.4.12"],
+        vec![pattern_image("docker.io/bitnami/*")],
+        Err(vec!["quay.io/coreos/etcd:v3.4.12"]),
+    )]
+    #[case::image_wildcard_with_tag_pattern(
+        vec!["ghcr.io/my-org/app:v1.2.3"],
+        vec![pattern_image("ghcr.io/my-org/*:v1.*")],
+        Ok(()),
+    )]
+    #[case::image_wildcard_with_tag_pattern_no_match(
+        vec!["ghcr.io/my-org/app:v2.0"],
+        vec![pattern_image("ghcr.io/my-org/*:v1.*")],
+        Err(vec!["ghcr.io/my-org/app:v2.0"]),
+    )]
+    #[case::image_wildcard_docker_library(
+        vec!["busybox:1.0.0"],
+        vec![pattern_image("docker.io/library/*")],
+        Ok(()),
+    )]
+    #[case::image_wildcard_mixed_with_exact(
+        vec!["docker.io/bitnami/redis:6.0", "ghcr.io/kubewarden/policy-server:1.0.0"],
+        vec![
+            pattern_image("docker.io/bitnami/*"),
+            exact_image("ghcr.io/kubewarden/policy-server:1.0.0"),
+        ],
+        Ok(()),
+    )]
+    #[case::image_wildcard_mixed_partial_match(
+        vec!["docker.io/bitnami/redis:6.0", "quay.io/coreos/etcd:v3.4.12"],
+        vec![pattern_image("docker.io/bitnami/*")],
+        Err(vec!["quay.io/coreos/etcd:v3.4.12"]),
+    )]
+    fn validation_with_image_allow_wildcard(
+        #[case] images: Vec<&str>,
+        #[case] settings_images_to_allow: Vec<ImageMatcher>,
+        #[case] expected_result: Result<(), Vec<&str>>,
+    ) {
+        let images: HashSet<&str> = images.into_iter().collect();
+        let settings = Settings {
+            images: Images {
+                allow: settings_images_to_allow.into_iter().collect(),
+                ..Images::default()
+            },
+            ..Settings::default()
+        };
+        let expected_result = if let Err(images_not_allowed) = expected_result {
+            let images_not_allowed = images_not_allowed
+                .into_iter()
+                .map(|image| image.to_string())
+                .collect();
+            PodSpecValidationResult::NotAllowed(PodRejectionReasons {
+                images_not_allowed,
+                ..PodRejectionReasons::default()
+            })
+        } else {
+            PodSpecValidationResult::Allowed
+        };
+
+        let result = validate_images(&images, &settings);
+        assert_eq!(
+            result, expected_result,
+            r#"got: {result:?} instead of {expected_result:?}"#
+        );
+    }
+
+    #[rstest]
+    #[case::image_wildcard_reject(
+        vec!["docker.io/bitnami/redis:6.0"],
+        vec![pattern_image("docker.io/bitnami/*")],
+        Err(vec!["docker.io/bitnami/redis:6.0"]),
+    )]
+    #[case::image_wildcard_reject_no_match(
+        vec!["ghcr.io/kubewarden/policy-server:1.0.0"],
+        vec![pattern_image("docker.io/bitnami/*")],
+        Ok(()),
+    )]
+    fn validation_with_image_reject_wildcard(
+        #[case] images: Vec<&str>,
+        #[case] settings_images_to_reject: Vec<ImageMatcher>,
+        #[case] expected_result: Result<(), Vec<&str>>,
+    ) {
+        let images: HashSet<&str> = images.into_iter().collect();
+        let settings = Settings {
+            images: Images {
+                reject: settings_images_to_reject.into_iter().collect(),
+                ..Images::default()
+            },
+            ..Settings::default()
+        };
+        let expected_result = if let Err(images_not_allowed) = expected_result {
+            let images_not_allowed = images_not_allowed
+                .into_iter()
+                .map(|image| image.to_string())
+                .collect();
+            PodSpecValidationResult::NotAllowed(PodRejectionReasons {
+                images_not_allowed,
+                ..PodRejectionReasons::default()
+            })
+        } else {
+            PodSpecValidationResult::Allowed
+        };
+
+        let result = validate_images(&images, &settings);
+        assert_eq!(
+            result, expected_result,
+            r#"got: {result:?} instead of {expected_result:?}"#
+        );
+    }
+
+    #[rstest]
+    #[case::registry_wildcard_allow(
+        vec!["registry.my-corp.com/app:1.0.0"],
+        vec![pattern_registry("*.my-corp.com")],
+        Ok(()),
+    )]
+    #[case::registry_wildcard_allow_no_match(
+        vec!["docker.io/library/busybox:1.0.0"],
+        vec![pattern_registry("*.my-corp.com")],
+        Err(vec!["docker.io"]),
+    )]
+    fn validation_with_registry_wildcard(
+        #[case] images: Vec<&str>,
+        #[case] settings_registries_to_allow: Vec<RegistryMatcher>,
+        #[case] expected_result: Result<(), Vec<&str>>,
+    ) {
+        let images: HashSet<&str> = images.into_iter().collect();
+        let settings = Settings {
+            registries: Registries {
+                allow: settings_registries_to_allow.into_iter().collect(),
+                ..Registries::default()
+            },
+            ..Settings::default()
+        };
+        let expected_result = if let Err(registries_not_allowed) = expected_result {
+            let registries_not_allowed = registries_not_allowed
+                .into_iter()
+                .map(|r| r.to_string())
+                .collect();
+            PodSpecValidationResult::NotAllowed(PodRejectionReasons {
+                registries_not_allowed,
+                ..PodRejectionReasons::default()
+            })
+        } else {
+            PodSpecValidationResult::Allowed
+        };
+
+        let result = validate_images(&images, &settings);
+        assert_eq!(
+            result, expected_result,
+            "got: {result:?} instead of {expected_result:?}"
+        );
+    }
+
+    #[rstest]
+    #[case::tag_wildcard_reject(
+        vec!["busybox:1.0.0-rc1"],
+        vec![pattern_tag("*-rc*")],
+        Err(vec!["1.0.0-rc1"]),
+    )]
+    #[case::tag_wildcard_no_match(
+        vec!["busybox:1.0.0"],
+        vec![pattern_tag("*-rc*")],
+        Ok(()),
+    )]
+    fn validation_with_tag_wildcard(
+        #[case] images: Vec<&str>,
+        #[case] settings_tags_to_reject: Vec<TagMatcher>,
+        #[case] expected_result: Result<(), Vec<&str>>,
+    ) {
+        let images: HashSet<&str> = images.into_iter().collect();
+        let settings = Settings {
+            tags: Tags {
+                reject: settings_tags_to_reject.into_iter().collect(),
+            },
+            ..Settings::default()
+        };
+        let expected_result = if let Err(tags_not_allowed) = expected_result {
+            let tags_not_allowed = tags_not_allowed
+                .into_iter()
+                .map(|t| t.to_string())
+                .collect();
+            PodSpecValidationResult::NotAllowed(PodRejectionReasons {
+                tags_not_allowed,
+                ..PodRejectionReasons::default()
+            })
+        } else {
+            PodSpecValidationResult::Allowed
+        };
+
         let result = validate_images(&images, &settings);
         assert_eq!(
             result, expected_result,

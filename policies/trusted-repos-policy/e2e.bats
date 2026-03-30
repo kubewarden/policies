@@ -68,6 +68,46 @@
   [ $(expr "$output" : '.*"allowed":true.*') -ne 0 ]
 }
 
+@test "Pod: accept image allowed by wildcard pattern" {
+  run kwctl run \
+    --request-path test_data/pod_creation.json \
+    --settings-json '{"images": {"allow": ["docker.io/library/*"]}}'\
+    annotated-policy.wasm
+
+  # this prints the output when one the checks below fails
+  echo "output = ${output}"
+
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*"allowed":true.*') -ne 0 ]
+}
+
+@test "Pod: reject image not matching wildcard pattern" {
+  run kwctl run \
+    --request-path test_data/pod_creation.json \
+    --settings-json '{"images": {"allow": ["ghcr.io/*"]}}'\
+    annotated-policy.wasm
+
+  # this prints the output when one the checks below fails
+  echo "output = ${output}"
+
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*"allowed":false.*') -ne 0 ]
+  [ $(expr "$output" : '.*"message":".*images not allowed.*') -ne 0 ]
+}
+
+@test "Pod: accept image from registry matching wildcard pattern" {
+  run kwctl run \
+    --request-path test_data/pod_creation.json \
+    --settings-json '{"registries": {"allow": ["*.io"]}}'\
+    annotated-policy.wasm
+
+  # this prints the output when one the checks below fails
+  echo "output = ${output}"
+
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*"allowed":true.*') -ne 0 ]
+}
+
 @test "Job: settings not valid because of tag " {
   run kwctl run \
     --request-path test_data/job_creation.json \

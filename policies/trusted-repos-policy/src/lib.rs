@@ -94,7 +94,7 @@ fn validate_resource<T: ValidatingResource + DeserializeOwned>(
 mod tests {
     use super::*;
 
-    use crate::settings::Registries;
+    use crate::settings::{Registries, RegistryMatcher};
 
     use kubewarden_policy_sdk::test::Testcase;
     use rstest::*;
@@ -113,9 +113,12 @@ mod tests {
     fn test_validate(#[case] fixture: &str, #[case] expected_validation_result: bool) {
         let settings = Settings {
             registries: Registries {
-                reject: vec!["ghcr.io".to_string(), "docker.io".to_string()]
-                    .into_iter()
-                    .collect(),
+                reject: vec![
+                    RegistryMatcher::Exact("ghcr.io".to_string()),
+                    RegistryMatcher::Exact("docker.io".to_string()),
+                ]
+                .into_iter()
+                .collect(),
                 ..Default::default()
             },
 

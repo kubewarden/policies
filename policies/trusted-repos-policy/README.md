@@ -93,3 +93,52 @@ images:
 Will reject container images like `nginx:1.21`, `nginx:latest`,
 `docker.io/library:nginx:1.21`, `quay.io/coreos/etcd:1.21`,
 `quay.io/coreos/etcd:latest`.
+
+## Wildcard Pattern Support
+
+In addition to exact values, registries, tags, and images support wildcard
+patterns using `*` (matches any number of characters) and `?` (matches a
+single character). Strings containing `*` or `?` are automatically treated
+as patterns; all others go through standard OCI validation.
+
+### Image normalization
+
+When matching image patterns, images are first normalized to their fully
+qualified form. For example, `busybox` becomes `docker.io/library/busybox:latest`.
+This means the pattern `docker.io/library/*` will match shorthand images
+like `busybox:1.0.0`.
+
+### Examples
+
+- Allow all images from the `bitnami` namespace on Docker Hub:
+
+```yaml
+images:
+  allow:
+    - docker.io/bitnami/*
+```
+
+- Allow registries matching a corporate domain pattern:
+
+```yaml
+registries:
+  allow:
+    - "*.my-corp.com"
+```
+
+- Reject all release candidate tags:
+
+```yaml
+tags:
+  reject:
+    - "*-rc*"
+```
+
+- Mix exact and wildcard entries:
+
+```yaml
+images:
+  allow:
+    - docker.io/bitnami/*
+    - ghcr.io/kubewarden/policy-server:1.0.0
+```

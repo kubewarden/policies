@@ -13,7 +13,7 @@ questions:
   type: string
   variable: description
 - default: {}
-  description: Allow or reject images coming from a specified registry.
+  description: Allow or reject images coming from a specified registry, Supports wildcard patterns.
   group: Settings
   label: Registries
   hide_input: true
@@ -31,7 +31,7 @@ questions:
       type: array[
       variable: registries.reject
 - default: {}
-  description: Reject a specified tag for all images
+  description: Reject a specified tag for all images, Supports wildcard patterns.
   group: Settings
   label: Tags
   hide_input: true
@@ -44,7 +44,7 @@ questions:
       type: array[
       variable: tags.reject
 - default: {}
-  description: Accept or reject a specified image
+  description: Accept or reject a specified image, Supports wildcard patterns
   group: Settings
   label: Images
   hide_input: true
