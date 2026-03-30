@@ -174,7 +174,7 @@ jobs:
 
       - name: Create release
         id: create-release
-        uses: release-drafter/release-drafter@44a942e465867c7465b76aa808ddca6e0acae5da # v7.1.0
+        uses: release-drafter/release-drafter@139054aeaa9adc52ab36ddf67437541f039b88e2 # v7.1.1
         with:
           config-name: "release-drafter-${{ needs.calculate-policy-from-tag.outputs.policy-name }}.yml"
           prerelease: ${{ contains(needs.calculate-policy-from-tag.outputs.policy-version, '-alpha') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-beta') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-rc') }}
@@ -313,7 +313,7 @@ jobs:
 
   release-catalog:
     needs: [calculate-policy-from-tag, release, push-artifacthub]
-    uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@f1695ca9a575bf58b85d6c3652c7ff7d1d12ec24 # v4.5.16
+    uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@7bc76e326b9c29582dd89eaf1b9efad1da3d3872 # v4.6.3
     with:
       policy-name: ${{ needs.calculate-policy-from-tag.outputs.policy-name }}
       policy-working-dir: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
