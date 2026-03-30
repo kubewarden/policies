@@ -1,13 +1,15 @@
-use std::collections::HashSet;
-use std::str::FromStr;
-
-use crate::{
-    settings::{ImageMatcher, ImageRef, RegistryMatcher, Settings, TagMatcher},
-    validation_result::{PodRejectionReasons, PodSpecValidationResult},
-};
+use std::{collections::HashSet, str::FromStr};
 
 use k8s_openapi::api::core::v1 as apicore;
 use oci_spec::distribution::Reference;
+
+use crate::{
+    matchers::image::{ImageMatcher, ImageRef},
+    matchers::registry::RegistryMatcher,
+    matchers::tag::TagMatcher,
+    settings::Settings,
+    validation_result::{PodRejectionReasons, PodSpecValidationResult},
+};
 
 pub(crate) fn validate_pod_spec(
     pod_spec: &apicore::PodSpec,
@@ -87,10 +89,7 @@ fn discover_images(pod_spec: &apicore::PodSpec) -> HashSet<&str> {
 }
 
 fn registry_matches_any(registry: &str, matchers: &HashSet<RegistryMatcher>) -> bool {
-    matchers.iter().any(|m| match m {
-        RegistryMatcher::Exact(exact) => exact == registry,
-        RegistryMatcher::Pattern { pattern, .. } => pattern.matches(registry),
-    })
+    matchers.iter().any(|m| m.matches(registry))
 }
 
 fn is_allowed_registry(registry: &str, settings: &Settings) -> bool {
@@ -117,10 +116,7 @@ fn is_allowed_registry(registry: &str, settings: &Settings) -> bool {
 }
 
 fn tag_matches_any(tag: &str, matchers: &HashSet<TagMatcher>) -> bool {
-    matchers.iter().any(|m| match m {
-        TagMatcher::Exact(exact) => exact == tag,
-        TagMatcher::Pattern { pattern, .. } => pattern.matches(tag),
-    })
+    matchers.iter().any(|m| m.matches(tag))
 }
 
 fn is_allowed_tag(tag: &str, settings: &Settings) -> bool {
@@ -155,24 +151,24 @@ fn image_matches_any(image_ref: &ImageRef, matchers: &HashSet<ImageMatcher>) -> 
                 .map(|r| &ImageRef::new(r) == exact_ref)
                 .unwrap_or(false)
         }
-        ImageMatcher::Pattern { pattern, raw } => {
+        ImageMatcher::Pattern(sm) => {
             let whole = image_ref.whole();
 
             // Match against fully normalized image reference
-            if pattern.matches(&whole) {
+            if sm.matches(&whole) {
                 return true;
             }
 
             // If pattern has no tag/digest component, also match against registry/repository
-            let has_tag_or_digest = raw.contains(':') || raw.contains('@');
+            let has_tag_or_digest = sm.raw().contains(':') || sm.raw().contains('@');
             if !has_tag_or_digest {
                 let registry_repo = format!("{}/{}", image_ref.registry(), image_ref.repository());
-                if pattern.matches(&registry_repo) {
+                if sm.matches(&registry_repo) {
                     return true;
                 }
 
                 // Also try matching against just the repository for Docker Hub shorthand
-                if pattern.matches(image_ref.repository()) {
+                if sm.matches(image_ref.repository()) {
                     return true;
                 }
             }
@@ -220,31 +216,35 @@ fn is_allowed_image(image_ref: &ImageRef, settings: &Settings) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rstest::*;
 
-    use crate::settings::{Images, Registries, Tags};
+    use rstest::*;
     use wildmatch::WildMatch;
 
+    use crate::{
+        matchers::string::StringMatcher,
+        settings::{Images, Registries, Tags},
+    };
+
     fn exact_registry(s: &str) -> RegistryMatcher {
-        RegistryMatcher::Exact(s.to_string())
+        RegistryMatcher(StringMatcher::Exact(s.to_string()))
     }
 
     fn pattern_registry(s: &str) -> RegistryMatcher {
-        RegistryMatcher::Pattern {
+        RegistryMatcher(StringMatcher::Pattern {
             pattern: WildMatch::new(s),
             raw: s.to_string(),
-        }
+        })
     }
 
     fn exact_tag(s: &str) -> TagMatcher {
-        TagMatcher::Exact(s.to_string())
+        TagMatcher(StringMatcher::Exact(s.to_string()))
     }
 
     fn pattern_tag(s: &str) -> TagMatcher {
-        TagMatcher::Pattern {
+        TagMatcher(StringMatcher::Pattern {
             pattern: WildMatch::new(s),
             raw: s.to_string(),
-        }
+        })
     }
 
     fn exact_image(s: &str) -> ImageMatcher {
@@ -252,10 +252,10 @@ mod tests {
     }
 
     fn pattern_image(s: &str) -> ImageMatcher {
-        ImageMatcher::Pattern {
+        ImageMatcher::Pattern(StringMatcher::Pattern {
             pattern: WildMatch::new(s),
             raw: s.to_string(),
-        }
+        })
     }
 
     #[rstest]

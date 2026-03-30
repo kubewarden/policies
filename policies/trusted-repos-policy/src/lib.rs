@@ -20,6 +20,8 @@ use validation::validate_pod_spec;
 mod validating_resource;
 use validating_resource::ValidatingResource;
 
+pub(crate) mod matchers;
+
 mod settings;
 use settings::Settings;
 
@@ -94,13 +96,16 @@ fn validate_resource<T: ValidatingResource + DeserializeOwned>(
 mod tests {
     use super::*;
 
-    use crate::settings::{Registries, RegistryMatcher};
-
     use kubewarden_policy_sdk::test::Testcase;
     use rstest::*;
 
+    use crate::{
+        matchers::{registry::RegistryMatcher, string::StringMatcher},
+        settings::Registries,
+    };
+
     #[rstest]
-    // Note: this test cares only about covering the switch statement of the resournce kind
+    // Note: this test cares only about covering the switch statement of the resource kind
     #[case::deployment("test_data/deployment_creation.json", false)]
     #[case::replicaset("test_data/replicaset_creation.json", false)]
     #[case::statefulset("test_data/statefulset_creation.json", false)]
@@ -114,8 +119,8 @@ mod tests {
         let settings = Settings {
             registries: Registries {
                 reject: vec![
-                    RegistryMatcher::Exact("ghcr.io".to_string()),
-                    RegistryMatcher::Exact("docker.io".to_string()),
+                    RegistryMatcher(StringMatcher::Exact("ghcr.io".to_string())),
+                    RegistryMatcher(StringMatcher::Exact("docker.io".to_string())),
                 ]
                 .into_iter()
                 .collect(),
