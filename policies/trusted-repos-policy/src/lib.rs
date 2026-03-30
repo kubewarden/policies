@@ -96,27 +96,79 @@ fn validate_resource<T: ValidatingResource + DeserializeOwned>(
 mod tests {
     use super::*;
 
-    use kubewarden_policy_sdk::test::Testcase;
-    use rstest::*;
+    use crate::matchers::{registry::RegistryMatcher, string::StringMatcher};
+    use crate::settings::Registries;
 
-    use crate::{
-        matchers::{registry::RegistryMatcher, string::StringMatcher},
-        settings::Registries,
+    use k8s_openapi::api::{
+        apps::v1::{DaemonSetSpec, DeploymentSpec, ReplicaSetSpec, StatefulSetSpec},
+        batch::v1::{CronJobSpec, JobSpec, JobTemplateSpec},
+        core::v1::{Container, PodSpec, PodTemplateSpec, ReplicationControllerSpec},
     };
+    use k8s_openapi::apimachinery::pkg::apis::meta::v1::ObjectMeta;
+    use serde::Serialize;
+    use serde_json::json;
 
-    #[rstest]
-    // Note: this test cares only about covering the switch statement of the resource kind
-    #[case::deployment("test_data/deployment_creation.json", false)]
-    #[case::replicaset("test_data/replicaset_creation.json", false)]
-    #[case::statefulset("test_data/statefulset_creation.json", false)]
-    #[case::daemonset("test_data/daemonset_creation.json", false)]
-    #[case::replicationcontroller("test_data/replicationcontroller_creation.json", false)]
-    #[case::job("test_data/job_creation.json", false)]
-    #[case::cronjob("test_data/cronjob_creation.json", false)]
-    #[case::pod("test_data/pod_creation.json", false)]
-    #[case::ingress("test_data/ingress_creation.json", true)]
-    fn test_validate(#[case] fixture: &str, #[case] expected_validation_result: bool) {
-        let settings = Settings {
+    // A single allowed image (nginx:1.0.0 — docker.io, not in the reject list)
+    // is used as the container image for all resource-kind cases.
+    // The ingress case uses a raw JSON object to exercise the unknown-kind path.
+
+    fn pod_spec_with(image: &str) -> PodSpec {
+        PodSpec {
+            containers: vec![Container {
+                name: "app".to_string(),
+                image: Some(image.to_string()),
+                ..Container::default()
+            }],
+            ..PodSpec::default()
+        }
+    }
+
+    fn pod_template(image: &str) -> PodTemplateSpec {
+        PodTemplateSpec {
+            spec: Some(pod_spec_with(image)),
+            ..PodTemplateSpec::default()
+        }
+    }
+
+    /// Build a raw `validate` payload from a serializable k8s object,
+    /// specifying the admission request `kind` metadata manually.
+    fn make_payload<T: Serialize>(
+        object: &T,
+        kind: &str,
+        group: &str,
+        settings: &Settings,
+    ) -> Vec<u8> {
+        let payload = json!({
+            "settings": settings,
+            "request": {
+                "uid": "test-uid",
+                "kind":        { "group": group, "kind": kind, "version": "v1" },
+                "resource":    { "group": group, "version": "v1", "resource": kind.to_lowercase() },
+                "requestKind": { "group": group, "kind": kind, "version": "v1" },
+                "operation": "CREATE",
+                "userInfo": {
+                    "username": "alice",
+                    "uid": "alice-uid",
+                    "groups": ["system:authenticated"]
+                },
+                "object": serde_json::to_value(object).unwrap()
+            }
+        });
+        serde_json::to_vec(&payload).unwrap()
+    }
+
+    fn assert_validate(payload: Vec<u8>, expected_accepted: bool) {
+        let raw = validate(&payload).unwrap();
+        let response: ValidationResponse = serde_json::from_slice(&raw).unwrap();
+        assert_eq!(
+            response.accepted, expected_accepted,
+            "expected accepted={expected_accepted}, got {:?}",
+            response
+        );
+    }
+
+    fn reject_ghcr_and_docker_settings() -> Settings {
+        Settings {
             registries: Registries {
                 reject: vec![
                     RegistryMatcher(StringMatcher::Exact("ghcr.io".to_string())),
@@ -126,17 +178,171 @@ mod tests {
                 .collect(),
                 ..Default::default()
             },
+            ..Default::default()
+        }
+    }
 
+    // --- resource-kind dispatch tests ---
+    // Each test exercises one arm of the `match kind.kind.as_str()` switch.
+    // The image nginx:1.0.0 normalises to docker.io/library/nginx:1.0.0, but
+    // the registry extracted by the OCI parser is "docker.io", which IS in the
+    // reject list — so expected_accepted is false for all workload kinds.
+    // The ingress case hits the `_ =>` arm and is always accepted.
+
+    #[test]
+    fn test_validate_deployment() {
+        let obj = Deployment {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(DeploymentSpec {
+                template: pod_template("nginx:1.0.0"),
+                ..DeploymentSpec::default()
+            }),
             ..Default::default()
         };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(make_payload(&obj, "Deployment", "apps", &settings), false);
+    }
 
-        let test_case = Testcase {
-            name: "test_validate".to_string(),
-            fixture_file: fixture.to_string(),
-            settings,
-            expected_validation_result,
+    #[test]
+    fn test_validate_replicaset() {
+        let obj = ReplicaSet {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(ReplicaSetSpec {
+                template: Some(pod_template("nginx:1.0.0")),
+                ..ReplicaSetSpec::default()
+            }),
+            ..Default::default()
         };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(make_payload(&obj, "ReplicaSet", "apps", &settings), false);
+    }
 
-        assert!(test_case.eval(validate).is_ok());
+    #[test]
+    fn test_validate_statefulset() {
+        let obj = StatefulSet {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(StatefulSetSpec {
+                template: pod_template("nginx:1.0.0"),
+                ..StatefulSetSpec::default()
+            }),
+            ..Default::default()
+        };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(make_payload(&obj, "StatefulSet", "apps", &settings), false);
+    }
+
+    #[test]
+    fn test_validate_daemonset() {
+        let obj = DaemonSet {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(DaemonSetSpec {
+                template: pod_template("nginx:1.0.0"),
+                ..DaemonSetSpec::default()
+            }),
+            ..Default::default()
+        };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(make_payload(&obj, "DaemonSet", "apps", &settings), false);
+    }
+
+    #[test]
+    fn test_validate_replicationcontroller() {
+        let obj = ReplicationController {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(ReplicationControllerSpec {
+                template: Some(pod_template("nginx:1.0.0")),
+                ..ReplicationControllerSpec::default()
+            }),
+            ..Default::default()
+        };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(
+            make_payload(&obj, "ReplicationController", "", &settings),
+            false,
+        );
+    }
+
+    #[test]
+    fn test_validate_job() {
+        let obj = Job {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(JobSpec {
+                template: pod_template("nginx:1.0.0"),
+                ..JobSpec::default()
+            }),
+            ..Default::default()
+        };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(make_payload(&obj, "Job", "batch", &settings), false);
+    }
+
+    #[test]
+    fn test_validate_cronjob() {
+        let obj = CronJob {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(CronJobSpec {
+                schedule: "* * * * *".to_string(),
+                job_template: JobTemplateSpec {
+                    spec: Some(JobSpec {
+                        template: pod_template("nginx:1.0.0"),
+                        ..JobSpec::default()
+                    }),
+                    ..JobTemplateSpec::default()
+                },
+                ..CronJobSpec::default()
+            }),
+            ..Default::default()
+        };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(make_payload(&obj, "CronJob", "batch", &settings), false);
+    }
+
+    #[test]
+    fn test_validate_pod() {
+        let obj = Pod {
+            metadata: ObjectMeta {
+                name: Some("nginx".to_string()),
+                ..Default::default()
+            },
+            spec: Some(pod_spec_with("nginx:1.0.0")),
+            ..Default::default()
+        };
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(make_payload(&obj, "Pod", "", &settings), false);
+    }
+
+    #[test]
+    fn test_validate_unknown_kind_is_accepted() {
+        // Ingress is not handled by this policy; the _ arm always accepts it.
+        let obj = json!({
+            "metadata": { "name": "my-ingress" },
+            "spec": { "rules": [] }
+        });
+        let settings = reject_ghcr_and_docker_settings();
+        assert_validate(
+            make_payload(&obj, "Ingress", "networking.k8s.io", &settings),
+            true,
+        );
     }
 }
