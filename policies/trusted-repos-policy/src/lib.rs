@@ -108,7 +108,7 @@ mod tests {
     use serde::Serialize;
     use serde_json::json;
 
-    // A single allowed image (nginx:1.0.0 — docker.io, not in the reject list)
+    // A single image (nginx:1.0.0 — docker.io, which is rejected by the registry settings)
     // is used as the container image for all resource-kind cases.
     // The ingress case uses a raw JSON object to exercise the unknown-kind path.
 

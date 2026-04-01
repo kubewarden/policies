@@ -186,7 +186,7 @@ fn is_allowed_image(image_ref: &ImageRef, settings: &Settings) -> bool {
     // - The full image ref (exact match)
     //
     // - The image repository, without registry, nor tag, nor digest:
-    //   allow "nginx" matches "nginx:1.21", "nginx:latest", "docker.io/library:nginx:1.21"
+    //   allow "nginx" matches "nginx:1.21", "nginx:latest", "docker.io/library/nginx:1.21"
     //
     // - The image registry+repository, without tag nor digest:
     //   allow "quay.io/coreos/etcd" matches "quay.io/coreos/etcd:1.21", "quay.io/coreos/etcd:latest"

@@ -4,7 +4,7 @@ use oci_spec::distribution::Reference;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use wildmatch::WildMatch;
 
-use crate::{matchers::string::StringMatcher, settings::is_glob_pattern};
+use crate::matchers::{is_glob_pattern, string::StringMatcher};
 
 /// Custom type to represent an image reference. It's required to implement
 /// the `Deserialize` trait to be able to use it in the `Settings` struct.

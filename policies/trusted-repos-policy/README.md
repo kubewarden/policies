@@ -99,7 +99,9 @@ Will reject container images like `nginx:1.21`, `nginx:latest`,
 In addition to exact values, registries, tags, and images support wildcard
 patterns using `*` (matches any number of characters) and `?` (matches a
 single character). Strings containing `*` or `?` are automatically treated
-as patterns; all others go through standard OCI validation.
+as patterns. For `images` and `tags`, non-pattern entries are validated as
+OCI image references and tags; for `registries`, non-pattern entries are
+matched literally and are not OCI-validated.
 
 ### Image normalization
 

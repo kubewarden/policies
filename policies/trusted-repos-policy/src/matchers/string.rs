@@ -3,7 +3,7 @@ use std::{fmt, hash::Hash};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use wildmatch::WildMatch;
 
-use crate::settings::is_glob_pattern;
+use crate::matchers::is_glob_pattern;
 
 #[derive(Debug, Clone)]
 pub(crate) enum StringMatcher {
@@ -94,6 +94,7 @@ mod tests {
     #[case::pattern_match("*.my-corp.com", "registry.my-corp.com", true)]
     #[case::pattern_no_match("*.my-corp.com", "docker.io", false)]
     #[case::pattern_question_mark("v1.?.0", "v1.2.0", true)]
+    #[case::pattern_wildcard("v1.*.0", "v1.20.0", true)]
     #[case::pattern_question_mark_no_match("v1.?.0", "v1.20.0", false)]
     fn matches(#[case] matcher_raw: &str, #[case] input: &str, #[case] expected: bool) {
         let m: StringMatcher = serde_json::from_str(&format!("{matcher_raw:?}")).unwrap();

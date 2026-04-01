@@ -6,10 +6,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::matchers::{image::ImageMatcher, registry::RegistryMatcher, tag::TagMatcher};
 
-pub(crate) fn is_glob_pattern(s: &str) -> bool {
-    s.contains('*') || s.contains('?')
-}
-
 // --- Structs ---
 
 #[derive(Deserialize, Serialize, Default, Debug)]
