@@ -182,7 +182,7 @@ jobs:
 
       - name: Upload release assets
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           POLICY_WORKING_DIR: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
           RELEASE_ID: ${{ steps.create-release.outputs.id }}
@@ -213,7 +213,7 @@ jobs:
       - name: Publish release
         # if we are on a single repo, we obtain the last draft release as it contains the changelog
         # and edit it by adding the artifacts. Then we mark the release as latest
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           RELEASE_ID: ${{ steps.create-release.outputs.id }}
         with:
