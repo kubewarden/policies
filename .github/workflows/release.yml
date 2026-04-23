@@ -141,8 +141,8 @@ jobs:
           echo Pushing :latest policy to OCI container registry
           IMMUTABLE_REF=$(kwctl push -o json annotated-policy.wasm ghcr.io/${{ github.repository_owner }}/policies/${{ needs.calculate-policy-from-tag.outputs.policy-id }}:latest | jq -r .immutable_ref)
 
-          echo Keyless signing of policy using cosign
-          cosign sign --yes ${IMMUTABLE_REF}
+          echo Keyless signing of policy using cosign v2 format
+          cosign sign --yes --new-bundle-format=false --use-signing-config=false ${IMMUTABLE_REF}
 
       - name: Publish Wasm policy artifact to OCI registry with the version tag and 'latest'
         shell: bash
@@ -155,8 +155,8 @@ jobs:
           echo Pushing tagged policy to OCI container registry
           IMMUTABLE_REF=$(kwctl push -o json annotated-policy.wasm ghcr.io/${{ github.repository_owner }}/policies/${{ needs.calculate-policy-from-tag.outputs.policy-id }}:${OCI_TAG} | jq -r .immutable_ref)
 
-          echo Keyless signing of policy using cosign
-          cosign sign --yes ${IMMUTABLE_REF}
+          echo Keyless signing of policy using cosign v2 format
+          cosign sign --yes --new-bundle-format=false --use-signing-config=false ${IMMUTABLE_REF}
 
       - name: Create release
         id: create-release
