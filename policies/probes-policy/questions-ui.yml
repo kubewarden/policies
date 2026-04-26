@@ -1,0 +1,45 @@
+questions:
+  - default: null
+    description: >-
+      This policy validates that Pod containers define liveness and readiness
+      probes, and can enforce basic probe timing configuration.
+    group: Settings
+    label: Description
+    required: false
+    hide_input: true
+    type: string
+    variable: description
+  - default: {}
+    description: >-
+      Configure whether containers must define a liveness probe.
+    group: Settings
+    label: Liveness probe
+    hide_input: true
+    type: map[
+    variable: liveness
+    subquestions:
+      - default: true
+        description: >-
+          Require all containers to define a liveness probe.
+        group: Settings
+        label: Enforce liveness probe
+        required: true
+        type: boolean
+        variable: liveness.enforce
+  - default: {}
+    description: >-
+      Configure whether containers must define a readiness probe.
+    group: Settings
+    label: Readiness probe
+    hide_input: true
+    type: map[
+    variable: readiness
+    subquestions:
+      - default: true
+        description: >-
+          Require all containers to define a readiness probe.
+        group: Settings
+        label: Enforce readiness probe
+        required: true
+        type: boolean
+        variable: readiness.enforce
