@@ -266,7 +266,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-artifacthub
+      group: artifacthub-branch-updates
       cancel-in-progress: false
     steps:
       - name: Checkout code
