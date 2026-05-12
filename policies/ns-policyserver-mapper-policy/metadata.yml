@@ -23,7 +23,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/ns-policyserver-mapper
   io.kubewarden.policy.title: ns-policyserver-mapper
-  io.kubewarden.policy.version: 0.1.0
+  io.kubewarden.policy.version: 0.1.1
   io.kubewarden.policy.description: >
     Mutates AdmissionPolicy and AdmissionPolicyGroup resources to enforce the
     PolicyServer they run on. The target PolicyServer is read from the
