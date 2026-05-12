@@ -1,6 +1,6 @@
 [package]
 name = "pod-runtime-class-policy"
-version = "1.0.9"
+version = "1.0.10"
 authors = ["José Guilherme Vanz <jguilhermevanz@suse.com>"]
 edition = "2024"
 
