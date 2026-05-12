@@ -1,6 +1,6 @@
 [package]
 name = "do-not-expose-admission-controller-webhook-services"
-version = "1.1.5"
+version = "1.1.6"
 authors = ["Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2024"
 
