@@ -8,7 +8,7 @@ contextAware: false
 executionMode: wasi
 annotations:
   io.kubewarden.policy.title: kyverno-dsl
-  io.kubewarden.policy.version: 0.1.8
+  io.kubewarden.policy.version: 0.1.9
   io.artifacthub.displayName: Kyverno DSL policy
   io.artifacthub.resources: Pod
   io.artifacthub.keywords: psp, container, runtime
