@@ -1657,7 +1657,7 @@ checksum = "490dcfcbfef26be6800d11870ff2df8774fa6e86d047e3e8c8a76b25655e41ca"
 
 [[package]]
 name = "seccomp-psp-policy"
-version = "1.0.12"
+version = "1.0.13"
 dependencies = [
  "anyhow",
  "k8s-openapi",
