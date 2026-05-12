@@ -27,6 +27,17 @@ targets:
       key: "$.annotations.'io.kubewarden.policy.version'"
       value: "{{ .policy.version }}"
 
+  updateMetadataAnnotationGithubReleaseTag:
+    name: Update metadata.yml with new GitHub release tag
+    kind: yaml
+    scmid: "policy-repo"
+    disableconditions: true
+    spec:
+      searchpattern: true
+      file: "{{ .policy.working_dir}}/metadata.y*ml"
+      key: "$.annotations.'com.github.release.tag'"
+      value: "{{ .policy.basename }}/v{{ .policy.version }}"
+
   updateCargoTomlVersion:
     name: Update Cargo.toml, Cargo.lock with new version
     scmid: "policy-repo"

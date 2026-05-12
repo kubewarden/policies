@@ -280,18 +280,6 @@ jobs:
         run: |
           kwctl scaffold artifacthub --output ${{ runner.temp }}/artifacthub-pkg.yml
 
-      # Currently, kwctl is not able to handle policies from monorepos. Therefore,
-      # the links to the wasm binary does not consider the policy subdirectory.
-      # Therefore, until the kwctl is updated we need to fix the link manually.
-      - name: Fix policy.wasm link
-        shell: bash
-        working-directory: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
-        run: |
-          # Capture the current directory name
-          export DIR_NAME=$(basename "$PWD")
-          # Update the URL by inserting the directory name followed by a slash
-          yq -i '(.links[] | select(.name == "policy")).url |= sub("/v", "/" + env(DIR_NAME) + "/v")' ${{ runner.temp }}/artifacthub-pkg.yml
-
       - name: Push up-to-date artifacthub-pkg.yml
         id: artifacthub-push
         shell: bash

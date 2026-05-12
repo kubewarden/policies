@@ -155,6 +155,7 @@ jobs:
             version: "${{ steps.create-release.outputs.resolved_version}}"
             working_dir: "${{ matrix.policy-working-dir }}"
             rust_package: "${{ steps.policy-info.outputs.policy-rust-package }}"
+            basename: "${{ steps.policy-info.outputs.policy-basename }}"
           EOF
 
       - name: Open PR with updatecli

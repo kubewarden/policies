@@ -38,3 +38,5 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   # io.kubewarden.policy.category: CEL metapolicy
   # io.kubewarden.policy.severity: medium # one of info, low, medium, high, critical. See docs.
+
+  com.github.release.tag: cel-policy/v1.6.0
