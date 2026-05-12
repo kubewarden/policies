@@ -1,6 +1,6 @@
 [package]
 name = "high-risk-service-account-policy"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2024"
 
