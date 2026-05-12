@@ -1,6 +1,6 @@
 [package]
 name = "environment-variable-policy"
-version = "3.0.5"
+version = "3.0.6"
 authors = [
   "José Guilherme Vanz <jguilhermevanz@suse.com>",
   "Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>",
