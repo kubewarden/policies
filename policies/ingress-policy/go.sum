@@ -2,6 +2,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/deckarep/golang-set/v2 v2.8.0 h1:swm0rlPCmdWn9mESxKOjWk8hXSqoxOp+ZlfuyaAdFlQ=
 github.com/deckarep/golang-set/v2 v2.8.0/go.mod h1:VAky9rY/yGXJOLEDv3OMci+7wtDpOF4IN+y82NBOac4=
+github.com/deckarep/golang-set/v2 v2.9.0 h1:prva4eP9UysWagLyKrtn074ughi0NnkIf0A4M5yOCKI=
+github.com/deckarep/golang-set/v2 v2.9.0/go.mod h1:EWknQXbs0mcFpat2QOoXV0Ee57cD+w6ZEN76BR2JVrM=
 github.com/kubewarden/gjson v1.7.2 h1:+cLRfPqyvjwrkgE68cGdNfUy1Z6L45DjvuFH9/ofwQ0=
 github.com/kubewarden/gjson v1.7.2/go.mod h1:jSlxpubGqBG5HHe4v8kwcc8z1JF2reJ7AJAUojw66AY=
 github.com/kubewarden/k8s-objects v1.29.0-kw1 h1:bVQ2WL1ROqApYmHQJ/yxrs3tssfzzalblE2txChcHxY=
@@ -20,5 +22,7 @@ github.com/tidwall/pretty v1.0.2 h1:Z7S3cePv9Jwm1KwS0513MRaoUe3S01WPbLNV40pwWZU=
 github.com/tidwall/pretty v1.0.2/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/wapc/wapc-guest-tinygo v0.3.3 h1:jLebiwjVSHLGnS+BRabQ6+XOV7oihVWAc05Hf1SbeR0=
 github.com/wapc/wapc-guest-tinygo v0.3.3/go.mod h1:mzM3CnsdSYktfPkaBdZ8v88ZlfUDEy5Jh5XBOV3fYcw=
+go.mongodb.org/mongo-driver v1.17.4 h1:jUorfmVzljjr0FLzYQsGP8cgN/qzzxlY9Vh0C9KFXVw=
+go.mongodb.org/mongo-driver v1.17.4/go.mod h1:Hy04i7O2kC4RS06ZrhPRqj/u4DTYkFDAAccj+rVKqgQ=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
