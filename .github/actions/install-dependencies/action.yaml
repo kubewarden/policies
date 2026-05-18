@@ -97,7 +97,7 @@ runs:
         chmod +x "$INSTALL_DIR"/semver
         echo "$INSTALL_DIR" >> "$GITHUB_PATH"
     - name: Install updatecli
-      uses: updatecli/updatecli-action@2c3221bc5f4499a99fec2c87d9de4a83cb30e990 # v3.1.3
+      uses: updatecli/updatecli-action@e71be7554f3f940bc439cf720b3e4e379823c562 # v3.2.0
     - name: Install OPA
       shell: bash
       run: |
