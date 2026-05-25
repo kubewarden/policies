@@ -150,7 +150,7 @@ jobs:
             ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/policy-sbom.spdx.jsonl.bundle.sigstore
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -197,7 +197,7 @@ jobs:
 
       - name: Create release
         id: create-release
-        uses: release-drafter/release-drafter@c2e2804cc59f45f57076a99af580d0fedb697927 # v7.3.0
+        uses: release-drafter/release-drafter@693d20e7c1ce1a81d3a41962f85914253b518449 # v7.3.1
         with:
           config-name: "release-drafter-${{ needs.calculate-policy-from-tag.outputs.policy-name }}.yml"
           prerelease: ${{ contains(needs.calculate-policy-from-tag.outputs.policy-version, '-alpha') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-beta') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-rc') }}
