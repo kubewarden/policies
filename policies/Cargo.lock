@@ -808,7 +808,7 @@ dependencies = [
  "kubewarden-policy-sdk",
  "lazy_static",
  "mockall",
- "oci-spec 0.10.0",
+ "oci-spec",
  "rstest",
  "schemars",
  "serde",
@@ -934,9 +934,9 @@ checksum = "a4933f3f57a8e9d9da04db23fb153356ecaf00cbd14aee46279c33dc80925c37"
 
 [[package]]
 name = "kubewarden-policy-sdk"
-version = "0.17.0"
+version = "0.17.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2ae4e00b1dfe10c84e2246b2402da8b3709fee3bfa1bafbd7fa86b70a583871"
+checksum = "f47b75d8ce7c6ab9f496ec63e14cdfffcb9bb345ea209184d5a2b74f59850a42"
 dependencies = [
  "cfg-if",
  "chrono",
@@ -945,7 +945,7 @@ dependencies = [
  "num",
  "num-derive",
  "num-traits",
- "oci-spec 0.9.0",
+ "oci-spec",
  "serde",
  "serde_json",
  "serde_yaml",
@@ -1145,23 +1145,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5c7398b9c8b70908f6371f47ed36737907c87c52af34c268fed0bf0ceb92ead9"
 dependencies = [
  "libc",
-]
-
-[[package]]
-name = "oci-spec"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8445a2631507cec628a15fdd6154b54a3ab3f20ed4fe9d73a3b8b7a4e1ba03a"
-dependencies = [
- "const_format",
- "derive_builder",
- "getset",
- "regex",
- "serde",
- "serde_json",
- "strum",
- "strum_macros",
- "thiserror",
 ]
 
 [[package]]
@@ -2019,7 +2002,7 @@ dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
- "oci-spec 0.10.0",
+ "oci-spec",
  "rstest",
  "serde",
  "serde_json",
@@ -2078,7 +2061,7 @@ dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
- "oci-spec 0.10.0",
+ "oci-spec",
  "rstest",
  "serde",
  "serde_json",
