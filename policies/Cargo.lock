@@ -35,7 +35,7 @@ dependencies = [
 
 [[package]]
 name = "annotations-policy"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "anyhow",
  "criteria_policy_base",
