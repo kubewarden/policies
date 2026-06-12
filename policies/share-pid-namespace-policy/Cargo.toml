@@ -1,6 +1,6 @@
 [package]
 name = "share-pid-namespace-policy"
-version = "1.0.11"
+version = "1.0.12"
 authors = ["Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2024"
 
