@@ -1,6 +1,6 @@
 [package]
 name = "seccomp-psp-policy"
-version = "1.0.12"
+version = "1.0.13"
 authors = ["José Guilherme Vanz <jvanz@jvanz.com>"]
 edition = "2024"
 
