@@ -5,7 +5,7 @@ policyType: raw
 executionMode: wasi
 annotations:
   io.kubewarden.policy.title: raw-validation-wasi-policy
-  io.kubewarden.policy.version: 0.0.3
+  io.kubewarden.policy.version: 0.0.4
   io.kubewarden.policy.description: A policy that validates raw requests
   io.kubewarden.policy.author: "Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/tests/raw-validation-wasi-policy
