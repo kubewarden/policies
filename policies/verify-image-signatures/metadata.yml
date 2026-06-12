@@ -37,4 +37,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Secure supply chain
   io.kubewarden.policy.severity: medium
-  com.github.release.tag: verify-image-signatures/v1.0.9
+  com.github.release.tag: verify-image-signatures/v1.0.10
