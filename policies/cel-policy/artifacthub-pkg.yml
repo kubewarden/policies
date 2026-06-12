@@ -4,42 +4,42 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.6.0
+version: 1.6.1
 name: cel-policy
 displayName: CEL Policy
-createdAt: 2026-03-04T14:39:41.787172796Z
+createdAt: 2026-06-12T12:41:43.006078458Z
 description: A policy that evaluates CEL expressions
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
-  - name: policy
-    image: ghcr.io/kubewarden/policies/cel-policy:v1.6.0
+- name: policy
+  image: ghcr.io/kubewarden/policies/cel-policy:v1.6.1
 keywords:
-  - compliance
-  - CEL
-  - ValidatingAdmissionPolicy
-  - Common Expression Language
+- compliance
+- CEL
+- ValidatingAdmissionPolicy
+- Common Expression Language
 links:
-  - name: policy
-    url: https://github.com/kubewarden/policies/releases/download/cel-policy/v1.6.0/policy.wasm
-  - name: source
-    url: https://github.com/kubewarden/policies
+- name: policy
+  url: https://github.com/kubewarden/policies/releases/download/cel-policy%2Fv1.6.1/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/cel-policy:v1.6.0
+  kwctl pull ghcr.io/kubewarden/policies/cel-policy:v1.6.1
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/cel-policy:v1.6.0
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/cel-policy:v1.6.1
   ```
 maintainers:
-  - name: Kubewarden developers
-    email: cncf-kubewarden-maintainers@lists.cncf.io
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
-  - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/contextAwareResources: |
     - apiVersion: v1
