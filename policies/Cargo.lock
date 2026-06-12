@@ -1486,7 +1486,7 @@ dependencies = [
 
 [[package]]
 name = "readonly-root-filesystem-psp-policy"
-version = "1.0.10"
+version = "1.0.11"
 dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
