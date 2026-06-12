@@ -27,4 +27,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.severity: medium
   io.kubewarden.policy.category: PSP
-  com.github.release.tag: allowed-fsgroups-psp-policy/v1.0.9
+  com.github.release.tag: allowed-fsgroups-psp-policy/v1.0.10
