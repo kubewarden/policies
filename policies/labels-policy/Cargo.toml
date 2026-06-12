@@ -1,6 +1,6 @@
 [package]
 name = "labels-policy"
-version = "0.1.7"
+version = "0.1.8"
 authors = ["Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2024"
 
