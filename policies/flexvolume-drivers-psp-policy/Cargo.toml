@@ -1,6 +1,6 @@
 [package]
 name = "flexvolume-drivers-psp"
-version = "1.0.14"
+version = "1.0.15"
 authors = ["Rafael Fernández López <ereslibre@ereslibre.es>"]
 edition = "2024"
 
