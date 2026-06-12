@@ -27,4 +27,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Service
   io.kubewarden.policy.severity: high
-  com.github.release.tag: disallow-service-nodeport-policy/v0.1.11
+  com.github.release.tag: disallow-service-nodeport-policy/v1.0.0
