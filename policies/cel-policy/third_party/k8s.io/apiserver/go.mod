@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/google/cel-go v0.28.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20260420184626-e10c466a9529
-	k8s.io/apimachinery v0.36.1
+	k8s.io/apimachinery v0.36.2
 )
 
 require (
