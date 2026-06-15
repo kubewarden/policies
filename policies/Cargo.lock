@@ -16,7 +16,7 @@ name = "allow-privilege-escalation-psp"
 version = "1.0.11"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -27,7 +27,7 @@ dependencies = [
 name = "allowed-proc-mount-types-psp"
 version = "1.0.13"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -39,7 +39,7 @@ version = "0.1.9"
 dependencies = [
  "anyhow",
  "criteria_policy_base",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "regex",
  "rstest",
  "serde",
@@ -108,7 +108,7 @@ name = "apparmor-psp"
 version = "1.0.12"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -167,7 +167,7 @@ dependencies = [
  "anyhow",
  "assert-json-diff",
  "jsonpath_lib",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -271,7 +271,7 @@ name = "context-aware-policy-demo"
 version = "0.1.13"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "mockall",
  "rstest",
@@ -287,7 +287,7 @@ dependencies = [
  "anyhow",
  "const_format",
  "criteria_policy_base",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rstest",
  "serde",
@@ -367,7 +367,7 @@ name = "deprecated-api-versions"
 version = "1.0.9"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "semver",
@@ -436,7 +436,7 @@ name = "do-not-expose-admission-controller-webhook-services"
 version = "1.1.6"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "mockall",
  "serde",
@@ -463,7 +463,7 @@ dependencies = [
  "anyhow",
  "assert-json-diff",
  "jmespath",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -539,7 +539,7 @@ version = "1.0.13"
 dependencies = [
  "base64 0.22.1",
  "encoding",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rusty_hog_scanner",
  "serde",
@@ -552,7 +552,7 @@ version = "3.0.6"
 dependencies = [
  "anyhow",
  "criteria_policy_base",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "regex",
  "rstest",
  "serde",
@@ -579,7 +579,7 @@ dependencies = [
 name = "flexvolume-drivers-psp"
 version = "1.0.15"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -701,7 +701,7 @@ checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 name = "high-risk-service-account-policy"
 version = "0.1.7"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
@@ -715,7 +715,7 @@ name = "host-namespaces-psp"
 version = "1.1.9"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rstest",
  "serde",
@@ -838,7 +838,7 @@ dependencies = [
  "anyhow",
  "cfg-if",
  "criteria_policy_base",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "mockall",
@@ -923,9 +923,9 @@ dependencies = [
 
 [[package]]
 name = "k8s-openapi"
-version = "0.27.1"
+version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51b326f5219dd55872a72c1b6ddd1b830b8334996c667449c29391d657d78d5e"
+checksum = "d9c6922f6afe80418dd6019818af5d0d34584c371780ff09b9752370c25b4abb"
 dependencies = [
  "base64 0.22.1",
  "jiff",
@@ -935,28 +935,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "k8s-openapi"
+name = "k8s-openapi-codegen-common"
 version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9c6922f6afe80418dd6019818af5d0d34584c371780ff09b9752370c25b4abb"
-dependencies = [
- "base64 0.22.1",
- "jiff",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "k8s-openapi-codegen-common"
-version = "0.27.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3e4d5c3e74cf10cb21480cc9ca5f1e5cd9e6690617fec8ce5fce858a800eb17a"
+checksum = "01ecbb9884316e5fbd87befb4ee8d41b6d1f589d83d56f0a88608be6159cbe8d"
 
 [[package]]
 name = "k8s-openapi-derive"
-version = "0.27.1"
+version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1da1bd86f921b5a4ac91632e699577a3b7b23eebc43f47c3f986f011765cf73c"
+checksum = "4da3836874caf121054b0bf11c3438f72a366fa717ffe7e2b2376989021d39a7"
 dependencies = [
  "k8s-openapi-codegen-common",
  "proc-macro2",
@@ -988,7 +976,7 @@ dependencies = [
  "cfg-if",
  "chrono",
  "hex",
- "k8s-openapi 0.28.0",
+ "k8s-openapi",
  "num",
  "num-derive",
  "num-traits",
@@ -1008,7 +996,7 @@ version = "0.1.8"
 dependencies = [
  "anyhow",
  "criteria_policy_base",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "regex",
  "rstest",
  "serde",
@@ -1086,7 +1074,7 @@ name = "ns-policyserver-mapper"
 version = "0.1.1"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "mockall",
  "rstest",
@@ -1266,7 +1254,7 @@ checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 name = "persistentvolumeclaim-storageclass-policy"
 version = "1.1.6"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rstest",
  "serde",
@@ -1283,7 +1271,7 @@ checksum = "a89322df9ebe1c1578d689c92318e070967d1042b512afbe49518723f4e6d5cd"
 name = "pod-ndots"
 version = "1.0.10"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rstest",
  "serde",
@@ -1295,7 +1283,7 @@ name = "pod-privileged-policy"
 version = "1.0.11"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
@@ -1309,7 +1297,7 @@ name = "pod-runtime-class-policy"
 version = "1.0.10"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rstest",
  "serde",
@@ -1321,7 +1309,7 @@ name = "policy-metadata-helper"
 version = "1.0.5"
 dependencies = [
  "clap",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "serde",
  "serde_yaml",
  "versions",
@@ -1387,7 +1375,7 @@ dependencies = [
 name = "priority-class-policy"
 version = "1.1.6"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
@@ -1401,7 +1389,7 @@ name = "probes-policy"
 version = "1.0.5"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
@@ -1455,7 +1443,7 @@ dependencies = [
 name = "psa-label-enforcer"
 version = "1.0.12"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "regex",
@@ -1469,7 +1457,7 @@ name = "psp-allowed-fsgroups"
 version = "1.0.10"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -1477,9 +1465,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.45"
+version = "1.0.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41f2619966050689382d2b44f664f4bc593e129785a36d6ee376ddf37259b924"
+checksum = "dfbc457d0c7a0759a614551b11a6409e5951f6c7537be1f1b7682b9ae9230368"
 dependencies = [
  "proc-macro2",
 ]
@@ -1489,7 +1477,7 @@ name = "rancher-project-propagate-labels"
 version = "0.1.5"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "k8s-openapi-derive",
  "kubewarden-policy-sdk",
  "lazy_static",
@@ -1506,7 +1494,7 @@ dependencies = [
 name = "raw-validation-policy"
 version = "0.1.3"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "serde",
@@ -1518,7 +1506,7 @@ dependencies = [
 name = "readonly-root-filesystem-psp-policy"
 version = "1.0.11"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -1692,7 +1680,7 @@ name = "seccomp-psp-policy"
 version = "1.0.13"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -1703,7 +1691,7 @@ name = "selinux-psp"
 version = "1.1.0"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "serde",
  "serde_json",
@@ -1813,7 +1801,7 @@ dependencies = [
 name = "share-pid-namespace-policy"
 version = "1.0.12"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rstest",
  "serde",
@@ -1849,7 +1837,7 @@ version = "0.1.5"
 dependencies = [
  "anyhow",
  "jmespath",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
@@ -1970,9 +1958,9 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.3.49"
+version = "0.3.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "711a53c2d47bbd818258c498c8dbfe186a2526c631495cfe7e078567f86b8469"
+checksum = "85c17d80feb7334b40c484e45ed1a5273dfd8bfda537c3be2e74a06a6686f327"
 dependencies = [
  "deranged",
  "libc",
@@ -1992,9 +1980,9 @@ checksum = "9e1c906769ad99c88eaa54e728060edef082f8e358ff32030cb7c7d315e81109"
 
 [[package]]
 name = "time-macros"
-version = "0.2.29"
+version = "0.2.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71c652a3727a9cbb9a02f707f530b618ce00d0ccd762009c8c23bd191df3c17d"
+checksum = "dcef1a61bdb119096e153208ec5cbec23944ce8bca13be5c7f60c634f7403935"
 dependencies = [
  "num-conv",
  "time-core",
@@ -2045,7 +2033,7 @@ name = "trusted-repos-policy"
 version = "2.1.1"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "oci-spec",
@@ -2072,7 +2060,7 @@ checksum = "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853"
 name = "unique-service-selector-policy"
 version = "1.0.11"
 dependencies = [
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "rstest",
  "serde",
@@ -2104,7 +2092,7 @@ version = "1.1.6"
 dependencies = [
  "anyhow",
  "jsonpath_lib",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "oci-spec",
@@ -2162,7 +2150,7 @@ name = "verify-image-signatures"
 version = "1.0.9"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "mockall",
@@ -2181,7 +2169,7 @@ name = "versions"
 version = "1.0.5"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "semver",
@@ -2195,7 +2183,7 @@ name = "volumemounts-policy"
 version = "1.0.9"
 dependencies = [
  "anyhow",
- "k8s-openapi 0.27.1",
+ "k8s-openapi",
  "kubewarden-policy-sdk",
  "lazy_static",
  "serde",
@@ -2216,9 +2204,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen"
-version = "0.2.125"
+version = "0.2.126"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ddb3f79143bced6de84270411622a2699cee572fc0875aeaf1e7867cf9fca1a"
+checksum = "4b067c0c11094aef6b7a801c1e34a26affafdf3d051dba08456b868789aaf9a4"
 dependencies = [
  "cfg-if",
  "once_cell",
@@ -2229,9 +2217,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro"
-version = "0.2.125"
+version = "0.2.126"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e21a184b13fb19e157296e2c46056aec9092264fab83e4ba59e68c61b323c3d"
+checksum = "167ce5e579f6bcf889c4f7175a8a5a585de84e8ff93976ce393efa5f2837aab1"
 dependencies = [
  "quote",
  "wasm-bindgen-macro-support",
@@ -2239,9 +2227,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro-support"
-version = "0.2.125"
+version = "0.2.126"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fecefd9c35bd935a20fc3fc344b5f29138961e4f47fb03297d88f2587afb5ebd"
+checksum = "f3997c7839262f4ef12cf90b818d6340c18e80f263f1a94bf157d0ec4420380e"
 dependencies = [
  "bumpalo",
  "proc-macro2",
@@ -2252,9 +2240,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-shared"
-version = "0.2.125"
+version = "0.2.126"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "23939e44bb9a5d7576fa2b563dc2e136628f1224e88a8deed09e04858b77871f"
+checksum = "dc1b4cb0cc549fcf58d7dfc081778139b3d283a081644e833e84682ad71cea24"
 dependencies = [
  "unicode-ident",
 ]

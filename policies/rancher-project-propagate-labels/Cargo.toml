@@ -12,7 +12,7 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = { workspace = true }
 k8s-openapi = { workspace = true, features = ["schemars"] }
-k8s-openapi-derive = "0.27.0"
+k8s-openapi-derive = "0.28.0"
 kubewarden-policy-sdk = { workspace = true }
 lazy_static = { workspace = true }
 schemars = { version = "1" }
