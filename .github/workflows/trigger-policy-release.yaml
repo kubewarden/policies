@@ -27,7 +27,7 @@ jobs:
     outputs:
       policy_working_dirs: ${{ steps.calculate-policy-dirs.outputs.policy_working_dirs }}
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0 # checkout all history to do git diff
       - name: calculate which policies need a CI job
@@ -70,7 +70,7 @@ jobs:
       matrix:
         policy-working-dir: ${{ fromJSON(needs.calculate-policy-matrix.outputs.policy_working_dirs) }}
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
 
