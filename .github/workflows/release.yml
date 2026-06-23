@@ -60,7 +60,6 @@ jobs:
             "raw-validation-policy"
             "raw-validation-wasi-policy"
             "sleeping-policy"
-            "runtime-enforcer-policy"
           )
           skip_publishing=false
           for excluded in "${EXCLUDED_FROM_PUBLISHING[@]}"; do
