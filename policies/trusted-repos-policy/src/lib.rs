@@ -301,7 +301,7 @@ mod tests {
                 name: Some("nginx".to_string()),
                 ..Default::default()
             },
-            spec: Some(CronJobSpec {
+            spec: CronJobSpec {
                 schedule: "* * * * *".to_string(),
                 job_template: JobTemplateSpec {
                     spec: Some(JobSpec {
@@ -311,7 +311,7 @@ mod tests {
                     ..JobTemplateSpec::default()
                 },
                 ..CronJobSpec::default()
-            }),
+            },
             ..Default::default()
         };
         let settings = reject_ghcr_and_docker_settings();

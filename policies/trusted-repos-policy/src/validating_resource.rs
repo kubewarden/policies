@@ -53,13 +53,6 @@ impl ValidatingResource for Job {
 
 impl ValidatingResource for CronJob {
     fn spec(&self) -> Option<PodSpec> {
-        self.spec
-            .as_ref()?
-            .job_template
-            .spec
-            .as_ref()?
-            .template
-            .spec
-            .clone()
+        self.spec.job_template.spec.as_ref()?.template.spec.clone()
     }
 }
