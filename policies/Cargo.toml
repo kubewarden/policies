@@ -47,8 +47,8 @@ members = [
 
 [workspace.dependencies]
 anyhow = "1.0"
-k8s-openapi = { version = "0.27.0", features = ["latest"] }
-kubewarden-policy-sdk = "0.17.1"
+k8s-openapi = { version = "0.28.0", features = ["latest"] }
+kubewarden-policy-sdk = "0.17.3"
 serde = "1.0"
 serde_json = "1.0"
 serde_yaml = "0.9"

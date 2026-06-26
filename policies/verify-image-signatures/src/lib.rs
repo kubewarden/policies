@@ -183,26 +183,11 @@ impl ValidatingResource for CronJob {
     }
 
     fn spec(&self) -> Option<PodSpec> {
-        self.spec
-            .as_ref()?
-            .job_template
-            .spec
-            .as_ref()?
-            .template
-            .spec
-            .clone()
+        self.spec.job_template.spec.as_ref()?.template.spec.clone()
     }
 
     fn set_spec(&mut self, spec: PodSpec) {
-        self.spec
-            .as_mut()
-            .unwrap()
-            .job_template
-            .spec
-            .as_mut()
-            .unwrap()
-            .template
-            .spec = Some(spec);
+        self.spec.job_template.spec.as_mut().unwrap().template.spec = Some(spec);
     }
 }
 

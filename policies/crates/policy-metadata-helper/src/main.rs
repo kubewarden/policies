@@ -70,12 +70,11 @@ pub fn main() {
         Some(cli::Commands::Build {}) => {
             println!("{}", serde_yaml::to_string(&expected_rules).unwrap());
         }
-        Some(cli::Commands::Check {}) => {
-            if metadata.rules != expected_rules {
-                eprintln!("Current rules are not correct.");
-                std::process::exit(1);
-            }
+        Some(cli::Commands::Check {}) if metadata.rules != expected_rules => {
+            eprintln!("Current rules are not correct.");
+            std::process::exit(1);
         }
+        Some(cli::Commands::Check {}) => {}
         None => {}
     };
 }
