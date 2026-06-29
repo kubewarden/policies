@@ -1,7 +1,6 @@
 use std::{collections::HashSet, str::FromStr};
 
 use k8s_openapi::api::core::v1 as apicore;
-use oci_spec::distribution::Reference;
 
 use crate::{
     matchers::image::{ImageMatcher, ImageRef},
@@ -24,7 +23,7 @@ fn validate_images(images: &HashSet<&str>, settings: &Settings) -> PodSpecValida
     let mut rejection_reasons = PodRejectionReasons::default();
 
     for image in images {
-        let image_ref = Reference::from_str(image);
+        let image_ref = ImageRef::from_str(image);
         if let Ok(image_ref) = image_ref {
             if !is_allowed_registry(image_ref.registry(), settings) {
                 rejection_reasons
@@ -37,7 +36,7 @@ fn validate_images(images: &HashSet<&str>, settings: &Settings) -> PodSpecValida
                 rejection_reasons.tags_not_allowed.insert(tag.to_owned());
             }
 
-            if !is_allowed_image(&image_ref.into(), settings) {
+            if !is_allowed_image(&image_ref, settings) {
                 rejection_reasons
                     .images_not_allowed
                     .insert(image.to_string());
@@ -136,9 +135,10 @@ fn image_matches_any(image_ref: &ImageRef, matchers: &HashSet<ImageMatcher>) -> 
             }
 
             // Loose match: repository only (without registry, tag, or digest)
-            let contained_in_set_with_same_repo = Reference::from_str(image_ref.repository())
+            let contained_in_set_with_same_repo = ImageRef::from_str(image_ref.repository())
                 .ok()
-                .map(|r| &ImageRef::new(r) == exact_ref)
+                .as_ref()
+                .map(|r| r == exact_ref)
                 .unwrap_or(false);
             if contained_in_set_with_same_repo {
                 return true;
@@ -146,9 +146,10 @@ fn image_matches_any(image_ref: &ImageRef, matchers: &HashSet<ImageMatcher>) -> 
 
             // Loose match: registry + repository (without tag or digest)
             let registry_repo = format!("{}/{}", image_ref.registry(), image_ref.repository());
-            Reference::from_str(&registry_repo)
+            ImageRef::from_str(&registry_repo)
                 .ok()
-                .map(|r| &ImageRef::new(r) == exact_ref)
+                .as_ref()
+                .map(|r| r == exact_ref)
                 .unwrap_or(false)
         }
         ImageMatcher::Pattern(sm) => {
@@ -248,7 +249,7 @@ mod tests {
     }
 
     fn exact_image(s: &str) -> ImageMatcher {
-        ImageMatcher::Exact(ImageRef::new(Reference::from_str(s).unwrap()))
+        ImageMatcher::Exact(ImageRef::from_str(s).unwrap())
     }
 
     fn pattern_image(s: &str) -> ImageMatcher {

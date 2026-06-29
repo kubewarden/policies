@@ -1,19 +1,56 @@
 use std::{hash::Hash, str::FromStr};
 
-use oci_spec::distribution::Reference;
+use oci_spec::distribution::{ParseError, Reference};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use wildmatch::WildMatch;
 
 use crate::matchers::{is_glob_pattern, string::StringMatcher};
 
-/// Custom type to represent an image reference. It's required to implement
-/// the `Deserialize` trait to be able to use it in the `Settings` struct.
+/// Custom type to represent an image reference. It's required to implement the `Deserialize` trait
+/// to be able to use it in the `Settings` struct.
+///
+/// The registry hostname is normalized and always stored in lowercase: DNS hostnames are
+/// case-insensitive (RFC 4343) but `oci-spec` preserves whatever case the caller supplies. This
+/// ensures correct comparisons.
 #[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct ImageRef(oci_spec::distribution::Reference);
 
 impl ImageRef {
-    pub fn new(reference: oci_spec::distribution::Reference) -> Self {
-        ImageRef(reference)
+    /// Build an `ImageRef` from an already-parsed `Reference`, normalising
+    /// the registry hostname to lowercase.  This is the single place where
+    /// the normalisation is enforced.
+    fn from_reference(r: Reference) -> Self {
+        let registry = r.registry();
+        let registry_lower = registry.to_lowercase();
+
+        if registry == registry_lower {
+            return ImageRef(r);
+        }
+
+        let rebuilt = match (r.tag(), r.digest()) {
+            (Some(tag), Some(digest)) => Reference::with_tag_and_digest(
+                registry_lower,
+                r.repository().to_owned(),
+                tag.to_owned(),
+                digest.to_owned(),
+            ),
+            (Some(tag), None) => {
+                Reference::with_tag(registry_lower, r.repository().to_owned(), tag.to_owned())
+            }
+            (None, Some(digest)) => {
+                Reference::with_digest(registry_lower, r.repository().to_owned(), digest.to_owned())
+            }
+            // After `Reference::from_str`, tag and digest are never both None
+            // (the parser inserts "latest" when both are absent), but handle
+            // the case exhaustively to satisfy the compiler
+            (None, None) => Reference::with_tag(
+                registry_lower,
+                r.repository().to_owned(),
+                "latest".to_owned(),
+            ),
+        };
+
+        ImageRef(rebuilt)
     }
 
     pub fn whole(&self) -> String {
@@ -27,11 +64,23 @@ impl ImageRef {
     pub fn registry(&self) -> &str {
         self.0.registry()
     }
+
+    pub fn tag(&self) -> Option<&str> {
+        self.0.tag()
+    }
+}
+
+impl FromStr for ImageRef {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Reference::from_str(s).map(ImageRef::from_reference)
+    }
 }
 
 impl From<Reference> for ImageRef {
     fn from(reference: Reference) -> Self {
-        ImageRef(reference)
+        ImageRef::from_reference(reference)
     }
 }
 
@@ -84,8 +133,8 @@ impl<'de> Deserialize<'de> for ImageMatcher {
                 raw: s,
             }))
         } else {
-            let reference = Reference::from_str(&s).map_err(serde::de::Error::custom)?;
-            Ok(ImageMatcher::Exact(ImageRef(reference)))
+            let image_ref = ImageRef::from_str(&s).map_err(serde::de::Error::custom)?;
+            Ok(ImageMatcher::Exact(image_ref))
         }
     }
 }
@@ -101,7 +150,7 @@ impl Serialize for ImageMatcher {
 
 impl From<Reference> for ImageMatcher {
     fn from(reference: Reference) -> Self {
-        ImageMatcher::Exact(ImageRef(reference))
+        ImageMatcher::Exact(ImageRef::from(reference))
     }
 }
 
@@ -114,7 +163,7 @@ mod tests {
     use crate::settings::Images;
 
     fn exact_image(s: &str) -> ImageMatcher {
-        ImageMatcher::Exact(ImageRef(Reference::from_str(s).unwrap()))
+        ImageMatcher::Exact(ImageRef::from_str(s).unwrap())
     }
 
     fn pattern_image(s: &str) -> ImageMatcher {
