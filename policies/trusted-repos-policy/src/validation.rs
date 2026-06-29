@@ -983,4 +983,71 @@ mod tests {
             "got: {result:?} instead of {expected_result:?}"
         );
     }
+
+    #[test]
+    fn hostcase_registry_reject_uppercase_domain() {
+        let settings = Settings {
+            registries: Registries {
+                reject: ["evil-registry.com".to_string()]
+                    .into_iter()
+                    .map(|s| RegistryMatcher(StringMatcher::Exact(s)))
+                    .collect(),
+                ..Registries::default()
+            },
+            ..Settings::default()
+        };
+
+        let lower: HashSet<&str> = ["evil-registry.com/malware:v1"].into_iter().collect();
+        let upper: HashSet<&str> = ["EVIL-REGISTRY.COM/malware:v1"].into_iter().collect();
+
+        // lowercase is correctly rejected
+        let lower_result = validate_images(&lower, &settings);
+        assert!(
+            matches!(lower_result, PodSpecValidationResult::NotAllowed(_)),
+            "lowercase should be rejected, got: {lower_result:?}"
+        );
+        // uppercase must also be rejected (same host per DNS)
+        let upper_result = validate_images(&upper, &settings);
+        assert!(
+            matches!(upper_result, PodSpecValidationResult::NotAllowed(_)),
+            "UPPERCASE should be rejected too, got: {upper_result:?}"
+        );
+    }
+
+    #[test]
+    fn oci_ref_uppercase_normalization() {
+        let lower = ImageRef::from_str("evil-registry.com/malware:v1").unwrap();
+        let upper = ImageRef::from_str("EVIL-REGISTRY.COM/malware:v1").unwrap();
+        // After our normalisation both inputs yield the same lowercase registry
+        assert_eq!(lower.registry(), "evil-registry.com");
+        assert_eq!(upper.registry(), "evil-registry.com");
+        assert_eq!(lower.registry(), upper.registry());
+    }
+
+    #[test]
+    fn hostcase_image_reject_uppercase_domain() {
+        let settings = Settings {
+            images: Images {
+                reject: [exact_image("evil-registry.com/malware")]
+                    .into_iter()
+                    .collect(),
+                ..Images::default()
+            },
+            ..Settings::default()
+        };
+
+        let lower: HashSet<&str> = ["evil-registry.com/malware:v1"].into_iter().collect();
+        let upper: HashSet<&str> = ["EVIL-REGISTRY.COM/malware:v1"].into_iter().collect();
+
+        let lower_result = validate_images(&lower, &settings);
+        assert!(
+            matches!(lower_result, PodSpecValidationResult::NotAllowed(_)),
+            "lowercase should be rejected, got: {lower_result:?}"
+        );
+        let upper_result = validate_images(&upper, &settings);
+        assert!(
+            matches!(upper_result, PodSpecValidationResult::NotAllowed(_)),
+            "UPPERCASE image registry should be rejected too, got: {upper_result:?}"
+        );
+    }
 }
