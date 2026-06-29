@@ -58,7 +58,7 @@ versions = { path = "crates/versions" }
 regex = "1"
 rstest = "0.26.0"
 lazy_static = "1.5"
-mockall = "0.14"
+mockall = "0.15"
 serial_test = "3.2"
 slog = "2.7"
 test_helpers = { path = "crates/test_helpers" }
