@@ -5,43 +5,33 @@
     "helpers:pinGitHubActionDigestsToSemver",
     "schedule:weekends"
   ],
-  "labels": [
-    "area/dependencies"
-  ],
+  "labels": ["area/dependencies"],
   "automerge": false,
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true
   },
-  "ignorePaths": [
-    "policies/kyverno-dsl-policy/go.mod"
-  ],
+  "ignorePaths": ["policies/kyverno-dsl-policy/go.mod"],
   "packageRules": [
     {
       "description": "bundle Rust dependencies updates together",
-      "matchManagers": [
-        "cargo"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor",
-        "major"
-      ],
+      "matchManagers": ["cargo"],
+      "matchUpdateTypes": ["patch", "minor", "major"],
       "groupName": "Rust dependencies",
       "groupSlug": "rust-updates",
       "semanticCommits": "enabled",
       "semanticCommitType": "build"
     },
     {
+      "description": "do not bump github.com/deckarep/golang-set/v2 - latest versions panic at runtime when tinygo is used.",
+      "matchManagers": ["gomod"],
+      "matchPackageNames": ["github.com/deckarep/golang-set/v2"],
+      "enabled": false
+    },
+    {
       "description": "bundle Go dependencies updates together",
-      "matchManagers": [
-        "gomod"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor",
-        "major"
-      ],
+      "matchManagers": ["gomod"],
+      "matchUpdateTypes": ["patch", "minor", "major"],
       "groupName": "Go dependencies",
       "groupSlug": "go-updates",
       "semanticCommits": "enabled",
@@ -49,14 +39,8 @@
     },
     {
       "description": "bundle GitHub Actions updates together",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor",
-        "major"
-      ],
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch", "minor", "major"],
       "groupName": "GitHub Actions",
       "groupSlug": "github-actions-updates",
       "semanticCommits": "enabled",
