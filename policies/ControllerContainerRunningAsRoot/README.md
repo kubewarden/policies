@@ -11,6 +11,15 @@ You should set `securityContext.runAsNonRoot` to `true`. Not setting it will def
       runAsNonRoot: true
 ```
 
+## Policy Behavior
+
+This policy detects and flags:
+- Containers where `securityContext.runAsNonRoot` is explicitly set to `false`
+- Pods where `securityContext.runAsNonRoot` is explicitly set to `false`
+- Containers **or pods where `securityContext` is entirely omitted** (will default to running as root)
+
+Even if other `securityContext` fields like `runAsUser` are set, omitting `runAsNonRoot: true` (or omitting the entire `securityContext` block) is considered a violation.
+
 https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 
 # Settings
