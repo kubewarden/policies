@@ -58,13 +58,11 @@ spec:
     	isExcludedNamespace == false
     	not exclude_label_value == controller_input.metadata.labels[exclude_label_key]
 
-    	controller_spec.securityContext
     	not controller_spec.securityContext.runAsNonRoot
     	not controller_spec.securityContext.runAsNonRoot == false
 
     	some i
     	containers := controller_spec.containers[i]
-    	containers.securityContext
     	not containers.securityContext.runAsNonRoot
     	not containers.securityContext.runAsNonRoot == false
 
