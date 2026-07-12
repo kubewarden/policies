@@ -186,4 +186,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Kubernetes API Versions
   io.kubewarden.policy.severity: low
-  com.github.release.tag: deprecated-api-versions-policy/v1.0.9
+  com.github.release.tag: deprecated-api-versions-policy/v1.0.10
