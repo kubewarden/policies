@@ -18,4 +18,4 @@ annotations:
   io.kubewarden.policy.url: https://github.com/kubewarden/policies
   io.kubewarden.policy.source: https://github.com/kubewarden/policies
   io.kubewarden.policy.license: Apache-2.0
-  com.github.release.tag: kyverno-dsl-policy/v0.1.9
+  com.github.release.tag: kyverno-dsl-policy/v0.1.10
