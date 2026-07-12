@@ -33,4 +33,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Secure supply chain
   io.kubewarden.policy.severity: medium
-  com.github.release.tag: trusted-repos-policy/v2.1.2
+  com.github.release.tag: trusted-repos-policy/v2.1.3
