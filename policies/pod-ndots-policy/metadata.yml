@@ -30,4 +30,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: low
   io.kubewarden.policy.category: Resource validation
-  com.github.release.tag: pod-ndots-policy/v1.0.10
+  com.github.release.tag: pod-ndots-policy/v1.0.11
