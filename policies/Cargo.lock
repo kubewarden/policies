@@ -535,7 +535,7 @@ checksum = "a246d82be1c9d791c5dfde9a2bd045fc3cbba3fa2b11ad558f27d01712f00569"
 
 [[package]]
 name = "env-variable-secrets-scanner-policy"
-version = "1.0.13"
+version = "1.0.14"
 dependencies = [
  "base64 0.22.1",
  "encoding",
