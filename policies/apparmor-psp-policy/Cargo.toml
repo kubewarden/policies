@@ -1,6 +1,6 @@
 [package]
 name = "apparmor-psp"
-version = "1.0.12"
+version = "1.0.13"
 authors = ["Flavio Castelli <fcastelli@suse.com>"]
 edition = "2024"
 
