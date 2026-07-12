@@ -27,4 +27,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: PSP
   io.kubewarden.policy.severity: medium
-  com.github.release.tag: selinux-psp-policy/v1.1.0
+  com.github.release.tag: selinux-psp-policy/v1.1.1
