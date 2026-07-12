@@ -26,7 +26,7 @@ annotations:
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/tests/go-wasi-context-aware-test-policy
   # kubewarden specific:
   io.kubewarden.policy.title: go-wasi-context-aware-test-policy
-  io.kubewarden.policy.version: 0.0.4
+  io.kubewarden.policy.version: 0.0.5
   io.kubewarden.policy.description: A test policy that uses context-aware capabilities
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/policies
