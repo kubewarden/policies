@@ -1294,7 +1294,7 @@ dependencies = [
 
 [[package]]
 name = "pod-runtime-class-policy"
-version = "1.0.10"
+version = "1.0.11"
 dependencies = [
  "anyhow",
  "k8s-openapi",
