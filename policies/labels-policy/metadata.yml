@@ -58,4 +58,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Resource validation
   io.kubewarden.policy.severity: low
-  com.github.release.tag: labels-policy/v0.1.8
+  com.github.release.tag: labels-policy/v0.1.9
