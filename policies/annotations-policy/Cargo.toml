@@ -1,6 +1,6 @@
 [package]
 name = "annotations-policy"
-version = "0.1.9"
+version = "0.1.10"
 authors = ["Kubewarden Developers <cncf-kubewarden-maintainers@lists.cncf.io>"]
 edition = "2024"
 
