@@ -33,4 +33,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: namespace
   io.kubewarden.policy.severity: high
-  com.github.release.tag: ns-policyserver-mapper-policy/v0.1.1
+  com.github.release.tag: ns-policyserver-mapper-policy/v0.1.2
