@@ -27,4 +27,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Pod Security
   io.kubewarden.policy.severity: medium
-  com.github.release.tag: psa-label-enforcer-policy/v1.0.12
+  com.github.release.tag: psa-label-enforcer-policy/v1.0.13
