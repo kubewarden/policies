@@ -1,6 +1,6 @@
 [package]
 name = "selinux-psp"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Rafael Fernández López <ereslibre@ereslibre.es>"]
 edition = "2024"
 
