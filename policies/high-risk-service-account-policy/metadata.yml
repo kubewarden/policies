@@ -68,4 +68,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: medium
   io.kubewarden.policy.category: Resource validation
-  com.github.release.tag: high-risk-service-account-policy/v0.1.7
+  com.github.release.tag: high-risk-service-account-policy/v0.1.8
