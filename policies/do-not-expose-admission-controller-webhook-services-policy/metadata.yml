@@ -36,4 +36,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: medium
   io.kubewarden.policy.category: Resource validation
-  com.github.release.tag: do-not-expose-admission-controller-webhook-services-policy/v1.1.6
+  com.github.release.tag: do-not-expose-admission-controller-webhook-services-policy/v1.1.7
