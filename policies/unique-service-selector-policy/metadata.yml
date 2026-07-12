@@ -34,4 +34,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: medium
   io.kubewarden.policy.category: Resource validation
-  com.github.release.tag: unique-service-selector-policy/v1.0.11
+  com.github.release.tag: unique-service-selector-policy/v1.0.12
