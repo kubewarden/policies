@@ -30,4 +30,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Debug
   io.kubewarden.policy.severity: info
-  com.github.release.tag: echo/v0.1.17
+  com.github.release.tag: echo/v0.1.18
