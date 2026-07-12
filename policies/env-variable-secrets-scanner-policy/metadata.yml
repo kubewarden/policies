@@ -58,4 +58,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Secrets
   io.kubewarden.policy.severity: medium
-  com.github.release.tag: env-variable-secrets-scanner-policy/v1.0.13
+  com.github.release.tag: env-variable-secrets-scanner-policy/v1.0.14
