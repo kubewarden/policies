@@ -33,4 +33,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: medium # one of info, low, medium, high, critical. See docs.
   io.kubewarden.policy.category: Resource validation
-  com.github.release.tag: unique-ingress-policy/v1.0.10
+  com.github.release.tag: unique-ingress-policy/v1.0.11
