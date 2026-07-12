@@ -61,4 +61,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: medium # one of info, low, medium, high, critical. See docs.
   io.kubewarden.policy.category: Runtime Enforcer
-  com.github.release.tag: runtime-enforcer-policy/v0.1.2
+  com.github.release.tag: runtime-enforcer-policy/v0.1.3
