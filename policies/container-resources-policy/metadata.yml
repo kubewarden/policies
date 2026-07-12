@@ -66,4 +66,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: medium # one of info, low, medium, high, critical. See docs.
   io.kubewarden.policy.category: Resource validation
-  com.github.release.tag: container-resources-policy/v1.3.4
+  com.github.release.tag: container-resources-policy/v1.3.5
