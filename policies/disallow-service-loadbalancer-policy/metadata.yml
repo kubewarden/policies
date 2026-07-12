@@ -27,4 +27,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Service
   io.kubewarden.policy.severity: high
-  com.github.release.tag: disallow-service-loadbalancer-policy/v1.0.12
+  com.github.release.tag: disallow-service-loadbalancer-policy/v1.0.13
