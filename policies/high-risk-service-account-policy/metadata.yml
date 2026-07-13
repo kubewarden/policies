@@ -57,7 +57,7 @@ annotations:
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/high-risk-service-account
   # kubewarden specific:
   io.kubewarden.policy.title: high-risk-service-account
-  io.kubewarden.policy.version: 0.1.7
+  io.kubewarden.policy.version: 0.1.8
   io.kubewarden.policy.description: Policy to prevent the usage of serviceaccount with too many permissions
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/policies
@@ -68,4 +68,4 @@ annotations:
   # Category indicates policy category. See more here at docs.kubewarden.io
   io.kubewarden.policy.severity: medium
   io.kubewarden.policy.category: Resource validation
-  com.github.release.tag: high-risk-service-account-policy/v0.1.7
+  com.github.release.tag: high-risk-service-account-policy/v0.1.8
