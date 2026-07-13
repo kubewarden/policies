@@ -23,7 +23,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/rancher-project-propagate-labels
   io.kubewarden.policy.title: rancher-project-propagate-labels
-  io.kubewarden.policy.version: 0.1.5
+  io.kubewarden.policy.version: 0.1.6
   io.kubewarden.policy.description: Propagate labels from a Rancher Project to all the Namespaces that belong to it
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/policies
@@ -31,4 +31,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: Rancher
   io.kubewarden.policy.severity: medium
-  com.github.release.tag: rancher-project-propagate-labels/v0.1.5
+  com.github.release.tag: rancher-project-propagate-labels/v0.1.6
