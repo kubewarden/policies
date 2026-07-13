@@ -4,31 +4,31 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.1.17
+version: 0.1.18
 name: echo
 displayName: Echo
-createdAt: 2026-06-12T12:47:27.252470086Z
+createdAt: 2026-07-13T13:47:28.510986708Z
 description: A policy that echoes back Kubernetes' AdmissionReview - useful for Policy Authors
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/echo:v0.1.17
+  image: ghcr.io/kubewarden/policies/echo:v0.1.18
 keywords:
 - developer
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/echo%2Fv0.1.17/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/echo%2Fv0.1.18/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/echo:v0.1.17
+  kwctl pull ghcr.io/kubewarden/policies/echo:v0.1.18
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/echo:v0.1.17
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/echo:v0.1.18
   ```
 maintainers:
 - name: Kubewarden developers
