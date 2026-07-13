@@ -4,31 +4,31 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.12
+version: 1.0.13
 name: disallow-service-loadbalancer
 displayName: Disallow Service Loadbalancer
-createdAt: 2026-06-12T12:38:30.261343034Z
+createdAt: 2026-07-13T13:42:46.040176882Z
 description: A policy that prevents the creation of Service resources of type `LoadBalancer`
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/disallow-service-loadbalancer:v1.0.12
+  image: ghcr.io/kubewarden/policies/disallow-service-loadbalancer:v1.0.13
 keywords:
 - service
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/disallow-service-loadbalancer-policy%2Fv1.0.12/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/disallow-service-loadbalancer-policy%2Fv1.0.13/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/disallow-service-loadbalancer:v1.0.12
+  kwctl pull ghcr.io/kubewarden/policies/disallow-service-loadbalancer:v1.0.13
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/disallow-service-loadbalancer:v1.0.12
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/disallow-service-loadbalancer:v1.0.13
   ```
 maintainers:
 - name: Kubewarden developers
