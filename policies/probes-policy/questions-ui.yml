@@ -1,0 +1,261 @@
+questions:
+  - default: null
+    description: >-
+      This policy validates that Pod containers define liveness and readiness
+      probes, and can enforce basic probe timing configuration.
+    group: Settings
+    label: Description
+    required: false
+    hide_input: true
+    type: string
+    variable: description
+  - default: {}
+    description: >-
+      Configure whether containers must define a liveness probe.
+    group: Settings
+    label: Liveness probe
+    hide_input: true
+    type: map[
+    variable: liveness
+    subquestions:
+      - default: true
+        description: >-
+          Require all containers to define a liveness probe.
+        group: Settings
+        label: Enforce liveness probe
+        required: true
+        type: boolean
+        variable: liveness.enforce
+      - default: null
+        description: >-
+          Minimum allowed liveness probe failure threshold.
+        group: Settings
+        label: Liveness failure threshold minimum
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.failureThreshold.minimum
+      - default: null
+        description: >-
+          Maximum allowed liveness probe failure threshold.
+        group: Settings
+        label: Liveness failure threshold limit
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.failureThreshold.limit
+      - default: null
+        description: >-
+          Minimum allowed liveness probe initial delay in seconds.
+        group: Settings
+        label: Liveness initial delay minimum
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.initialDelaySeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed liveness probe initial delay in seconds.
+        group: Settings
+        label: Liveness initial delay limit
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.initialDelaySeconds.limit
+      - default: null
+        description: >-
+          Minimum allowed liveness probe period in seconds.
+        group: Settings
+        label: Liveness period minimum
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.periodSeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed liveness probe period in seconds.
+        group: Settings
+        label: Liveness period limit
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.periodSeconds.limit
+      - default: null
+        description: >-
+          Minimum allowed liveness probe success threshold.
+        group: Settings
+        label: Liveness success threshold minimum
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.successThreshold.minimum
+      - default: null
+        description: >-
+          Maximum allowed liveness probe success threshold.
+        group: Settings
+        label: Liveness success threshold limit
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.successThreshold.limit
+      - default: null
+        description: >-
+          Minimum allowed liveness probe termination grace period in seconds.
+        group: Settings
+        label: Liveness termination grace period minimum
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.terminationGracePeriodSeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed liveness probe termination grace period in seconds.
+        group: Settings
+        label: Liveness termination grace period limit
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.terminationGracePeriodSeconds.limit
+      - default: null
+        description: >-
+          Minimum allowed liveness probe timeout in seconds.
+        group: Settings
+        label: Liveness timeout minimum
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.timeoutSeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed liveness probe timeout in seconds.
+        group: Settings
+        label: Liveness timeout limit
+        required: false
+        show_if: liveness.enforce=true
+        type: int
+        variable: liveness.timeoutSeconds.limit
+  - default: {}
+    description: >-
+      Configure whether containers must define a readiness probe.
+    group: Settings
+    label: Readiness probe
+    hide_input: true
+    type: map[
+    variable: readiness
+    subquestions:
+      - default: true
+        description: >-
+          Require all containers to define a readiness probe.
+        group: Settings
+        label: Enforce readiness probe
+        required: true
+        type: boolean
+        variable: readiness.enforce
+      - default: null
+        description: >-
+          Minimum allowed readiness probe failure threshold.
+        group: Settings
+        label: Readiness failure threshold minimum
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.failureThreshold.minimum
+      - default: null
+        description: >-
+          Maximum allowed readiness probe failure threshold.
+        group: Settings
+        label: Readiness failure threshold limit
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.failureThreshold.limit
+      - default: null
+        description: >-
+          Minimum allowed readiness probe initial delay in seconds.
+        group: Settings
+        label: Readiness initial delay minimum
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.initialDelaySeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed readiness probe initial delay in seconds.
+        group: Settings
+        label: Readiness initial delay limit
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.initialDelaySeconds.limit
+      - default: null
+        description: >-
+          Minimum allowed readiness probe period in seconds.
+        group: Settings
+        label: Readiness period minimum
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.periodSeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed readiness probe period in seconds.
+        group: Settings
+        label: Readiness period limit
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.periodSeconds.limit
+      - default: null
+        description: >-
+          Minimum allowed readiness probe success threshold.
+        group: Settings
+        label: Readiness success threshold minimum
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.successThreshold.minimum
+      - default: null
+        description: >-
+          Maximum allowed readiness probe success threshold.
+        group: Settings
+        label: Readiness success threshold limit
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.successThreshold.limit
+      - default: null
+        description: >-
+          Minimum allowed readiness probe termination grace period in seconds.
+        group: Settings
+        label: Readiness termination grace period minimum
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.terminationGracePeriodSeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed readiness probe termination grace period in seconds.
+        group: Settings
+        label: Readiness termination grace period limit
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.terminationGracePeriodSeconds.limit
+      - default: null
+        description: >-
+          Minimum allowed readiness probe timeout in seconds.
+        group: Settings
+        label: Readiness timeout minimum
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.timeoutSeconds.minimum
+      - default: null
+        description: >-
+          Maximum allowed readiness probe timeout in seconds.
+        group: Settings
+        label: Readiness timeout limit
+        required: false
+        show_if: readiness.enforce=true
+        type: int
+        variable: readiness.timeoutSeconds.limit
