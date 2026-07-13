@@ -3,7 +3,7 @@ module github.com/kubewarden/policies/policies/cel-policy
 go 1.26.0
 
 require (
-	github.com/google/cel-go v0.29.1
+	github.com/google/cel-go v0.29.2
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/kubewarden/k8s-objects v1.29.0-kw1
 	github.com/kubewarden/policy-sdk-go v0.13.1
