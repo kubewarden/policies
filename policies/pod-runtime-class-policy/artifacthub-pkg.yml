@@ -4,33 +4,33 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.10
+version: 1.0.11
 name: pod-runtime
 displayName: Pod Runtime
-createdAt: 2026-06-12T12:32:54.191899041Z
+createdAt: 2026-07-13T14:04:12.674438251Z
 description: Policy that controls the usage of Pod runtimeClass
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-runtime:v1.0.10
+  image: ghcr.io/kubewarden/policies/pod-runtime:v1.0.11
 keywords:
 - pod
 - runtime
 - container runtime
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/pod-runtime-class-policy%2Fv1.0.10/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/pod-runtime-class-policy%2Fv1.0.11/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/pod-runtime:v1.0.10
+  kwctl pull ghcr.io/kubewarden/policies/pod-runtime:v1.0.11
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-runtime:v1.0.10
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-runtime:v1.0.11
   ```
 maintainers:
 - name: Kubewarden developers
