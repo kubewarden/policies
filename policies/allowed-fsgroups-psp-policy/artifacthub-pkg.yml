@@ -4,33 +4,33 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.10
+version: 1.0.11
 name: allowed-fsgroups-psp
 displayName: Allowed Fs Groups PSP
-createdAt: 2026-06-12T12:34:34.602654438Z
+createdAt: 2026-07-13T13:40:22.799676229Z
 description: Replacement for the Kubernetes Pod Security Policy that controls the usage of fsGroups in the pod security context
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/allowed-fsgroups-psp:v1.0.10
+  image: ghcr.io/kubewarden/policies/allowed-fsgroups-psp:v1.0.11
 keywords:
 - psp
 - container
 - runtime
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/allowed-fsgroups-psp-policy%2Fv1.0.10/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/allowed-fsgroups-psp-policy%2Fv1.0.11/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/allowed-fsgroups-psp:v1.0.10
+  kwctl pull ghcr.io/kubewarden/policies/allowed-fsgroups-psp:v1.0.11
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/allowed-fsgroups-psp:v1.0.10
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/allowed-fsgroups-psp:v1.0.11
   ```
 maintainers:
 - name: Kubewarden developers
