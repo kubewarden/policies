@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.1.0
+version: 1.1.1
 name: selinux-psp
 displayName: Selinux PSP
-createdAt: 2026-06-12T12:20:13.03344622Z
+createdAt: 2026-07-13T13:56:53.646057898Z
 description: Replacement for the Kubernetes Pod Security Policy that controls the usage of SELinux
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/selinux-psp:v1.1.0
+  image: ghcr.io/kubewarden/policies/selinux-psp:v1.1.1
 keywords:
 - psp
 - container
@@ -21,17 +21,17 @@ keywords:
 - selinux
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/selinux-psp-policy%2Fv1.1.0/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/selinux-psp-policy%2Fv1.1.1/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/selinux-psp:v1.1.0
+  kwctl pull ghcr.io/kubewarden/policies/selinux-psp:v1.1.1
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/selinux-psp:v1.1.0
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/selinux-psp:v1.1.1
   ```
 maintainers:
 - name: Kubewarden developers
