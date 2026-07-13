@@ -180,7 +180,7 @@ fn do_validate_pod_security_context(
         {
             return Err(anyhow!(format!(
                 "Invalid podspec seccomp profile types: {}",
-                &seccomp_profile.type_
+                seccomp_profile.type_
             )));
         }
         if seccomp_profile.type_ == "Localhost" {
@@ -194,7 +194,7 @@ fn do_validate_pod_security_context(
                     {
                         return Err(anyhow!(format!(
                             "Invalid podspec seccomp profile: {}",
-                            &localhost_profile
+                            localhost_profile
                         )));
                     }
                 }
