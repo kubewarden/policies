@@ -1,6 +1,6 @@
 [package]
 name = "psp-allowed-fsgroups"
-version = "1.0.10"
+version = "1.0.11"
 authors = ["Rafael Fernández López <ereslibre@ereslibre.es>"]
 edition = "2024"
 

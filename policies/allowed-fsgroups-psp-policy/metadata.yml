@@ -14,7 +14,7 @@ executionMode: kubewarden-wapc
 annotations:
   # artifacthub specific
   io.kubewarden.policy.title: allowed-fsgroups-psp
-  io.kubewarden.policy.version: 1.0.10
+  io.kubewarden.policy.version: 1.0.11
   io.artifacthub.displayName: Allowed Fs Groups PSP
   io.artifacthub.resources: Pod
   io.artifacthub.keywords: psp, container, runtime
@@ -27,4 +27,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.severity: medium
   io.kubewarden.policy.category: PSP
-  com.github.release.tag: allowed-fsgroups-psp-policy/v1.0.10
+  com.github.release.tag: allowed-fsgroups-psp-policy/v1.0.11
