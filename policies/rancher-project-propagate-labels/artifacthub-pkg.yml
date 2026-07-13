@@ -4,32 +4,32 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.1.5
+version: 0.1.6
 name: rancher-project-propagate-labels
 displayName: Rancher Project propagate labels
-createdAt: 2026-06-12T13:02:00.221412611Z
+createdAt: 2026-07-13T14:02:35.170139582Z
 description: Propagate labels from a Rancher Project to all the Namespaces that belong to it
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.5
+  image: ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.6
 keywords:
 - namespace
 - rancher project
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/rancher-project-propagate-labels%2Fv0.1.5/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/rancher-project-propagate-labels%2Fv0.1.6/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.5
+  kwctl pull ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.6
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.5
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/rancher-project-propagate-labels:v0.1.6
   ```
 maintainers:
 - name: Kubewarden developers
