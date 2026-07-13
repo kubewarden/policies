@@ -19,7 +19,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/allowed-proc-mount-types-psp
   io.kubewarden.policy.title: allowed-proc-mount-types-psp
-  io.kubewarden.policy.version: 1.0.13
+  io.kubewarden.policy.version: 1.0.14
   io.kubewarden.policy.description: Replacement for the Kubernetes Pod Security Policy that controls the usage of /proc mount types
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/policies
@@ -27,4 +27,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.severity: medium
   io.kubewarden.policy.category: PSP
-  com.github.release.tag: allowed-proc-mount-types-psp-policy/v1.0.13
+  com.github.release.tag: allowed-proc-mount-types-psp-policy/v1.0.14
