@@ -4,17 +4,17 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.1.1
+version: 0.1.2
 name: ns-policyserver-mapper
 displayName: Namespace to PolicyServer mapper
-createdAt: 2026-06-12T12:59:04.528543943Z
+createdAt: 2026-07-13T14:14:01.941199038Z
 description: |
   Mutates AdmissionPolicy and AdmissionPolicyGroup resources to enforce the PolicyServer they run on. The target PolicyServer is read from the `admission.kubewarden.io/policy-server` label of the Namespace where the policy is being created or updated. Requests are rejected when the label is absent, preventing policies from being scheduled on an unintended PolicyServer.
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/ns-policyserver-mapper:v0.1.1
+  image: ghcr.io/kubewarden/policies/ns-policyserver-mapper:v0.1.2
 keywords:
 - namespace
 - policies
@@ -23,17 +23,17 @@ keywords:
 - admissionpolicygroup
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/ns-policyserver-mapper-policy%2Fv0.1.1/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/ns-policyserver-mapper-policy%2Fv0.1.2/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/ns-policyserver-mapper:v0.1.1
+  kwctl pull ghcr.io/kubewarden/policies/ns-policyserver-mapper:v0.1.2
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/ns-policyserver-mapper:v0.1.1
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/ns-policyserver-mapper:v0.1.2
   ```
 maintainers:
 - name: Kubewarden developers
