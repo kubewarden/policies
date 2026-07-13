@@ -252,7 +252,7 @@ fn validate_resource<T: ValidatingResource + DeserializeOwned + Serialize>(
                 return kubewarden::reject_request(
                     Some(format!(
                         "Resource {} is not accepted: {}",
-                        &resource.name(),
+                        resource.name(),
                         error
                     )),
                     None,
