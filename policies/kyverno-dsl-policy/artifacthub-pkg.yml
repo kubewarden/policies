@@ -4,33 +4,33 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.1.9
+version: 0.1.10
 name: kyverno-dsl
 displayName: Kyverno DSL policy
-createdAt: 2026-06-12T13:26:03.538458479Z
+createdAt: 2026-07-13T14:24:53.542152723Z
 description: An experimental Kubewarden policy that runs Kyverno policies
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/kyverno-dsl:v0.1.9
+  image: ghcr.io/kubewarden/policies/kyverno-dsl:v0.1.10
 keywords:
 - psp
 - container
 - runtime
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/kyverno-dsl-policy%2Fv0.1.9/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/kyverno-dsl-policy%2Fv0.1.10/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/kyverno-dsl:v0.1.9
+  kwctl pull ghcr.io/kubewarden/policies/kyverno-dsl:v0.1.10
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/kyverno-dsl:v0.1.9
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/kyverno-dsl:v0.1.10
   ```
 maintainers:
 - name: Kubewarden developers
