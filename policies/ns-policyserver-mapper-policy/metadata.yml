@@ -23,7 +23,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/ns-policyserver-mapper
   io.kubewarden.policy.title: ns-policyserver-mapper
-  io.kubewarden.policy.version: 0.1.1
+  io.kubewarden.policy.version: 0.1.2
   io.kubewarden.policy.description: >
     Mutates AdmissionPolicy and AdmissionPolicyGroup resources to enforce the PolicyServer they run on. The target PolicyServer is read from the `admission.kubewarden.io/policy-server` label of the Namespace where the policy is being created or updated. Requests are rejected when the label is absent, preventing policies from being scheduled on an unintended PolicyServer.
 
@@ -33,4 +33,4 @@ annotations:
   io.kubewarden.policy.license: Apache-2.0
   io.kubewarden.policy.category: namespace
   io.kubewarden.policy.severity: high
-  com.github.release.tag: ns-policyserver-mapper-policy/v0.1.1
+  com.github.release.tag: ns-policyserver-mapper-policy/v0.1.2
