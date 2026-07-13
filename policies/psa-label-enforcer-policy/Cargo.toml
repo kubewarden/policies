@@ -1,6 +1,6 @@
 [package]
 name = "psa-label-enforcer"
-version = "1.0.12"
+version = "1.0.13"
 authors = ["José Guilherme Vanz <jguilhermevanz@suse.com>"]
 edition = "2024"
 
