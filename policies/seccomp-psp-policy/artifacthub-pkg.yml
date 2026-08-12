@@ -4,32 +4,32 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 1.0.14
+version: 1.0.15
 name: seccomp-psp
 displayName: Seccomp PSP
-createdAt: 2026-07-13T15:13:37.460225198Z
+createdAt: 2026-08-12T10:35:52.576910939Z
 description: Pod Security Policy that controls usage of Seccomp profile
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/policies
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/seccomp-psp:v1.0.14
+  image: ghcr.io/kubewarden/policies/seccomp-psp:v1.0.15
 keywords:
 - psp
 - seccomp
 links:
 - name: policy
-  url: https://github.com/kubewarden/policies/releases/download/seccomp-psp-policy%2Fv1.0.14/policy.wasm
+  url: https://github.com/kubewarden/policies/releases/download/seccomp-psp-policy%2Fv1.0.15/policy.wasm
 - name: source
   url: https://github.com/kubewarden/policies
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/seccomp-psp:v1.0.14
+  kwctl pull ghcr.io/kubewarden/policies/seccomp-psp:v1.0.15
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/seccomp-psp:v1.0.14
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/seccomp-psp:v1.0.15
   ```
 maintainers:
 - name: Kubewarden developers
