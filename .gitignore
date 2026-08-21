@@ -1,2 +1,3 @@
 target/
 policies/bin/
+updatecli/values/hauler-manifest.generated.yaml

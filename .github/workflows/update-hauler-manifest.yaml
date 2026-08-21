@@ -1,0 +1,53 @@
+name: Update Hauler manifest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 4 * * 2" # 4:30 on Tuesday
+
+permissions: {}
+
+jobs:
+  update-hauler-manifest:
+    name: Update Hauler manifest with published policy versions
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Updatecli in the runner
+        uses: updatecli/updatecli-action@41b9c8d707830a9daebaeaa84c1b62d60b779564 # v3.6.0
+        with:
+          version: v0.109.0
+
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: generate-token
+        with:
+          app-id: ${{ secrets.APP_ID }} # zizmor: ignore[secrets-outside-env]
+          private-key: ${{ secrets.APP_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
+          owner: ${{ github.repository_owner }} # the default
+          repositories: ${{ github.event.repository.name }}
+          # minimum permissions for updatecli to push a branch and open a PR:
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Generate Updatecli values for this repository
+        run: make hauler-values
+
+      - name: Upload generated Updatecli values
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: hauler-manifest-updatecli-values
+          path: updatecli/values/hauler-manifest.generated.yaml
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Update Hauler manifest
+        env:
+          UPDATECLI_GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |-
+          updatecli compose apply --file ./updatecli/update-hauler-manifest.yaml
