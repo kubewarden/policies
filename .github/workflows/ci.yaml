@@ -25,7 +25,7 @@ jobs:
           set -
           git remote -v
 
-          candidate_dirs=($(find policies -maxdepth 2 -name Makefile -exec dirname '{}' \;))
+          candidate_dirs=($(find policies -maxdepth 2 \( -name metadata.yml -o -name metadata.yaml \) -exec dirname '{}' \;))
           if [ "${{github.event_name}}" == "pull_request" ]; then
             # list only changes of files in `policies/`:
             # it's necessary to add the `|| true` in the pipe because if the CI is running in a PR with no changes under
@@ -37,14 +37,14 @@ jobs:
           fi
 
           # Keep only candidates that really are policy directories, i.e.
-          # contain a Makefile. This drops files shared by every policy that
-          # live directly under policies/ (Makefile.rust, common.mk,
-          # excluded-from-publishing.txt, Cargo.toml, go.mod, ...), and drops
-          # directories deleted by the PR, since there is nothing left to
-          # build for either.
+          # contain a metadata.yml/metadata.yaml. This drops files shared by
+          # every policy that live directly under policies/ (Makefile.rust,
+          # common.mk, excluded-from-publishing.txt, Cargo.toml, go.mod, ...),
+          # and drops directories deleted by the PR, since there is nothing
+          # left to build for either.
           policies_working_dirs=()
           for candidate in "${candidate_dirs[@]}"; do
-            if [ -f "$candidate/Makefile" ]; then
+            if [ -f "$candidate/metadata.yml" ] || [ -f "$candidate/metadata.yaml" ]; then
               policies_working_dirs+=("$candidate")
             fi
           done

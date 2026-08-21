@@ -73,10 +73,11 @@ is_excluded() {
   return 1
 }
 
-# Publishable set = every policy directory (contains a Makefile, maxdepth 2,
-# excluding policies/crates/) minus the exclusion list.
-mapfile -t POLICY_DIRS < <(find "$REPO_ROOT/policies" -maxdepth 2 -name Makefile -print0 |
-  while IFS= read -r -d '' makefile; do basename "$(dirname "$makefile")"; done | LC_ALL=C sort)
+# Publishable set = every policy directory (contains a
+# metadata.yml/metadata.yaml, maxdepth 2, excluding policies/crates/) minus
+# the exclusion list.
+mapfile -t POLICY_DIRS < <(find "$REPO_ROOT/policies" -maxdepth 2 \( -name metadata.yml -o -name metadata.yaml \) -print0 |
+  while IFS= read -r -d '' metadata; do basename "$(dirname "$metadata")"; done | LC_ALL=C sort -u)
 
 declare -a PAIRS=()
 for dir in "${POLICY_DIRS[@]}"; do
@@ -102,7 +103,7 @@ done
 
 if [ "${#PAIRS[@]}" -eq 0 ]; then
   echo "ERROR: no publishable policies found (everything is either missing a" >&2
-  echo "       Makefile or listed in $EXCLUSION_LIST)" >&2
+  echo "       metadata.yml/metadata.yaml or listed in $EXCLUSION_LIST)" >&2
   exit 1
 fi
 
