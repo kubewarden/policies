@@ -152,56 +152,57 @@ the CI will generate the tag: `pod-privileged-policy/v0.1.5`
 
 # Hauler Manifest
 
-`hauler_manifest.yaml`, at the root of the repository, is a
+`hauler_manifest.yaml` is at the root of the repository. It is a
 [Hauler](https://github.com/hauler-dev/hauler) content manifest. It lists every
-published policy image (`ghcr.io/kubewarden/policies/<policy-id>:<version>`) so
-downstream consumers can vendor or air-gap all Kubewarden policies with a
-single `hauler` invocation.
+published policy image (`ghcr.io/kubewarden/policies/<policy-id>:<version>`).
+Downstream consumers can use it to vendor or air-gap all Kubewarden policies
+with one `hauler` command.
 
-`.github/workflows/update-hauler-manifest.yaml` reconciles the manifest weekly.
-It runs `updatecli compose apply --file ./updatecli/update-hauler-manifest.yaml`,
-which pulls in the
+`.github/workflows/update-hauler-manifest.yaml` updates the manifest every
+week. It runs
+`updatecli compose apply --file ./updatecli/update-hauler-manifest.yaml`. This
+command uses the
 [`hauler/manifest`](https://github.com/updatecli/policies/tree/main/updatecli/policies/hauler/manifest)
 Updatecli policy. Each version comes from the OCI registry, not from
-`metadata.yml`, so the manifest matches what is actually published even when a
-release PR bumping `metadata.yml` is still open. If anything changed, the
-workflow opens a PR against `main`.
+`metadata.yml`. As a result, the manifest matches the published policies, even
+when a release PR to update `metadata.yml` is still open. If the manifest
+changed, the workflow opens a PR against `main`.
 
 ## Generated Updatecli Values
 
-The values file that policy reads,
-`updatecli/values/hauler-manifest.generated.yaml`, is not committed.
-`hack/generate-hauler-values.sh` writes it, and `make hauler-values` runs the
-script. The workflow uploads the generated file as a build artifact, so you can
-inspect what a given run used.
+The Updatecli policy reads a values file:
+`updatecli/values/hauler-manifest.generated.yaml`. This file is not committed.
+`hack/generate-hauler-values.sh` creates it, and `make hauler-values` runs this
+script. The workflow uploads the generated file as a build artifact. You can
+examine the artifact to see what a run used.
 
-The generated values are tied to one owner and one repository. Both default to
-`kubewarden` and `policies` in `hack/generate-hauler-values.sh`, and they
-decide the image path (`ghcr.io/<owner>/policies/<policy-id>`) and the
-`certificate-identity-regexp` that points at the release workflow. Nothing
-overrides them, so a run on a fork still generates values for the upstream
-`kubewarden` namespace. To generate values for your own fork, call the script
-directly:
+The generated values use one owner and one repository. In
+`hack/generate-hauler-values.sh`, both default to `kubewarden` and `policies`.
+These values set the image path (`ghcr.io/<owner>/policies/<policy-id>`) and
+the `certificate-identity-regexp` that points at the release workflow. Nothing
+overrides these defaults. As a result, a run on a fork still generates values
+for the upstream `kubewarden` namespace. To generate values for your own fork,
+run the script directly:
 
 ```console
 ./hack/generate-hauler-values.sh --owner <you> --repo <your-fork> \
   --output updatecli/values/hauler-manifest.generated.yaml
 ```
 
-Doing that against an existing manifest rewrites the whole thing. Every policy
-is re-added under `ghcr.io/<you>/policies/...`, and because the policy sets
-`prune: true`, every `kubewarden`-owned entry is dropped.
+This command rewrites the whole manifest. It adds every policy again, under
+`ghcr.io/<you>/policies/...`. The policy sets `prune: true`. As a result, it
+removes every `kubewarden`-owned entry.
 
 You do not need to add a newly published policy to the values file by hand. The
-next generation picks up any policy directory that has a `Makefile` and is not
-listed in `policies/excluded-from-publishing.txt`. The reverse case is the one
-to watch. If a policy has no image under `ghcr.io/<owner>/policies/<policy-id>`
-yet, its `dockerimage` source finds no matching tag and the weekly run fails.
-The manifest target depends on every source, so one missing image blocks the
-whole update. Keep such a policy in `policies/excluded-from-publishing.txt`
-until its first release.
+next generation includes any policy directory that has a `metadata.[yaml|yml]`
+and is not in `policies/excluded-from-publishing.txt`. Watch for the reverse
+case. If a policy has no image yet under
+`ghcr.io/<owner>/policies/<policy-id>`, its `dockerimage` source finds no
+matching tag. Then the weekly run fails. The manifest target depends on every
+source. As a result, one missing image blocks the whole update. Keep such a
+policy in `policies/excluded-from-publishing.txt` until its first release.
 
-To preview changes before the scheduled workflow lands them, run:
+To preview changes before the scheduled workflow runs, use these commands:
 
 ```console
 make hauler-values                                  # writes updatecli/values/hauler-manifest.generated.yaml
