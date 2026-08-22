@@ -2,7 +2,7 @@ module github.com/kubewarden/safe-labels-policy
 
 go 1.26
 
-toolchain go1.26.6
+toolchain go1.27.0
 
 replace github.com/go-openapi/strfmt => github.com/kubewarden/strfmt v0.1.3
 
