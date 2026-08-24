@@ -168,10 +168,17 @@ Create it once, with these commands:
 
 ```console
 git switch --orphan hauler-manifest
-git checkout main -- hauler_manifest.yaml
-git commit -s -m "chore: seed the hauler manifest branch"
+git commit -s --allow-empty -m "chore: seed the hauler manifest branch"
 git push -u origin hauler-manifest
+git switch -
 ```
+
+The branch starts with no file. The first run of the workflow creates
+`hauler_manifest.yaml`, because the generated values set `createIfMissing`
+on the file and on the document.
+
+NOTE: `git switch --orphan` removes tracked files from the working tree. It
+keeps untracked and ignored files. Do not add these files to the commit.
 
 ## Automatic Updates
 
