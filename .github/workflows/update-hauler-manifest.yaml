@@ -31,9 +31,9 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
           owner: ${{ github.repository_owner }} # the default
           repositories: ${{ github.event.repository.name }}
-          # minimum permissions for updatecli to push a branch and open a PR:
+          # minimum permission for updatecli to commit to the manifest
+          # branch. The automation commits directly, with no pull request.
           permission-contents: write
-          permission-pull-requests: write
 
       - name: Generate Updatecli values for this repository
         run: make hauler-values
