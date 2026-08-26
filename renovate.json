@@ -45,6 +45,15 @@
       "groupSlug": "github-actions-updates",
       "semanticCommits": "enabled",
       "semanticCommitType": "build"
+    },
+    {
+      "description": "keep Go toolchain/go directive updates (in go.mod files and GitHub Actions go-version) in a dedicated PR, separate from dependency bumps",
+      "matchManagers": ["gomod", "github-actions"],
+      "matchDepNames": ["go"],
+      "groupName": "Go toolchain",
+      "groupSlug": "go-toolchain",
+      "semanticCommits": "enabled",
+      "semanticCommitType": "build"
     }
   ],
   "rebaseWhen": "behind-base-branch",
