@@ -1,0 +1,11 @@
+# Settings to verify images signed with cosign v3 (OCI referrers / Sigstore bundle
+# format) using a public key. The image was signed without uploading to the Rekor
+# transparency log (--tlog-upload=false).
+signatures:
+  - image: "ghcr.io/kubewarden/test-verify-image-signatures:signed-v3-only"
+    pubKeys:
+      - |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEALYYVLuPXXcKajo5meRcU+c6/iZe
+        Dh+o3ZZs1puVW5FyS1cOusnLn209R0IOFL479vm1iFn+auB41JJZUxfc8g==
+        -----END PUBLIC KEY-----
