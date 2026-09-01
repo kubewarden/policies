@@ -1,25 +1,25 @@
 package main
 
-//nolint:godox
+//nolint:godox // tracked TODO, not a lint violation to fix now
 // TODO: figure out if it's worth to move this to a dedicated library
 
-// Message is the optional string used to build validation responses
+// Message is the optional string used to build validation responses.
 type Message string
 
-// Code is the optional error code associated with validation responses
+// Code is the optional error code associated with validation responses.
 type Code uint16
 
 const (
 	// NoMessage can be used when building a response that doesn't have any
-	// message to be shown to the user
+	// message to be shown to the user.
 	NoMessage Message = ""
 
 	// NoCode can be used when building a response that doesn't have any
-	// error code to be shown to the user
+	// error code to be shown to the user.
 	NoCode Code = 0
 )
 
-// ValidationResponse defines the response given when validating a request
+// ValidationResponse defines the response given when validating a request.
 type ValidationResponse struct {
 	Accepted bool `json:"accepted"`
 	// Optional - ignored if accepted
@@ -29,7 +29,7 @@ type ValidationResponse struct {
 }
 
 // SettingsValidationResponse is the response sent by a policy when validating
-// its settings
+// its settings.
 type SettingsValidationResponse struct {
 	Valid bool `json:"valid"`
 	// Optional - ignored if valid
@@ -37,7 +37,7 @@ type SettingsValidationResponse struct {
 }
 
 // AcceptRequest can be used inside of the `validate` function to accept the
-// incoming request
+// incoming request.
 func AcceptRequest() ValidationResponse {
 	return ValidationResponse{
 		Accepted: true,
@@ -47,7 +47,7 @@ func AcceptRequest() ValidationResponse {
 // RejectRequest can be used inside of the `validate` function to reject the
 // incoming request
 // * `message`: optional message to show to the user
-// * `code`: optional error code to show to the user
+// * `code`: optional error code to show to the user.
 func RejectRequest(message Message, code Code) ValidationResponse {
 	response := ValidationResponse{
 		Accepted: false,
@@ -67,7 +67,7 @@ func RejectRequest(message Message, code Code) ValidationResponse {
 }
 
 // AcceptSettings be used inside of the `validateSettings` function to accept the
-// incoming settings
+// incoming settings.
 func AcceptSettings() SettingsValidationResponse {
 	return SettingsValidationResponse{
 		Valid: true,
@@ -76,7 +76,7 @@ func AcceptSettings() SettingsValidationResponse {
 
 // RejectSettings can be used inside of the `validate_settings` function to
 // mark the user provided settings as invalid
-// * `message`: optional message to show to the user
+// * `message`: optional message to show to the user.
 func RejectSettings(message Message) SettingsValidationResponse {
 	response := SettingsValidationResponse{
 		Valid: false,

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"strings"
 
 	kyvernov1 "github.com/kyverno/kyverno/api/kyverno/v1"
@@ -26,7 +27,7 @@ func validate(input []byte) []byte {
 	if err != nil {
 		response = RejectRequest(
 			Message(fmt.Sprintf("Error deserializing validation request: %v", err)),
-			Code(400))
+			Code(http.StatusBadRequest))
 	} else {
 		response = validateAdmissionReview(validationRequest.Settings, validationRequest.Request)
 	}
@@ -38,12 +39,15 @@ func validate(input []byte) []byte {
 	return responseBytes
 }
 
-func validateAdmissionReview(policySettings CliPolicySettings, request admissionv1.AdmissionRequest) ValidationResponse {
+func validateAdmissionReview(
+	policySettings CliPolicySettings,
+	request admissionv1.AdmissionRequest,
+) ValidationResponse {
 	policyBytes, err := yaml.ToJSON([]byte(policySettings.Policy))
 	if err != nil {
 		return RejectRequest(
 			Message(fmt.Sprintf("failed to convert policy to JSON: %v", err)),
-			Code(400))
+			Code(http.StatusBadRequest))
 	}
 
 	policy := &kyvernov1.ClusterPolicy{}
@@ -51,7 +55,7 @@ func validateAdmissionReview(policySettings CliPolicySettings, request admission
 	if err != nil {
 		return RejectRequest(
 			Message(fmt.Sprintf("cannot unmarshal policy: %v", err)),
-			Code(400))
+			Code(http.StatusBadRequest))
 	}
 
 	cfg := config.NewDefaultConfiguration(false)
@@ -62,7 +66,7 @@ func validateAdmissionReview(policySettings CliPolicySettings, request admission
 	if err = engineContext.AddRequest(request); err != nil {
 		return RejectRequest(
 			Message(fmt.Sprintf("engine context: cannot add request %v", err)),
-			Code(500))
+			Code(http.StatusInternalServerError))
 	}
 
 	e := engine.NewEngine(
@@ -79,7 +83,7 @@ func validateAdmissionReview(policySettings CliPolicySettings, request admission
 	if err != nil {
 		return RejectRequest(
 			Message(fmt.Sprintf("cannot extract resources %v", err)),
-			Code(500))
+			Code(http.StatusInternalServerError))
 	}
 
 	policyContext := engine.NewPolicyContextWithJsonContext(kyvernov1.Create, engineContext).

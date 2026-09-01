@@ -55,7 +55,7 @@ func NewCompiler() (*Compiler, error) {
 		// Variables
 		cel.Variable("object", cel.DynType),
 		cel.Variable("oldObject", cel.DynType),
-		ext.NativeTypes(reflect.TypeOf(&variables{})),
+		ext.NativeTypes(reflect.TypeFor[*variables]()),
 		cel.Variable("variables", cel.ObjectType("cel.variables")),
 		// TODO: change this to cel.NativeType by using kw generated k8s objects
 		// once the CEL library supports binding nested objects.
@@ -88,7 +88,7 @@ func (c *Compiler) CompileCELExpression(expression string) (*cel.Ast, error) {
 }
 
 func (c *Compiler) EvalCELExpression(
-	vars map[string]interface{}, ast *cel.Ast,
+	vars map[string]any, ast *cel.Ast,
 ) (ref.Val, error) {
 	prog, err := c.env.Program(ast, cel.EvalOptions(cel.OptOptimize))
 	if err != nil {

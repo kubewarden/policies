@@ -148,39 +148,99 @@ func (*quantity) LibraryName() string {
 
 var quantityLibraryDecls = map[string][]cel.FunctionOpt{
 	"quantity": {
-		cel.Overload("string_to_quantity", []*cel.Type{cel.StringType}, apiservercel.QuantityType, cel.UnaryBinding((stringToQuantity))),
+		cel.Overload(
+			"string_to_quantity",
+			[]*cel.Type{cel.StringType},
+			apiservercel.QuantityType,
+			cel.UnaryBinding((stringToQuantity)),
+		),
 	},
 	"isQuantity": {
 		cel.Overload("is_quantity_string", []*cel.Type{cel.StringType}, cel.BoolType, cel.UnaryBinding(isQuantity)),
 	},
 	"sign": {
-		cel.Overload("quantity_sign", []*cel.Type{apiservercel.QuantityType}, cel.IntType, cel.UnaryBinding(quantityGetSign)),
+		cel.Overload(
+			"quantity_sign",
+			[]*cel.Type{apiservercel.QuantityType},
+			cel.IntType,
+			cel.UnaryBinding(quantityGetSign),
+		),
 	},
 	"isGreaterThan": {
-		cel.MemberOverload("quantity_is_greater_than", []*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType}, cel.BoolType, cel.BinaryBinding(quantityIsGreaterThan)),
+		cel.MemberOverload(
+			"quantity_is_greater_than",
+			[]*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType},
+			cel.BoolType,
+			cel.BinaryBinding(quantityIsGreaterThan),
+		),
 	},
 	"isLessThan": {
-		cel.MemberOverload("quantity_is_less_than", []*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType}, cel.BoolType, cel.BinaryBinding(quantityIsLessThan)),
+		cel.MemberOverload(
+			"quantity_is_less_than",
+			[]*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType},
+			cel.BoolType,
+			cel.BinaryBinding(quantityIsLessThan),
+		),
 	},
 	"compareTo": {
-		cel.MemberOverload("quantity_compare_to", []*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType}, cel.IntType, cel.BinaryBinding(quantityCompareTo)),
+		cel.MemberOverload(
+			"quantity_compare_to",
+			[]*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType},
+			cel.IntType,
+			cel.BinaryBinding(quantityCompareTo),
+		),
 	},
 	"asApproximateFloat": {
-		cel.MemberOverload("quantity_get_float", []*cel.Type{apiservercel.QuantityType}, cel.DoubleType, cel.UnaryBinding(quantityGetApproximateFloat)),
+		cel.MemberOverload(
+			"quantity_get_float",
+			[]*cel.Type{apiservercel.QuantityType},
+			cel.DoubleType,
+			cel.UnaryBinding(quantityGetApproximateFloat),
+		),
 	},
 	"asInteger": {
-		cel.MemberOverload("quantity_get_int", []*cel.Type{apiservercel.QuantityType}, cel.IntType, cel.UnaryBinding(quantityGetValue)),
+		cel.MemberOverload(
+			"quantity_get_int",
+			[]*cel.Type{apiservercel.QuantityType},
+			cel.IntType,
+			cel.UnaryBinding(quantityGetValue),
+		),
 	},
 	"isInteger": {
-		cel.MemberOverload("quantity_is_integer", []*cel.Type{apiservercel.QuantityType}, cel.BoolType, cel.UnaryBinding(quantityCanValue)),
+		cel.MemberOverload(
+			"quantity_is_integer",
+			[]*cel.Type{apiservercel.QuantityType},
+			cel.BoolType,
+			cel.UnaryBinding(quantityCanValue),
+		),
 	},
 	"add": {
-		cel.MemberOverload("quantity_add", []*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType}, apiservercel.QuantityType, cel.BinaryBinding(quantityAdd)),
-		cel.MemberOverload("quantity_add_int", []*cel.Type{apiservercel.QuantityType, cel.IntType}, apiservercel.QuantityType, cel.BinaryBinding(quantityAddInt)),
+		cel.MemberOverload(
+			"quantity_add",
+			[]*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType},
+			apiservercel.QuantityType,
+			cel.BinaryBinding(quantityAdd),
+		),
+		cel.MemberOverload(
+			"quantity_add_int",
+			[]*cel.Type{apiservercel.QuantityType, cel.IntType},
+			apiservercel.QuantityType,
+			cel.BinaryBinding(quantityAddInt),
+		),
 	},
 	"sub": {
-		cel.MemberOverload("quantity_sub", []*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType}, apiservercel.QuantityType, cel.BinaryBinding(quantitySub)),
-		cel.MemberOverload("quantity_sub_int", []*cel.Type{apiservercel.QuantityType, cel.IntType}, apiservercel.QuantityType, cel.BinaryBinding(quantitySubInt)),
+		cel.MemberOverload(
+			"quantity_sub",
+			[]*cel.Type{apiservercel.QuantityType, apiservercel.QuantityType},
+			apiservercel.QuantityType,
+			cel.BinaryBinding(quantitySub),
+		),
+		cel.MemberOverload(
+			"quantity_sub_int",
+			[]*cel.Type{apiservercel.QuantityType, cel.IntType},
+			apiservercel.QuantityType,
+			cel.BinaryBinding(quantitySubInt),
+		),
 	},
 }
 

@@ -9,7 +9,7 @@ import (
 	kubewardenProtocol "github.com/kubewarden/policy-sdk-go/protocol"
 )
 
-// Settings defines the settings of the policy
+// Settings defines the settings of the policy.
 type Settings struct {
 	RequiredAnnotations  map[string]string  `json:"requiredAnnotations"`
 	ForbiddenAnnotations mapset.Set[string] `json:"forbiddenAnnotations"`

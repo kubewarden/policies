@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 
 	mapset "github.com/deckarep/golang-set/v2"
@@ -18,14 +19,14 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	settings, err := NewSettingsFromValidationReq(validationRequest)
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	data := gjson.GetBytes(

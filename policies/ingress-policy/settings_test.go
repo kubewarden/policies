@@ -20,7 +20,7 @@ func TestParsingSettingsWithAllValuesProvidedFromValidationReq(t *testing.T) {
 	}
 
 	expectedSettings := Settings{
-		RequireTls: true,
+		RequireTLS: true,
 		AllowPorts: mapset.NewThreadUnsafeSet[uint64](443),
 		DenyPorts:  mapset.NewThreadUnsafeSet[uint64](80, 8080),
 	}
@@ -40,8 +40,8 @@ func TestParsingSettingsWithAllValuesProvidedFromValidationReq(t *testing.T) {
 		t.Errorf("Unexpected error %+v", err)
 	}
 
-	if settings.RequireTls != true {
-		t.Errorf("Wrong value for RequireTls")
+	if settings.RequireTLS != true {
+		t.Errorf("Wrong value for RequireTLS")
 	}
 
 	if !settings.AllowPorts.Contains(uint64(443)) {
@@ -65,7 +65,7 @@ func TestParsingSettingsWithSomeValuesProvided(t *testing.T) {
 	}
 
 	expectedSettings := Settings{
-		RequireTls: false,
+		RequireTLS: false,
 		AllowPorts: mapset.NewThreadUnsafeSet[uint64](443),
 		DenyPorts:  mapset.NewThreadUnsafeSet[uint64](),
 	}
@@ -85,8 +85,8 @@ func TestParsingSettingsWithSomeValuesProvided(t *testing.T) {
 		t.Errorf("Unexpected error %+v", err)
 	}
 
-	if settings.RequireTls != false {
-		t.Errorf("Wrong value for RequireTls")
+	if settings.RequireTLS != false {
+		t.Errorf("Wrong value for RequireTLS")
 	}
 
 	if !settings.AllowPorts.Contains(uint64(443)) {
@@ -112,8 +112,8 @@ func TestParsingSettingsFromValidateSettingsPayload(t *testing.T) {
 		t.Errorf("Unexpected error %+v", err)
 	}
 
-	if settings.RequireTls != true {
-		t.Errorf("Wrong value for RequireTls")
+	if settings.RequireTLS != true {
+		t.Errorf("Wrong value for RequireTLS")
 	}
 
 	if !settings.AllowPorts.Contains(uint64(443)) {

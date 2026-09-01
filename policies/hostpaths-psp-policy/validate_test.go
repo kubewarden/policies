@@ -11,10 +11,6 @@ import (
 	kubewarden_testing "github.com/kubewarden/policy-sdk-go/testing"
 )
 
-func ptrString(s string) *string {
-	return &s
-}
-
 func TestEmptySettingsLeadsToApproval(t *testing.T) {
 	settings := Settings{}
 
@@ -304,39 +300,48 @@ func TestRejection(t *testing.T) {
 	}
 }
 
+// workloadTypeTestCase describes a single TestWorkloadTypes test case.
+type workloadTypeTestCase struct {
+	name     string
+	kind     kubewarden_protocol.GroupVersionKind
+	payload  any
+	settings Settings
+	error    string
+}
+
 func TestWorkloadTypes(t *testing.T) {
 	commonPodSpec := corev1.PodSpec{
 		Volumes: []*corev1.Volume{
 			{
-				Name: ptrString("test-data"),
+				Name: new("test-data"),
 				HostPath: &corev1.HostPathVolumeSource{
-					Path: ptrString("/data"),
+					Path: new("/data"),
 					Type: "Directory",
 				},
 			},
 			{
-				Name: ptrString("test-var"),
+				Name: new("test-var"),
 				HostPath: &corev1.HostPathVolumeSource{
-					Path: ptrString("/var"),
+					Path: new("/var"),
 					Type: "Directory",
 				},
 			},
 			{
-				Name: ptrString("test-var-local-aaa"),
+				Name: new("test-var-local-aaa"),
 				HostPath: &corev1.HostPathVolumeSource{
-					Path: ptrString("/var/local/aaa"),
+					Path: new("/var/local/aaa"),
 					Type: "DirectoryOrCreate",
 				},
 			},
 			{
-				Name: ptrString("kube-api-access-kplj9"),
+				Name: new("kube-api-access-kplj9"),
 				Projected: &corev1.ProjectedVolumeSource{
 					DefaultMode: 420,
 					Sources: []*corev1.VolumeProjection{
 						{
 							ServiceAccountToken: &corev1.ServiceAccountTokenProjection{
 								ExpirationSeconds: 3607,
-								Path:              ptrString("token"),
+								Path:              new("token"),
 							},
 						},
 						{
@@ -344,8 +349,8 @@ func TestWorkloadTypes(t *testing.T) {
 								Name: "kube-root-ca.crt",
 								Items: []*corev1.KeyToPath{
 									{
-										Key:  ptrString("ca.crt"),
-										Path: ptrString("ca.crt"),
+										Key:  new("ca.crt"),
+										Path: new("ca.crt"),
 									},
 								},
 							},
@@ -356,9 +361,9 @@ func TestWorkloadTypes(t *testing.T) {
 									{
 										FieldRef: &corev1.ObjectFieldSelector{
 											APIVersion: "v1",
-											FieldPath:  ptrString("metadata.namespace"),
+											FieldPath:  new("metadata.namespace"),
 										},
-										Path: ptrString("namespace"),
+										Path: new("namespace"),
 									},
 								},
 							},
@@ -371,8 +376,8 @@ func TestWorkloadTypes(t *testing.T) {
 			{
 				VolumeMounts: []*corev1.VolumeMount{
 					{
-						MountPath: ptrString("/test-data-init"),
-						Name:      ptrString("test-data"),
+						MountPath: new("/test-data-init"),
+						Name:      new("test-data"),
 						ReadOnly:  true,
 					},
 				},
@@ -380,8 +385,8 @@ func TestWorkloadTypes(t *testing.T) {
 			{
 				VolumeMounts: []*corev1.VolumeMount{
 					{
-						MountPath: ptrString("/test-var-init2"),
-						Name:      ptrString("test-var"),
+						MountPath: new("/test-var-init2"),
+						Name:      new("test-var"),
 					},
 				},
 			},
@@ -390,16 +395,16 @@ func TestWorkloadTypes(t *testing.T) {
 			{
 				VolumeMounts: []*corev1.VolumeMount{
 					{
-						MountPath: ptrString("/test-var"),
-						Name:      ptrString("test-var"),
+						MountPath: new("/test-var"),
+						Name:      new("test-var"),
 					},
 					{
-						MountPath: ptrString("/test-var-local-aaa"),
-						Name:      ptrString("test-var-local-aaa"),
+						MountPath: new("/test-var-local-aaa"),
+						Name:      new("test-var-local-aaa"),
 					},
 					{
-						MountPath: ptrString("/var/run/secrets/kubernetes.io/serviceaccount"),
-						Name:      ptrString("kube-api-access-kplj9"),
+						MountPath: new("/var/run/secrets/kubernetes.io/serviceaccount"),
+						Name:      new("kube-api-access-kplj9"),
 						ReadOnly:  true,
 					},
 				},
@@ -407,8 +412,8 @@ func TestWorkloadTypes(t *testing.T) {
 			{
 				VolumeMounts: []*corev1.VolumeMount{
 					{
-						MountPath: ptrString("/test-var-local-aaa"),
-						Name:      ptrString("test-var-local-aaa"),
+						MountPath: new("/test-var-local-aaa"),
+						Name:      new("test-var-local-aaa"),
 					},
 				},
 			},
@@ -435,13 +440,7 @@ func TestWorkloadTypes(t *testing.T) {
 		"hostPath '/var' mounted as 'test-var' is not in the AllowedHostPaths list\n" +
 		"hostPath '/var/local/aaa' mounted as 'test-var-local-aaa' should be readOnly 'true'\n" +
 		"hostPath '/var/local/aaa' mounted as 'test-var-local-aaa' should be readOnly 'true'"
-	for _, tcase := range []struct {
-		name     string
-		kind     kubewarden_protocol.GroupVersionKind
-		payload  any
-		settings Settings
-		error    string
-	}{
+	for _, tcase := range []workloadTypeTestCase{
 		{
 			name: "deployment",
 			kind: kubewarden_protocol.GroupVersionKind{
@@ -568,49 +567,54 @@ func TestWorkloadTypes(t *testing.T) {
 		},
 	} {
 		t.Run(tcase.name, func(t *testing.T) {
-			objectRaw, err := json.Marshal(tcase.payload)
-			if err != nil {
-				t.Fatalf("on test %q, got unexpected error '%+v'", tcase.name, err)
-			}
-
-			kubeAdmissionReq := kubewarden_protocol.KubernetesAdmissionRequest{
-				Kind:   tcase.kind,
-				Object: objectRaw,
-			}
-
-			settingsRaw, err := json.Marshal(tcase.settings)
-			if err != nil {
-				t.Fatalf("on test %q, got unexpected error '%+v'", tcase.name, err)
-			}
-
-			validationRequest := kubewarden_protocol.ValidationRequest{
-				Request:  kubeAdmissionReq,
-				Settings: settingsRaw,
-			}
-
-			payload, err := json.Marshal(validationRequest)
-			if err != nil {
-				t.Errorf("on test %q, got unexpected error '%+v'", tcase.name, err)
-			}
-
-			responsePayload, err := validate(payload)
-			if err != nil {
-				t.Errorf("on test %q, got unexpected error '%+v'", tcase.name, err)
-			}
-
-			var response kubewarden_protocol.ValidationResponse
-			if err := json.Unmarshal(responsePayload, &response); err != nil {
-				t.Errorf("on test %q, got unexpected error '%+v'", tcase.name, err)
-			}
-
-			if response.Accepted != false {
-				t.Fatalf("on test %q, got unexpected approval", tcase.name)
-			}
-
-			if *response.Message != tcase.error {
-				t.Errorf("on test %q, got '%s' instead of '%s'",
-					tcase.name, *response.Message, tcase.error)
-			}
+			runWorkloadTypeTestCase(t, tcase)
 		})
+	}
+}
+
+// runWorkloadTypeTestCase executes a single TestWorkloadTypes test case.
+func runWorkloadTypeTestCase(t *testing.T, tcase workloadTypeTestCase) {
+	objectRaw, err := json.Marshal(tcase.payload)
+	if err != nil {
+		t.Fatalf("on test %q, got unexpected error '%+v'", tcase.name, err)
+	}
+
+	kubeAdmissionReq := kubewarden_protocol.KubernetesAdmissionRequest{
+		Kind:   tcase.kind,
+		Object: objectRaw,
+	}
+
+	settingsRaw, err := json.Marshal(tcase.settings)
+	if err != nil {
+		t.Fatalf("on test %q, got unexpected error '%+v'", tcase.name, err)
+	}
+
+	validationRequest := kubewarden_protocol.ValidationRequest{
+		Request:  kubeAdmissionReq,
+		Settings: settingsRaw,
+	}
+
+	payload, err := json.Marshal(validationRequest)
+	if err != nil {
+		t.Errorf("on test %q, got unexpected error '%+v'", tcase.name, err)
+	}
+
+	responsePayload, err := validate(payload)
+	if err != nil {
+		t.Errorf("on test %q, got unexpected error '%+v'", tcase.name, err)
+	}
+
+	var response kubewarden_protocol.ValidationResponse
+	if err := json.Unmarshal(responsePayload, &response); err != nil {
+		t.Errorf("on test %q, got unexpected error '%+v'", tcase.name, err)
+	}
+
+	if response.Accepted != false {
+		t.Fatalf("on test %q, got unexpected approval", tcase.name)
+	}
+
+	if *response.Message != tcase.error {
+		t.Errorf("on test %q, got '%s' instead of '%s'",
+			tcase.name, *response.Message, tcase.error)
 	}
 }

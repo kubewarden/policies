@@ -17,13 +17,12 @@ import (
 	kubewarden_testing "github.com/kubewarden/policy-sdk-go/testing"
 )
 
-const SHOULD_ACCEPT = true
-const SHOULD_REJECT = false
-const SHOULD_MUTATE = true
-const NO_MUTATION = false
-const TEST_NAMESPACE = "default"
+const shouldAccept = true
+const expectMutation = true
+const noMutation = false
+const testNamespace = "default"
 
-func buildValidationRequest(propagatedLabels []string, resource interface{}, kind string) ([]byte, error) {
+func buildValidationRequest(propagatedLabels []string, resource any, kind string) ([]byte, error) {
 	settings := Settings{PropagatedLabels: propagatedLabels}
 	payload, err := kubewarden_testing.BuildValidationRequest(resource, &settings)
 
@@ -35,40 +34,49 @@ func buildValidationRequest(propagatedLabels []string, resource interface{}, kin
 		return nil, err
 	}
 	return payload, nil
-
 }
 
-func basicResposeValidation(responsePayload []byte, accepted, should_mutate bool) (*kubewarden_protocol.ValidationResponse, error) {
+func basicResposeValidation(
+	responsePayload []byte,
+	accepted, shouldMutate bool,
+) (*kubewarden_protocol.ValidationResponse, error) {
 	var response kubewarden_protocol.ValidationResponse
 	if err := json.Unmarshal(responsePayload, &response); err != nil {
-		return nil, fmt.Errorf("Unexpected error: %+v", err)
+		return nil, fmt.Errorf("Unexpected error: %+w", err)
 	}
 
 	if response.Accepted != accepted {
 		return nil, fmt.Errorf("Unexpected rejection: msg %s - code %d", *response.Message, *response.Code)
 	}
 
-	if response.MutatedObject == nil && should_mutate {
+	if response.MutatedObject == nil && shouldMutate {
 		return nil, fmt.Errorf("Missing mutated resource")
 	}
 	return &response, nil
-
 }
 
 func validateLabels(resourceLabels, expectedLabels map[string]string) error {
 	for expectedLabel, expectedValue := range expectedLabels {
 		if resourceValue, found := resourceLabels[expectedLabel]; found {
 			if resourceValue != expectedValue {
-				return fmt.Errorf("Resource label \"%s\" expected value:  \"%s\". Found \"%s\"", expectedLabel, expectedValue, resourceValue)
+				return fmt.Errorf(
+					"Resource label \"%s\" expected value:  \"%s\". Found \"%s\"",
+					expectedLabel,
+					expectedValue,
+					resourceValue,
+				)
 			}
 		} else {
 			return fmt.Errorf("Mutated resource missing label \"%s\"", expectedLabel)
 		}
-
 	}
 
 	if len(resourceLabels) != len(expectedLabels) {
-		return fmt.Errorf("Mutated resource contains %d labels. But the expected is %d", len(resourceLabels), len(expectedLabels))
+		return fmt.Errorf(
+			"Mutated resource contains %d labels. But the expected is %d",
+			len(resourceLabels),
+			len(expectedLabels),
+		)
 	}
 	return nil
 }
@@ -80,7 +88,7 @@ func updateValidationRequestKindAndNamespace(payload []byte, kind string) ([]byt
 		return nil, err
 	}
 	validationRequest.Request.Kind.Kind = kind
-	validationRequest.Request.Namespace = TEST_NAMESPACE
+	validationRequest.Request.Namespace = testNamespace
 	return json.Marshal(validationRequest)
 }
 
@@ -101,18 +109,17 @@ func TestPodWithNoLabels(t *testing.T) {
 		},
 	}
 
-	payload, err := buildValidationRequest(propagatedLabels, resource, POD_KIND)
+	payload, err := buildValidationRequest(propagatedLabels, resource, PodKind)
 	if err != nil {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	
 	wapcRequest, err := json.Marshal(&kubernetes.GetResourceRequest{
-			APIVersion:   "v1",
-			Kind:         "Namespace",
-			Name:         "default",
-			DisableCache: false,
-		})
+		APIVersion:   "v1",
+		Kind:         "Namespace",
+		Name:         "default",
+		DisableCache: false,
+	})
 	if err != nil {
 		t.Errorf("Cannot create wapcRequest payload: %+v", err)
 	}
@@ -128,7 +135,7 @@ func TestPodWithNoLabels(t *testing.T) {
 
 	wapcClient := mocks.NewMockWapcClient(t)
 	wapcClient.On("HostCall", "kubewarden", "kubernetes", "get_resource",
-	wapcRequest).Return(wapcResponse, nil)
+		wapcRequest).Return(wapcResponse, nil)
 
 	host.Client = wapcClient
 
@@ -137,12 +144,12 @@ func TestPodWithNoLabels(t *testing.T) {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	response, err := basicResposeValidation(responsePayload, SHOULD_ACCEPT, SHOULD_MUTATE)
+	response, err := basicResposeValidation(responsePayload, shouldAccept, expectMutation)
 	if err != nil {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	mutatedResourceJSON, err := json.Marshal(response.MutatedObject.(map[string]interface{}))
+	mutatedResourceJSON, err := json.Marshal(response.MutatedObject.(map[string]any))
 	if err != nil {
 		t.Errorf("Unexpected error: %+v", err)
 	}
@@ -174,17 +181,17 @@ func TestPodLabelsShouldNotMutateWithItHasTheExpectedValue(t *testing.T) {
 		},
 	}
 
-	payload, err := buildValidationRequest(propagatedLabels, resource, POD_KIND)
+	payload, err := buildValidationRequest(propagatedLabels, resource, PodKind)
 	if err != nil {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
 	wapcRequest, err := json.Marshal(&kubernetes.GetResourceRequest{
-			APIVersion:   "v1",
-			Kind:         "Namespace",
-			Name:         "default",
-			DisableCache: false,
-		})
+		APIVersion:   "v1",
+		Kind:         "Namespace",
+		Name:         "default",
+		DisableCache: false,
+	})
 	if err != nil {
 		t.Errorf("Cannot create wapcRequest payload: %+v", err)
 	}
@@ -200,7 +207,7 @@ func TestPodLabelsShouldNotMutateWithItHasTheExpectedValue(t *testing.T) {
 
 	wapcClient := mocks.NewMockWapcClient(t)
 	wapcClient.On("HostCall", "kubewarden", "kubernetes", "get_resource",
-	wapcRequest).Return(wapcResponse, nil)
+		wapcRequest).Return(wapcResponse, nil)
 
 	host.Client = wapcClient
 
@@ -209,29 +216,33 @@ func TestPodLabelsShouldNotMutateWithItHasTheExpectedValue(t *testing.T) {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	_, err = basicResposeValidation(responsePayload, SHOULD_ACCEPT, NO_MUTATION)
+	_, err = basicResposeValidation(responsePayload, shouldAccept, noMutation)
 	if err != nil {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 }
 
+// overwriteLabelsTestCase describes a single
+// TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings test case.
+type overwriteLabelsTestCase struct {
+	propagatedLabels []string
+	namespaceLabels  map[string]string
+	expectedLabels   map[string]string
+	resource         any
+	kind             string
+	accept           bool
+	mutate           bool
+}
+
 func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
-	cases := []struct {
-		propagatedLabels []string
-		namespaceLabels  map[string]string
-		expectedLabels   map[string]string
-		resource         interface{}
-		kind             string
-		accept           bool
-		mutate           bool
-	}{
+	cases := []overwriteLabelsTestCase{
 		{
 			[]string{"testing"},
 			map[string]string{"testing": "foo", "testing2": "zpto"},
 			map[string]string{"testing": "foo"},
 			corev1.Pod{Metadata: &metav1.ObjectMeta{Name: "test", Namespace: "default"}},
-			POD_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			PodKind,
+			shouldAccept, expectMutation,
 		},
 
 		{
@@ -253,8 +264,8 @@ func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
 					},
 				},
 			},
-			JOB_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			JobKind,
+			shouldAccept, expectMutation,
 		},
 		{
 			[]string{"testing"},
@@ -279,8 +290,8 @@ func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
 					},
 				},
 			},
-			CRONJOB_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			CronjobKind,
+			shouldAccept, expectMutation,
 		},
 
 		{
@@ -302,8 +313,8 @@ func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
 					},
 				},
 			},
-			REPLICATIONCONTROLLER_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			ReplicationcontrollerKind,
+			shouldAccept, expectMutation,
 		},
 		{
 			[]string{"testing"},
@@ -324,8 +335,8 @@ func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
 					},
 				},
 			},
-			DAEMONSET_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			DaemonsetKind,
+			shouldAccept, expectMutation,
 		},
 		{
 			[]string{"testing"},
@@ -346,8 +357,8 @@ func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
 					},
 				},
 			},
-			STATEFULSET_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			StatefulsetKind,
+			shouldAccept, expectMutation,
 		},
 		{
 
@@ -369,8 +380,8 @@ func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
 					},
 				},
 			},
-			REPLICASET_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			ReplicasetKind,
+			shouldAccept, expectMutation,
 		},
 		{
 			[]string{"testing"},
@@ -391,148 +402,165 @@ func TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings(t *testing.T) {
 					},
 				},
 			},
-			DEPLOYMENT_KIND,
-			SHOULD_ACCEPT, SHOULD_MUTATE,
+			DeploymentKind,
+			shouldAccept, expectMutation,
 		},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.kind, func(t *testing.T) {
-			payload, err := buildValidationRequest(tc.propagatedLabels, tc.resource, tc.kind)
-			if err != nil {
-				t.Errorf("Unexpected error: %+v", err)
-			}
-
-			wapcRequest, err := json.Marshal(&kubernetes.GetResourceRequest{
-					APIVersion:   "v1",
-					Kind:         "Namespace",
-					Name:         "default",
-					DisableCache: false,
-				})
-			if err != nil {
-				t.Errorf("Cannot create wapcRequest payload: %+v", err)
-			}
-
-			wapcResponse, err := json.Marshal(&corev1.Namespace{
-				Metadata: &metav1.ObjectMeta{
-					Labels: tc.namespaceLabels,
-				},
-			})
-			if err != nil {
-				t.Errorf("Cannot create wapcResponse payload: %+v", err)
-			}
-
-			wapcClient := mocks.NewMockWapcClient(t)
-			wapcClient.On("HostCall", "kubewarden", "kubernetes", "get_resource",
-			wapcRequest).Return(wapcResponse, nil)
-
-			host.Client = wapcClient
-
-			responsePayload, err := validate(payload)
-			if err != nil {
-				t.Errorf("Unexpected error: %+v", err)
-			}
-
-			response, err := basicResposeValidation(responsePayload, tc.accept, tc.mutate)
-			if err != nil {
-				t.Errorf("Unexpected error: %+v", err)
-			}
-
-			mutatedResourceJSON, err := json.Marshal(response.MutatedObject.(map[string]interface{}))
-			if err != nil {
-				t.Errorf("Unexpected error: %+v", err)
-			}
-
-			switch tc.kind {
-			case POD_KIND:
-				resource := corev1.Pod{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			case DEPLOYMENT_KIND:
-				resource := appsv1.Deployment{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-				if err := validateLabels(resource.Spec.Template.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			case REPLICASET_KIND:
-				resource := appsv1.ReplicaSet{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-				if err := validateLabels(resource.Spec.Template.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			case DAEMONSET_KIND:
-				resource := appsv1.DaemonSet{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-				if err := validateLabels(resource.Spec.Template.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			case STATEFULSET_KIND:
-				resource := appsv1.StatefulSet{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-				if err := validateLabels(resource.Spec.Template.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			case REPLICATIONCONTROLLER_KIND:
-				resource := corev1.ReplicationController{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-				if err := validateLabels(resource.Spec.Template.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			case JOB_KIND:
-				resource := batchv1.Job{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-				if err := validateLabels(resource.Spec.Template.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			case CRONJOB_KIND:
-				resource := batchv1.CronJob{}
-				if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
-					t.Errorf("Unexpected error: %+v", err)
-				}
-				if err := validateLabels(resource.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-				if err := validateLabels(resource.Spec.JobTemplate.Spec.Template.Metadata.Labels, tc.expectedLabels); err != nil {
-					t.Error(err.Error())
-				}
-			default:
-				t.Errorf("Unexpected kind: %s", tc.kind)
-			}
+			runOverwriteLabelsTestCase(t, tc)
 		})
+	}
+}
+
+// runOverwriteLabelsTestCase executes a single
+// TestLabelsShouldOverwrittenLabelsOnlyDefinedInSettings test case.
+func runOverwriteLabelsTestCase(t *testing.T, tc overwriteLabelsTestCase) {
+	payload, err := buildValidationRequest(tc.propagatedLabels, tc.resource, tc.kind)
+	if err != nil {
+		t.Errorf("Unexpected error: %+v", err)
+	}
+
+	wapcRequest, err := json.Marshal(&kubernetes.GetResourceRequest{
+		APIVersion:   "v1",
+		Kind:         "Namespace",
+		Name:         "default",
+		DisableCache: false,
+	})
+	if err != nil {
+		t.Errorf("Cannot create wapcRequest payload: %+v", err)
+	}
+
+	wapcResponse, err := json.Marshal(&corev1.Namespace{
+		Metadata: &metav1.ObjectMeta{
+			Labels: tc.namespaceLabels,
+		},
+	})
+	if err != nil {
+		t.Errorf("Cannot create wapcResponse payload: %+v", err)
+	}
+
+	wapcClient := mocks.NewMockWapcClient(t)
+	wapcClient.On("HostCall", "kubewarden", "kubernetes", "get_resource",
+		wapcRequest).Return(wapcResponse, nil)
+
+	host.Client = wapcClient
+
+	responsePayload, err := validate(payload)
+	if err != nil {
+		t.Errorf("Unexpected error: %+v", err)
+	}
+
+	response, err := basicResposeValidation(responsePayload, tc.accept, tc.mutate)
+	if err != nil {
+		t.Errorf("Unexpected error: %+v", err)
+	}
+
+	mutatedResourceJSON, err := json.Marshal(response.MutatedObject.(map[string]any))
+	if err != nil {
+		t.Errorf("Unexpected error: %+v", err)
+	}
+
+	validateMutatedResourceLabels(t, tc, mutatedResourceJSON)
+}
+
+// validateMutatedResourceLabels unmarshals mutatedResourceJSON into the
+// concrete type matching tc.kind, and checks that its labels (and, when
+// applicable, its pod template labels) match tc.expectedLabels.
+// resourceLabelMetadata is the ObjectMeta of a mutated resource and,
+// when applicable, the ObjectMeta of its pod template (nil otherwise).
+type resourceLabelMetadata struct {
+	objMeta         *metav1.ObjectMeta
+	podTemplateMeta *metav1.ObjectMeta
+}
+
+// resourceLabelExtractors maps each supported kind to a function able to
+// unmarshal a mutated resource JSON payload and extract its label metadata.
+var resourceLabelExtractors = map[string]func([]byte) (resourceLabelMetadata, error){
+	PodKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := corev1.Pod{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{objMeta: resource.Metadata}, nil
+	},
+	DeploymentKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := appsv1.Deployment{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{objMeta: resource.Metadata, podTemplateMeta: resource.Spec.Template.Metadata}, nil
+	},
+	ReplicasetKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := appsv1.ReplicaSet{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{objMeta: resource.Metadata, podTemplateMeta: resource.Spec.Template.Metadata}, nil
+	},
+	DaemonsetKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := appsv1.DaemonSet{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{objMeta: resource.Metadata, podTemplateMeta: resource.Spec.Template.Metadata}, nil
+	},
+	StatefulsetKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := appsv1.StatefulSet{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{objMeta: resource.Metadata, podTemplateMeta: resource.Spec.Template.Metadata}, nil
+	},
+	ReplicationcontrollerKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := corev1.ReplicationController{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{objMeta: resource.Metadata, podTemplateMeta: resource.Spec.Template.Metadata}, nil
+	},
+	JobKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := batchv1.Job{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{objMeta: resource.Metadata, podTemplateMeta: resource.Spec.Template.Metadata}, nil
+	},
+	CronjobKind: func(mutatedResourceJSON []byte) (resourceLabelMetadata, error) {
+		resource := batchv1.CronJob{}
+		if err := json.Unmarshal(mutatedResourceJSON, &resource); err != nil {
+			return resourceLabelMetadata{}, err
+		}
+		return resourceLabelMetadata{
+			objMeta:         resource.Metadata,
+			podTemplateMeta: resource.Spec.JobTemplate.Spec.Template.Metadata,
+		}, nil
+	},
+}
+
+// validateMutatedResourceLabels unmarshals mutatedResourceJSON into the
+// concrete type matching tc.kind, and checks that its labels (and, when
+// applicable, its pod template labels) match tc.expectedLabels.
+func validateMutatedResourceLabels(t *testing.T, tc overwriteLabelsTestCase, mutatedResourceJSON []byte) {
+	extractor, ok := resourceLabelExtractors[tc.kind]
+	if !ok {
+		t.Errorf("Unexpected kind: %s", tc.kind)
+		return
+	}
+
+	metadata, err := extractor(mutatedResourceJSON)
+	if err != nil {
+		t.Errorf("Unexpected error: %+v", err)
+		return
+	}
+
+	if err := validateLabels(metadata.objMeta.Labels, tc.expectedLabels); err != nil {
+		t.Error(err.Error())
+	}
+	if metadata.podTemplateMeta != nil {
+		if err := validateLabels(metadata.podTemplateMeta.Labels, tc.expectedLabels); err != nil {
+			t.Error(err.Error())
+		}
 	}
 }

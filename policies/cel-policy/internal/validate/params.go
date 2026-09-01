@@ -20,7 +20,9 @@ func handleFailureInParamsRetrieval(validationRequest ValidationRequest, errorMe
 		validationRequest.Settings.FailurePolicy == admissionregistration.Ignore {
 		return kubewarden.AcceptRequest()
 	}
-	message := kubewarden.Message(fmt.Sprintf("failed to get params for performing policy evaluation: %s", errorMessage))
+	message := kubewarden.Message(
+		fmt.Sprintf("failed to get params for performing policy evaluation: %s", errorMessage),
+	)
 	return kubewarden.RejectRequest(message, reasonToStatusCode(settings.StatusReasonInvalid))
 }
 

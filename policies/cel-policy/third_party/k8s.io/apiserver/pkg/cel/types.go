@@ -284,7 +284,13 @@ type DeclField struct {
 	defaultValue interface{}
 }
 
-func NewDeclField(name string, declType *DeclType, required bool, enumValues []interface{}, defaultValue interface{}) *DeclField {
+func NewDeclField(
+	name string,
+	declType *DeclType,
+	required bool,
+	enumValues []interface{},
+	defaultValue interface{},
+) *DeclField {
 	return &DeclField{
 		Name:         name,
 		Type:         declType,
@@ -559,7 +565,12 @@ var (
 	DoubleType = NewSimpleTypeWithMinSize("double", cel.DoubleType, types.Double(0), MinNumberSize)
 
 	// DurationType is equivalent to the CEL 'duration' type.
-	DurationType = NewSimpleTypeWithMinSize("duration", cel.DurationType, types.Duration{Duration: time.Duration(0)}, MinDurationSizeJSON)
+	DurationType = NewSimpleTypeWithMinSize(
+		"duration",
+		cel.DurationType,
+		types.Duration{Duration: time.Duration(0)},
+		MinDurationSizeJSON,
+	)
 
 	// DateType is equivalent to the CEL 'date' type.
 	DateType = NewSimpleTypeWithMinSize("date", cel.TimestampType, types.Timestamp{Time: time.Time{}}, JSONDateSize)
@@ -581,11 +592,21 @@ var (
 	// TimestampType corresponds to the well-known protobuf.Timestamp type supported within CEL.
 	// Note that both the OpenAPI date and date-time types map onto TimestampType, so not all types
 	// labeled as Timestamp will necessarily have the same MinSerializedSize.
-	TimestampType = NewSimpleTypeWithMinSize("timestamp", cel.TimestampType, types.Timestamp{Time: time.Time{}}, JSONDateSize)
+	TimestampType = NewSimpleTypeWithMinSize(
+		"timestamp",
+		cel.TimestampType,
+		types.Timestamp{Time: time.Time{}},
+		JSONDateSize,
+	)
 
 	// QuantityDeclType wraps a [QuantityType] and makes it usable with functions that expect
 	// a [DeclType].
-	QuantityDeclType = NewSimpleTypeWithMinSize("quantity", QuantityType, Quantity{Quantity: resource.NewQuantity(0, resource.DecimalSI)}, 8)
+	QuantityDeclType = NewSimpleTypeWithMinSize(
+		"quantity",
+		QuantityType,
+		Quantity{Quantity: resource.NewQuantity(0, resource.DecimalSI)},
+		8,
+	)
 
 	// UintType is equivalent to the CEL 'uint' type.
 	UintType = NewSimpleTypeWithMinSize("uint", cel.UintType, types.Uint(0), 1)

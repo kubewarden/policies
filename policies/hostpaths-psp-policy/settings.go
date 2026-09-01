@@ -17,7 +17,7 @@ type Settings struct {
 	AllowedHostPaths []HostPath `json:"allowedHostPaths"`
 }
 
-// Builds a new Settings instance starting from a validation
+// NewSettingsFromValidationReq builds a new Settings instance starting from a validation
 // request payload:
 //
 //	{
@@ -37,7 +37,7 @@ func NewSettingsFromValidationReq(payload []byte) (Settings, error) {
 		"settings.allowedHostPaths")
 }
 
-// Builds a new Settings instance starting from a Settings
+// NewSettingsFromValidateSettingsPayload builds a new Settings instance starting from a Settings
 // payload:
 //
 //	{

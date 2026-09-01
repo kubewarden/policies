@@ -313,7 +313,10 @@ func lastIndexOf(list ref.Val, item ref.Val) ref.Val {
 
 // templatedOverloads returns overloads for each of the provided types. The template function is called with each type
 // name (map key) and type to construct the overloads.
-func templatedOverloads(types []namedCELType, template func(name string, t *cel.Type) cel.FunctionOpt) []cel.FunctionOpt {
+func templatedOverloads(
+	types []namedCELType,
+	template func(name string, t *cel.Type) cel.FunctionOpt,
+) []cel.FunctionOpt {
 	overloads := make([]cel.FunctionOpt, len(types))
 	i := 0
 	for _, t := range types {

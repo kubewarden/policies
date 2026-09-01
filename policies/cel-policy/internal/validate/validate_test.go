@@ -18,7 +18,7 @@ func TestValidate(t *testing.T) {
 	tests := []struct {
 		name                       string
 		settings                   settings.Settings
-		object                     interface{}
+		object                     any
 		expectedValidationResponse kubewardenProtocol.ValidationResponse
 	}{
 		{
@@ -39,7 +39,7 @@ func TestValidate(t *testing.T) {
 			},
 			expectedValidationResponse: kubewardenProtocol.ValidationResponse{
 				Accepted: false,
-				Message:  message("not true"),
+				Message:  new("not true"),
 				Code:     code(400),
 			},
 		},
@@ -60,7 +60,7 @@ func TestValidate(t *testing.T) {
 			},
 			expectedValidationResponse: kubewardenProtocol.ValidationResponse{
 				Accepted: false,
-				Message:  message("namespace-name is not allowed"),
+				Message:  new("namespace-name is not allowed"),
 				Code:     code(400),
 			},
 		},
@@ -81,7 +81,7 @@ func TestValidate(t *testing.T) {
 			},
 			expectedValidationResponse: kubewardenProtocol.ValidationResponse{
 				Accepted: false,
-				Message:  message("failed expression: object.metadata.name != 'pod-name'"),
+				Message:  new("failed expression: object.metadata.name != 'pod-name'"),
 				Code:     code(400),
 			},
 		},
@@ -104,7 +104,7 @@ func TestValidate(t *testing.T) {
 			},
 			expectedValidationResponse: kubewardenProtocol.ValidationResponse{
 				Accepted: false,
-				Message:  message("failed"),
+				Message:  new("failed"),
 				Code:     code(401),
 			},
 		},
@@ -127,7 +127,7 @@ func TestValidate(t *testing.T) {
 			},
 			expectedValidationResponse: kubewardenProtocol.ValidationResponse{
 				Accepted: false,
-				Message:  message("failed"),
+				Message:  new("failed"),
 				Code:     code(401),
 			},
 		},
@@ -163,7 +163,7 @@ func TestValidate(t *testing.T) {
 			},
 			expectedValidationResponse: kubewardenProtocol.ValidationResponse{
 				Accepted: false,
-				Message:  message("pod-name is forbidden"),
+				Message:  new("pod-name is forbidden"),
 				Code:     code(400),
 			},
 		},
@@ -241,12 +241,9 @@ func TestValidate(t *testing.T) {
 	}
 }
 
-// message is a helper function to create a pointer to a string.
-func message(s string) *string {
-	return &s
-}
-
 // code is a helper function to create a pointer to a uint16.
+//
+//go:fix inline
 func code(i uint16) *uint16 {
-	return &i
+	return new(i)
 }

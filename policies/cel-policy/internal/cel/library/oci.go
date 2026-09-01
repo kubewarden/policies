@@ -157,6 +157,7 @@ var ociClientType = cel.ObjectType("kw.oci.OCIClient")
 // ociClient is a the client to interact with OCI-related capabilities.
 type ociClient struct {
 	receiverOnlyObjectVal
+
 	image string
 }
 
@@ -173,7 +174,7 @@ func (c *ociClient) manifest() ref.Val {
 		return types.NewErr("failed to call host: %s", err)
 	}
 
-	var response map[string]interface{}
+	var response map[string]any
 	err = json.Unmarshal(responsePayload, &response)
 	if err != nil {
 		return types.NewErr("failed to unmarshal response payload: %s", err)
@@ -204,7 +205,7 @@ func (c *ociClient) manifestConfig() ref.Val {
 		return types.NewErr("failed to call host: %s", err)
 	}
 
-	var response map[string]interface{}
+	var response map[string]any
 	err = json.Unmarshal(responsePayload, &response)
 	if err != nil {
 		return types.NewErr("failed to unmarshal response payload: %s", err)

@@ -9,7 +9,7 @@ import (
 )
 
 type Settings struct {
-	RequireTls bool               `json:"requireTLS"`
+	RequireTLS bool               `json:"requireTLS"`
 	AllowPorts mapset.Set[uint64] `json:"allowPorts"`
 	DenyPorts  mapset.Set[uint64] `json:"denyPorts"`
 }
@@ -24,8 +24,8 @@ func NewSettingsFromValidationReq(validationReq *kubewarden_protocol.ValidationR
 	return settings, nil
 }
 
-// The AllowPorts and DenyPorts should not have any
-// element in common
+// Valid checks that the AllowPorts and DenyPorts do not have any
+// element in common.
 func (s *Settings) Valid() bool {
 	common := s.AllowPorts.Intersect(s.DenyPorts)
 	return common.Cardinality() == 0
@@ -35,7 +35,7 @@ func (s *Settings) UnmarshalJSON(data []byte) error {
 	// This is needed becaus golang-set v2.3.0 has a bug that prevents
 	// the correct unmarshalling of ThreadUnsafeSet types.
 	rawSettings := struct {
-		RequireTls bool     `json:"requireTLS"`
+		RequireTLS bool     `json:"requireTLS"`
 		AllowPorts []uint64 `json:"allowPorts"`
 		DenyPorts  []uint64 `json:"denyPorts"`
 	}{}
@@ -45,7 +45,7 @@ func (s *Settings) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	s.RequireTls = rawSettings.RequireTls
+	s.RequireTLS = rawSettings.RequireTLS
 	s.AllowPorts = mapset.NewThreadUnsafeSet[uint64](rawSettings.AllowPorts...)
 	s.DenyPorts = mapset.NewThreadUnsafeSet[uint64](rawSettings.DenyPorts...)
 

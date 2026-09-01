@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
 	mapset "github.com/deckarep/golang-set/v2"
@@ -13,14 +14,14 @@ func validate(payload []byte) ([]byte, error) {
 	if !gjson.ValidBytes(payload) {
 		return kubewarden.RejectRequest(
 			kubewarden.Message("Not a valid JSON document"),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	settings, err := NewSettingsFromValidationReq(payload)
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	data := gjson.GetBytes(
@@ -28,15 +29,15 @@ func validate(payload []byte) ([]byte, error) {
 		"request.object.metadata.labels")
 
 	labels := mapset.NewThreadUnsafeSet[string]()
-	denied_labels_violations := []string{}
-	constrained_labels_violations := []string{}
+	deniedLabelsViolations := []string{}
+	constrainedLabelsViolations := []string{}
 
 	data.ForEach(func(key, value gjson.Result) bool {
 		label := key.String()
 		labels.Add(label)
 
 		if settings.DeniedLabels.Contains(label) {
-			denied_labels_violations = append(denied_labels_violations, label)
+			deniedLabelsViolations = append(deniedLabelsViolations, label)
 			return true
 		}
 
@@ -44,7 +45,7 @@ func validate(payload []byte) ([]byte, error) {
 		if found {
 			// This is a constrained label
 			if !regExp.Match([]byte(value.String())) {
-				constrained_labels_violations = append(constrained_labels_violations, label)
+				constrainedLabelsViolations = append(constrainedLabelsViolations, label)
 				return true
 			}
 		}
@@ -54,21 +55,21 @@ func validate(payload []byte) ([]byte, error) {
 
 	errorMsgs := []string{}
 
-	if len(denied_labels_violations) > 0 {
+	if len(deniedLabelsViolations) > 0 {
 		errorMsgs = append(
 			errorMsgs,
 			fmt.Sprintf(
 				"The following labels are denied: %s",
-				strings.Join(denied_labels_violations, ","),
+				strings.Join(deniedLabelsViolations, ","),
 			))
 	}
 
-	if len(constrained_labels_violations) > 0 {
+	if len(constrainedLabelsViolations) > 0 {
 		errorMsgs = append(
 			errorMsgs,
 			fmt.Sprintf(
 				"The following labels are violating user constraints: %s",
-				strings.Join(constrained_labels_violations, ","),
+				strings.Join(constrainedLabelsViolations, ","),
 			))
 	}
 

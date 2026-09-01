@@ -12,11 +12,11 @@ import (
 	apimachinery_pkg_apis_meta_v1 "github.com/kubewarden/k8s-objects/apimachinery/pkg/apis/meta/v1"
 )
 
-// Settings is a an empty struct because this policy has no configuration
+// Settings is a an empty struct because this policy has no configuration.
 type Settings struct {
 }
 
-// ConditionStatus is a valid condition status
+// ConditionStatus is a valid condition status.
 type ConditionStatus string
 
 const (
@@ -47,13 +47,13 @@ type Project struct {
 // ProjectSpec contains the details of a Rancher Project
 // Taken from https://github.com/rancher/types/blob/release/v2.4/apis/management.cattle.io/v3/authz_types.go
 type ProjectSpec struct {
-	DisplayName                   string                  `json:"displayName,omitempty" norman:"required"`
+	DisplayName                   string                  `json:"displayName,omitempty"                   norman:"required"`
 	Description                   string                  `json:"description"`
-	ClusterName                   string                  `json:"clusterName,omitempty" norman:"required,type=reference[cluster]"`
+	ClusterName                   string                  `json:"clusterName,omitempty"                   norman:"required,type=reference[cluster]"`
 	ResourceQuota                 *ProjectResourceQuota   `json:"resourceQuota,omitempty"`
 	NamespaceDefaultResourceQuota *NamespaceResourceQuota `json:"namespaceDefaultResourceQuota,omitempty"`
 	ContainerDefaultResourceLimit *ContainerResourceLimit `json:"containerDefaultResourceLimit,omitempty"`
-	EnableProjectMonitoring       bool                    `json:"enableProjectMonitoring" norman:"default=false"`
+	EnableProjectMonitoring       bool                    `json:"enableProjectMonitoring"                 norman:"default=false"`
 }
 
 // ProjectStatus contains the observed status of the project
@@ -61,7 +61,7 @@ type ProjectSpec struct {
 type ProjectStatus struct {
 	Conditions                    []ProjectCondition `json:"conditions"`
 	PodSecurityPolicyTemplateName string             `json:"podSecurityPolicyTemplateId"`
-	MonitoringStatus              *MonitoringStatus  `json:"monitoringStatus,omitempty" norman:"nocreate,noupdate"`
+	MonitoringStatus              *MonitoringStatus  `json:"monitoringStatus,omitempty"  norman:"nocreate,noupdate"`
 }
 
 // ProjectCondition contains the conditions of the project
@@ -84,14 +84,14 @@ type ProjectCondition struct {
 // ProjectResourceQuota describes the limit and used limits of a Project
 // Taken from https://github.com/rancher/types/blob/release/v2.4/apis/management.cattle.io/v3/resource_quota_types.go
 type ProjectResourceQuota struct {
-	Limit     ResourceQuotaLimit `json:"limit,omitempty"`
-	UsedLimit ResourceQuotaLimit `json:"usedLimit,omitempty"`
+	Limit     ResourceQuotaLimit `json:"limit,omitzero"`
+	UsedLimit ResourceQuotaLimit `json:"usedLimit,omitzero"`
 }
 
 // NamespaceResourceQuota defines the quota limits applied to the namespace
 // Taken from https://github.com/rancher/types/blob/release/v2.4/apis/management.cattle.io/v3/resource_quota_types.go
 type NamespaceResourceQuota struct {
-	Limit ResourceQuotaLimit `json:"limit,omitempty"`
+	Limit ResourceQuotaLimit `json:"limit,omitzero"`
 }
 
 // ResourceQuotaLimit defines the types of quotas that can be set

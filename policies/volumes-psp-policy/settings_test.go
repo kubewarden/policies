@@ -76,7 +76,6 @@ func TestSettingsWithInvalidEntries(t *testing.T) {
 	if settings.Valid() {
 		t.Errorf("Expected Settings reported as not valid")
 	}
-
 }
 
 func TestEmptySettingsAreValid(t *testing.T) {

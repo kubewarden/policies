@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"strings"
 
 	mapset "github.com/deckarep/golang-set/v2"
@@ -18,11 +19,10 @@ func validate(input []byte) []byte {
 	decoder.DisallowUnknownFields()
 	err := decoder.Decode(&validationRequest)
 	if err != nil {
-		//nolint:mnd
 		return marshalValidationResponseOrFail(
 			RejectRequest(
 				Message(fmt.Sprintf("Error deserializing validation request: %v", err)),
-				Code(400)))
+				Code(http.StatusBadRequest)))
 	}
 
 	return marshalValidationResponseOrFail(

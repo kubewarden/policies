@@ -8,7 +8,7 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 )
 
-// Settings defines the settings of the policy
+// Settings defines the settings of the policy.
 type Settings struct {
 	ForbiddenResources mapset.Set[string] `json:"forbiddenResources"`
 	DefaultResource    string             `json:"defaultResource"`

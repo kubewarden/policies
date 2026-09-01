@@ -99,7 +99,7 @@ func TestParsePorts(t *testing.T) {
 
 func TestCheckTlsSettingsNotEnforced(t *testing.T) {
 	settings := Settings{
-		RequireTls: false,
+		RequireTLS: false,
 	}
 
 	payload, err := kubewarden_testing.BuildValidationRequestFromFixture(
@@ -109,14 +109,14 @@ func TestCheckTlsSettingsNotEnforced(t *testing.T) {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	if checkTlsSettings(payload, &settings) != true {
+	if checkTLSSettings(payload, &settings) != true {
 		t.Errorf("Unexpected rejection")
 	}
 }
 
 func TestCheckTlsSettingsEnforcedAndTlsNotConfigured(t *testing.T) {
 	settings := Settings{
-		RequireTls: true,
+		RequireTLS: true,
 	}
 
 	payload, err := kubewarden_testing.BuildValidationRequestFromFixture(
@@ -126,14 +126,14 @@ func TestCheckTlsSettingsEnforcedAndTlsNotConfigured(t *testing.T) {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	if checkTlsSettings(payload, &settings) != false {
+	if checkTLSSettings(payload, &settings) != false {
 		t.Errorf("Unexpected approval")
 	}
 }
 
 func TestCheckTlsSettingsEnforcedAndTlsConfigured(t *testing.T) {
 	settings := Settings{
-		RequireTls: true,
+		RequireTLS: true,
 	}
 
 	payload, err := kubewarden_testing.BuildValidationRequestFromFixture(
@@ -143,14 +143,14 @@ func TestCheckTlsSettingsEnforcedAndTlsConfigured(t *testing.T) {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	if checkTlsSettings(payload, &settings) != true {
+	if checkTLSSettings(payload, &settings) != true {
 		t.Errorf("Unexpected rejection")
 	}
 }
 
 func TestCheckTlsSettingsEnforcedAndPartialTlsConfiguration(t *testing.T) {
 	settings := Settings{
-		RequireTls: true,
+		RequireTLS: true,
 	}
 
 	payload, err := kubewarden_testing.BuildValidationRequestFromFixture(
@@ -160,7 +160,7 @@ func TestCheckTlsSettingsEnforcedAndPartialTlsConfiguration(t *testing.T) {
 		t.Errorf("Unexpected error: %+v", err)
 	}
 
-	if checkTlsSettings(payload, &settings) != false {
+	if checkTLSSettings(payload, &settings) != false {
 		t.Errorf("Unexpected approval")
 	}
 }
@@ -190,7 +190,7 @@ func TestValidationRejectionDueToInvalidJSON(t *testing.T) {
 
 func TestValidationTlsRejection(t *testing.T) {
 	settings := Settings{
-		RequireTls: true,
+		RequireTLS: true,
 	}
 
 	payload, err := kubewarden_testing.BuildValidationRequestFromFixture(
@@ -222,7 +222,7 @@ func TestValidationTlsRejection(t *testing.T) {
 
 func TestValidationAllowedPortsRejection(t *testing.T) {
 	settings := Settings{
-		RequireTls: false,
+		RequireTLS: false,
 		AllowPorts: mapset.NewThreadUnsafeSet[uint64](5000),
 		DenyPorts:  mapset.NewThreadUnsafeSet[uint64](),
 	}
@@ -256,7 +256,7 @@ func TestValidationAllowedPortsRejection(t *testing.T) {
 
 func TestValidationDeniedPortsRejection(t *testing.T) {
 	settings := Settings{
-		RequireTls: false,
+		RequireTLS: false,
 		AllowPorts: mapset.NewThreadUnsafeSet[uint64](),
 		DenyPorts:  mapset.NewThreadUnsafeSet[uint64](80),
 	}
@@ -290,7 +290,7 @@ func TestValidationDeniedPortsRejection(t *testing.T) {
 
 func TestValidationAccept(t *testing.T) {
 	settings := Settings{
-		RequireTls: true,
+		RequireTLS: true,
 		AllowPorts: mapset.NewThreadUnsafeSet[uint64](),
 		DenyPorts:  mapset.NewThreadUnsafeSet[uint64](8080),
 	}

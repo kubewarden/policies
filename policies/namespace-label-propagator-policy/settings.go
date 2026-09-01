@@ -13,9 +13,14 @@ type Settings struct {
 	PropagatedLabels []string `json:"propagatedLabels"`
 }
 
-// The Settings class is defined inside of the `types.go` file
+func NewSettingsFromValidationReq(validationReq *kubewarden_protocol.ValidationRequest) (Settings, error) {
+	settings := Settings{}
+	err := json.Unmarshal(validationReq.Settings, &settings)
+	return settings, err
+}
 
-// No special checks have to be done
+// Valid checks that the Settings are valid. No special checks have to be done
+// besides ensuring at least one non-empty label has been provided.
 func (s *Settings) Valid() (bool, error) {
 	if len(s.PropagatedLabels) == 0 {
 		return false, errors.New("some label must be provided")
@@ -26,12 +31,6 @@ func (s *Settings) Valid() (bool, error) {
 		}
 	}
 	return true, nil
-}
-
-func NewSettingsFromValidationReq(validationReq *kubewarden_protocol.ValidationRequest) (Settings, error) {
-	settings := Settings{}
-	err := json.Unmarshal(validationReq.Settings, &settings)
-	return settings, err
 }
 
 func validateSettings(payload []byte) ([]byte, error) {

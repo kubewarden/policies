@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-	//nolint:mnd
-	if len(os.Args) != 2 {
+	const expectedArgsCount = 2
+
+	if len(os.Args) != expectedArgsCount {
 		log.Fatalln("Wrong usage, expected either 'validate' or `validate-settings'")
 	}
 

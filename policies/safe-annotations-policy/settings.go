@@ -11,13 +11,13 @@ import (
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
 )
 
-// A wrapper around the standard regexp.Regexp struct
-// that implements marshalling and unmarshalling
+// RegularExpression wraps the standard [regexp.Regexp] struct
+// so that it implements marshalling and unmarshalling.
 type RegularExpression struct {
 	*regexp.Regexp
 }
 
-// Convenience method to build a regular expression
+// CompileRegularExpression is a convenience method to build a regular expression.
 func CompileRegularExpression(expr string) (*RegularExpression, error) {
 	nativeRegExp, err := regexp.Compile(expr)
 	if err != nil {
@@ -26,8 +26,8 @@ func CompileRegularExpression(expr string) (*RegularExpression, error) {
 	return &RegularExpression{nativeRegExp}, nil
 }
 
-// UnmarshalText satisfies the encoding.TextMarshaler interface,
-// also used by json.Unmarshal.
+// UnmarshalText satisfies the [encoding.TextMarshaler] interface,
+// also used by [json.Unmarshal].
 func (r *RegularExpression) UnmarshalText(text []byte) error {
 	nativeRegExp, err := regexp.Compile(string(text))
 	if err != nil {
@@ -37,8 +37,10 @@ func (r *RegularExpression) UnmarshalText(text []byte) error {
 	return nil
 }
 
-// MarshalText satisfies the encoding.TextMarshaler interface,
-// also used by json.Marshal.
+// MarshalText satisfies the [encoding.TextMarshaler] interface,
+// also used by [json.Marshal].
+//
+//nolint:unparam // the error return value is required to satisfy the encoding.TextMarshaler interface
 func (r *RegularExpression) MarshalText() ([]byte, error) {
 	if r.Regexp != nil {
 		return []byte(r.String()), nil
@@ -53,7 +55,7 @@ type Settings struct {
 	ConstrainedAnnotations map[string]*RegularExpression `json:"constrained_annotations"`
 }
 
-// Builds a new Settings instance starting from a validation
+// NewSettingsFromValidationReq builds a new Settings instance starting from a validation
 // request payload:
 //
 //	{

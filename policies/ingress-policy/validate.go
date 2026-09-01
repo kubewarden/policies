@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/kubewarden/gjson"
@@ -16,7 +17,7 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	// Create a Settings instance from the ValidationRequest object
@@ -24,22 +25,22 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
-	if !checkTlsSettings(payload, &settings) {
+	if !checkTLSSettings(payload, &settings) {
 		return kubewarden.RejectRequest(
 			kubewarden.Message("Not all hosts have TLS enabled"),
 			kubewarden.NoCode)
 	}
 
 	ports := parsePorts(payload)
-	if err := checkAllowedPorts(ports, &settings); err != nil {
+	if err = checkAllowedPorts(ports, &settings); err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
 			kubewarden.NoCode)
 	}
-	if err := checkDeniedPorts(ports, &settings); err != nil {
+	if err = checkDeniedPorts(ports, &settings); err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
 			kubewarden.NoCode)
@@ -48,8 +49,8 @@ func validate(payload []byte) ([]byte, error) {
 	return kubewarden.AcceptRequest()
 }
 
-func checkTlsSettings(payload []byte, settings *Settings) bool {
-	if !settings.RequireTls {
+func checkTLSSettings(payload []byte, settings *Settings) bool {
+	if !settings.RequireTLS {
 		return true
 	}
 

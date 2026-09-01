@@ -153,16 +153,22 @@ var FindRegexOptimization = &interpreter.RegexOptimization{
 		if err != nil {
 			return nil, err
 		}
-		return interpreter.NewCall(call.ID(), call.Function(), call.OverloadID(), call.Args(), func(args ...ref.Val) ref.Val {
-			if len(args) != 2 {
-				return types.NoSuchOverloadErr()
-			}
-			in, ok := args[0].Value().(string)
-			if !ok {
-				return types.MaybeNoSuchOverloadErr(args[0])
-			}
-			return types.String(compiledRegex.FindString(in))
-		}), nil
+		return interpreter.NewCall(
+			call.ID(),
+			call.Function(),
+			call.OverloadID(),
+			call.Args(),
+			func(args ...ref.Val) ref.Val {
+				if len(args) != 2 {
+					return types.NoSuchOverloadErr()
+				}
+				in, ok := args[0].Value().(string)
+				if !ok {
+					return types.MaybeNoSuchOverloadErr(args[0])
+				}
+				return types.String(compiledRegex.FindString(in))
+			},
+		), nil
 	},
 }
 
@@ -177,25 +183,31 @@ var FindAllRegexOptimization = &interpreter.RegexOptimization{
 		if err != nil {
 			return nil, err
 		}
-		return interpreter.NewCall(call.ID(), call.Function(), call.OverloadID(), call.Args(), func(args ...ref.Val) ref.Val {
-			argn := len(args)
-			if argn < 2 || argn > 3 {
-				return types.NoSuchOverloadErr()
-			}
-			str, ok := args[0].Value().(string)
-			if !ok {
-				return types.MaybeNoSuchOverloadErr(args[0])
-			}
-			n := int64(-1)
-			if argn == 3 {
-				n, ok = args[2].Value().(int64)
-				if !ok {
-					return types.MaybeNoSuchOverloadErr(args[2])
+		return interpreter.NewCall(
+			call.ID(),
+			call.Function(),
+			call.OverloadID(),
+			call.Args(),
+			func(args ...ref.Val) ref.Val {
+				argn := len(args)
+				if argn < 2 || argn > 3 {
+					return types.NoSuchOverloadErr()
 				}
-			}
+				str, ok := args[0].Value().(string)
+				if !ok {
+					return types.MaybeNoSuchOverloadErr(args[0])
+				}
+				n := int64(-1)
+				if argn == 3 {
+					n, ok = args[2].Value().(int64)
+					if !ok {
+						return types.MaybeNoSuchOverloadErr(args[2])
+					}
+				}
 
-			result := compiledRegex.FindAllString(str, int(n))
-			return types.NewStringList(types.DefaultTypeAdapter, result)
-		}), nil
+				result := compiledRegex.FindAllString(str, int(n))
+				return types.NewStringList(types.DefaultTypeAdapter, result)
+			},
+		), nil
 	},
 }

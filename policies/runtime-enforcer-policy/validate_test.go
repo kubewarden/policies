@@ -5,6 +5,7 @@ import (
 
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_extractPodLabelsFromObject(t *testing.T) {
@@ -70,7 +71,9 @@ func Test_extractPodLabelsFromObject(t *testing.T) {
 					Kind: kubewarden_protocol.GroupVersionKind{
 						Kind: "CronJob",
 					},
-					Object: []byte(`{"spec":{"jobTemplate":{"spec":{"template":{"metadata":{"labels":{"app":"my-app"}}}}}}}`),
+					Object: []byte(
+						`{"spec":{"jobTemplate":{"spec":{"template":{"metadata":{"labels":{"app":"my-app"}}}}}}}`,
+					),
 				},
 			},
 			want: map[string]string{"app": "my-app"},
@@ -116,9 +119,9 @@ func Test_extractPodLabelsFromObject(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got, gotErr := extractPodLabelsFromObject(tt.object)
 			if tt.wantErr {
-				assert.Error(t, gotErr, "extractPodLabelsFromObject() does not fail as expected")
+				require.Error(t, gotErr, "extractPodLabelsFromObject() does not fail as expected")
 			} else {
-				assert.NoError(t, gotErr, "extractPodLabelsFromObject() failed unexpectedly")
+				require.NoError(t, gotErr, "extractPodLabelsFromObject() failed unexpectedly")
 			}
 			assert.Equalf(t, tt.want, got, "extractPodLabelsFromObject() = got %v, want %v", got, tt.want)
 		})
