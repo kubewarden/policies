@@ -80,8 +80,8 @@ runs:
       shell: bash
       run: |
         set -e
-        TINYGO_VERSION="0.41.1"
-        TINYGO_CHECKSUM="901fbccffc61adb111656d1f907dfc21b6c499ca841b115866a0d6de2d835fbe"
+        TINYGO_VERSION="0.42.0"
+        TINYGO_CHECKSUM="2082c4762fea6d5cc4cd1f4a243eaacf07b12f576717d4c6b74828bd163cb563"
         TINYGO_DEB="tinygo_${TINYGO_VERSION}_amd64.deb"
         wget https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/${TINYGO_DEB}
         echo "${TINYGO_CHECKSUM}  ${TINYGO_DEB}" | sha256sum -c -
