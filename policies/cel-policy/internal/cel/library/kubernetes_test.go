@@ -19,9 +19,9 @@ func TestKubernetes(t *testing.T) {
 		name              string
 		expression        string
 		expectedOperation string
-		expectedRequest   interface{}
-		response          interface{}
-		expectedResult    interface{}
+		expectedRequest   any
+		response          any
+		expectedResult    any
 	}{
 		{
 			"list",
@@ -30,7 +30,7 @@ func TestKubernetes(t *testing.T) {
 			kubernetes.ListAllResourcesRequest{
 				APIVersion:    "v1",
 				Kind:          "Pod",
-				LabelSelector: stringPtr("foo=bar"),
+				LabelSelector: new("foo=bar"),
 				FieldSelector: nil,
 			},
 			&corev1.PodList{
@@ -62,7 +62,7 @@ func TestKubernetes(t *testing.T) {
 				Kind:          "Pod",
 				Namespace:     "default",
 				LabelSelector: nil,
-				FieldSelector: stringPtr("foo.bar=baz"),
+				FieldSelector: new("foo.bar=baz"),
 			},
 			&corev1.PodList{
 				Items: []*corev1.Pod{
@@ -92,7 +92,7 @@ func TestKubernetes(t *testing.T) {
 				APIVersion: "v1",
 				Kind:       "Pod",
 				Name:       "app",
-				Namespace:  stringPtr("default"),
+				Namespace:  new("default"),
 			},
 			&corev1.Pod{
 				Kind: "Pod",
@@ -163,7 +163,7 @@ func TestKubernetes(t *testing.T) {
 				APIVersion: "v1",
 				Kind:       "Pod",
 				Name:       "app",
-				Namespace:  stringPtr("default"),
+				Namespace:  new("default"),
 				FieldMasks: []string{"metadata.labels"},
 			},
 			&corev1.Pod{
@@ -185,8 +185,8 @@ func TestKubernetes(t *testing.T) {
 			kubernetes.ListAllResourcesRequest{
 				APIVersion:    "v1",
 				Kind:          "Pod",
-				LabelSelector: stringPtr("app=nginx"),
-				FieldSelector: stringPtr("status.phase=Running"),
+				LabelSelector: new("app=nginx"),
+				FieldSelector: new("status.phase=Running"),
 				FieldMasks:    []string{"metadata.name", "status.phase"},
 			},
 			&corev1.PodList{
@@ -212,7 +212,8 @@ func TestKubernetes(t *testing.T) {
 			require.NoError(t, err)
 
 			mockWapcClient := &mocks.MockWapcClient{}
-			mockWapcClient.On("HostCall", "kubewarden", "kubernetes", test.expectedOperation, expectedRequest).Return(response, nil)
+			mockWapcClient.On("HostCall", "kubewarden", "kubernetes", test.expectedOperation, expectedRequest).
+				Return(response, nil)
 
 			host.Client = mockWapcClient
 
@@ -227,7 +228,7 @@ func TestKubernetes(t *testing.T) {
 			prog, err := env.Program(ast)
 			require.NoError(t, err)
 
-			val, _, err := prog.Eval(map[string]interface{}{})
+			val, _, err := prog.Eval(map[string]any{})
 			require.NoError(t, err)
 
 			result, err := val.ConvertToNative(reflect.TypeOf(test.expectedResult))
@@ -236,8 +237,4 @@ func TestKubernetes(t *testing.T) {
 			require.Equal(t, test.expectedResult, result)
 		})
 	}
-}
-
-func stringPtr(s string) *string {
-	return &s
 }

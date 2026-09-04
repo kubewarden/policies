@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 
 	appsv1 "github.com/kubewarden/k8s-objects/api/apps/v1"
@@ -15,6 +16,7 @@ import (
 )
 
 const (
+	// PolicyLabelKey is defined at:
 	// https://github.com/rancher-sandbox/runtime-enforcer/blob/242bc76dcf0593110ee0a8edb2aaf2eb5b726fe8/api/v1alpha1/workloadpolicyproposal_types.go#L16
 	PolicyLabelKey = "security.rancher.io/policy"
 )
@@ -79,12 +81,12 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	podLabels, err := extractPodLabelsFromObject(validationRequest)
 	if err != nil {
-		return kubewarden.RejectRequest(kubewarden.Message(err.Error()), kubewarden.Code(400))
+		return kubewarden.RejectRequest(kubewarden.Message(err.Error()), kubewarden.Code(http.StatusBadRequest))
 	}
 
 	wpName, wpReferenced := podLabels[PolicyLabelKey]
@@ -106,21 +108,27 @@ func validate(payload []byte) ([]byte, error) {
 				kubewarden.Message(
 					fmt.Sprintf(
 						"The WorkloadPolicy '%s/%s' specified in the %s '%s/%s' is not found",
-						validationRequest.Request.Namespace, wpName,
-						validationRequest.Request.Kind.Kind, validationRequest.Request.Namespace, validationRequest.Request.Name,
+						validationRequest.Request.Namespace,
+						wpName,
+						validationRequest.Request.Kind.Kind,
+						validationRequest.Request.Namespace,
+						validationRequest.Request.Name,
 					)),
-				kubewarden.Code(403),
+				kubewarden.Code(http.StatusForbidden),
 			)
 		}
 		return kubewarden.RejectRequest(
 			kubewarden.Message(
 				fmt.Sprintf(
 					"Failed to read the WorkloadPolicy '%s/%s' specified in the %s '%s/%s': %v",
-					validationRequest.Request.Namespace, wpName,
-					validationRequest.Request.Kind.Kind, validationRequest.Request.Namespace, validationRequest.Request.Name,
+					validationRequest.Request.Namespace,
+					wpName,
+					validationRequest.Request.Kind.Kind,
+					validationRequest.Request.Namespace,
+					validationRequest.Request.Name,
 					err,
 				)),
-			kubewarden.Code(500),
+			kubewarden.Code(http.StatusInternalServerError),
 		)
 	}
 

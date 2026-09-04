@@ -46,7 +46,7 @@ func TestMutation(t *testing.T) {
 		t.Error("Unexpected mutation")
 	}
 
-	mutatedRequestJSON, err := json.Marshal(response.MutatedObject.(map[string]interface{}))
+	mutatedRequestJSON, err := json.Marshal(response.MutatedObject.(map[string]any))
 	if err != nil {
 		t.Errorf("Unexpected error: %+v", err)
 	}

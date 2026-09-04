@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"strings"
 	"testing"
 )
@@ -19,12 +20,13 @@ func TestCheckMalformedQuantities(t *testing.T) {
 	for _, tc := range cases {
 		err := checkLimitVsAvailableQuota(tc.nsLimit, tc.prjLimit, tc.prjUsed)
 
-		switch err := err.(type) {
-		case nil:
+		var parseErr *QuantityParseError
+		switch {
+		case err == nil:
 			t.Errorf("%s: should have raised an error", tc.desc)
-		case *QuantityParseError:
-			if !strings.Contains(err.Error(), tc.expectedString) {
-				t.Errorf("%s: the error was supposed to be about '%s': %v", tc.desc, tc.expectedString, err)
+		case errors.As(err, &parseErr):
+			if !strings.Contains(parseErr.Error(), tc.expectedString) {
+				t.Errorf("%s: the error was supposed to be about '%s': %v", tc.desc, tc.expectedString, parseErr)
 			}
 		default:
 			t.Errorf("%s: didn't get the expected error: %v", tc.desc, err)
@@ -44,10 +46,11 @@ func TestNamespaceRequestExceedsAvailability(t *testing.T) {
 
 	for _, tc := range cases {
 		err := checkLimitVsAvailableQuota(tc.nsLimit, tc.prjLimit, tc.prjUsed)
-		switch err := err.(type) {
-		case nil:
+		var exceedsErr *NamespaceRequestExceedsAvailabilityError
+		switch {
+		case err == nil:
 			t.Errorf("%s: should have raised an error", tc.desc)
-		case *NamespaceRequestExceedsAvailabilityError:
+		case errors.As(err, &exceedsErr):
 		default:
 			t.Errorf("%s: didn't get the expected error: %v", tc.desc, err)
 		}
@@ -67,9 +70,7 @@ func TestLimitIsReasonable(t *testing.T) {
 
 	for _, tc := range cases {
 		err := checkLimitVsAvailableQuota(tc.nsLimit, tc.prjLimit, tc.prjUsed)
-		switch err := err.(type) {
-		case nil:
-		default:
+		if err != nil {
 			t.Errorf("%s: should not have raised an error: %v", tc.desc, err)
 		}
 	}

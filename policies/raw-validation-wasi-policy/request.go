@@ -7,7 +7,7 @@ type Request struct {
 }
 
 // RawValidationRequest describes the input received by the policy
-// when invoked via the `validate` subcommand
+// when invoked via the `validate` subcommand.
 type RawValidationRequest struct {
 	Request  Request  `json:"request"`
 	Settings Settings `json:"settings"`

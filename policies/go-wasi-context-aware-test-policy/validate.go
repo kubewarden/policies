@@ -12,7 +12,7 @@ import (
 	kubewardenProtocol "github.com/kubewarden/policy-sdk-go/protocol"
 )
 
-// LookupError is a custom error that provides extra information
+// LookupError is a custom error that provides extra information.
 type LookupError struct {
 	StatusCode kubewarden.Code
 	Message    kubewarden.Message
@@ -47,7 +47,6 @@ func validate(input []byte) ([]byte, error) {
 	return validateAdmissionReview(settings, validationRequest.Request)
 }
 
-//nolint:cyclop
 func validateAdmissionReview(_ Settings, request kubewardenProtocol.KubernetesAdmissionRequest) ([]byte, error) {
 	deployment := appsv1.Deployment{}
 	err := json.Unmarshal(request.Object, &deployment)
@@ -151,7 +150,8 @@ func validateAdmissionReview(_ Settings, request kubewardenProtocol.KubernetesAd
 
 func componentDeployed(deploymentList *appsv1.DeploymentList, componentName string) bool {
 	for _, deployment := range deploymentList.Items {
-		if deployment.Metadata.Labels != nil && deployment.Metadata.Labels["app.kubernetes.io/component"] == componentName {
+		if deployment.Metadata.Labels != nil &&
+			deployment.Metadata.Labels["app.kubernetes.io/component"] == componentName {
 			return true
 		}
 	}

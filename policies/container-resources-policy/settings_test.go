@@ -10,18 +10,31 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func checkSettingsValues(t *testing.T, settings *ResourceConfiguration, expectedMaxLimit, expectedDefaultRequest, expectedDefaultLimit string, expectedIgnoreValues bool) {
+func checkSettingsValues(
+	t *testing.T,
+	settings *ResourceConfiguration,
+	expectedMaxLimit, expectedDefaultRequest, expectedDefaultLimit string,
+	expectedIgnoreValues bool,
+) {
 	actualMaxLimit := resource.MustParse(expectedMaxLimit)
 	if !settings.MaxLimit.Equal(actualMaxLimit) {
 		t.Errorf("invalid max limit quantity parsed. Expected %+v, got %+v", actualMaxLimit, settings.MaxLimit)
 	}
 	actualDefaultRequest := resource.MustParse(expectedDefaultRequest)
 	if !settings.DefaultRequest.Equal(actualDefaultRequest) {
-		t.Errorf("invalid default request quantity parsed. Expected %+v, got %+v", actualDefaultRequest, settings.DefaultRequest)
+		t.Errorf(
+			"invalid default request quantity parsed. Expected %+v, got %+v",
+			actualDefaultRequest,
+			settings.DefaultRequest,
+		)
 	}
 	actualDefaultLimit := resource.MustParse(expectedDefaultLimit)
 	if !settings.DefaultLimit.Equal(actualDefaultLimit) {
-		t.Errorf("invalid default limit quantity parsed. Expected %+v, got %+v", actualDefaultLimit, settings.DefaultLimit)
+		t.Errorf(
+			"invalid default limit quantity parsed. Expected %+v, got %+v",
+			actualDefaultLimit,
+			settings.DefaultLimit,
+		)
 	}
 	if settings.IgnoreValues != expectedIgnoreValues {
 		t.Errorf("invalid ignoreValues value. Expected %t, got %t", expectedIgnoreValues, settings.IgnoreValues)
@@ -39,12 +52,16 @@ func TestParsingResourceConfiguration(t *testing.T) {
 			rawSettings: []byte(`{"maxLimit": "3", "minRequest": "1", "defaultLimit": "2", "defaultRequest": "1"}`),
 		},
 		{
-			name:        "valid ignoreValues with valid resource configuration",
-			rawSettings: []byte(`{"maxLimit": "3", "minRequest": "1", "defaultLimit": "2", "defaultRequest": "1", "ignoreValues": true}`),
+			name: "valid ignoreValues with valid resource configuration",
+			rawSettings: []byte(
+				`{"maxLimit": "3", "minRequest": "1", "defaultLimit": "2", "defaultRequest": "1", "ignoreValues": true}`,
+			),
 		},
 		{
-			name:        "valid ignoreValues",
-			rawSettings: []byte(`{"maxLimit": "3", "minRequest": "1", "defaultLimit": "2", "defaultRequest": "1", "ignoreValues": false}`),
+			name: "valid ignoreValues",
+			rawSettings: []byte(
+				`{"maxLimit": "3", "minRequest": "1", "defaultLimit": "2", "defaultRequest": "1", "ignoreValues": false}`,
+			),
 		},
 		{
 			name:        "valid ignoreValues",
@@ -58,12 +75,16 @@ func TestParsingResourceConfiguration(t *testing.T) {
 		{
 			name:        "invalid limit suffix",
 			rawSettings: []byte(`{"maxLimit": "1x", "minRequest": "1x", "defaultLimit": "1m", "defaultRequest": "1m"}`),
-			err:         errors.New("quantities must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'"),
+			err: errors.New(
+				"quantities must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'",
+			),
 		},
 		{
 			name:        "invalid request suffix",
 			rawSettings: []byte(`{"maxLimit": "3m", "minRequest": "1m", "defaultLimit": "2m", "defaultRequest": "1x"}`),
-			err:         errors.New("quantities must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'"),
+			err: errors.New(
+				"quantities must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'",
+			),
 		},
 		{
 			name:        "valid resource configuration",
@@ -86,8 +107,10 @@ func TestParsingResourceConfiguration(t *testing.T) {
 			rawSettings: []byte(`{"minLimit": "1m", "maxLimit": "4m", "defaultLimit": "2m", "defaultRequest": "1m"}`),
 		},
 		{
-			name:        "valid: maxRequest with minRequest consistency",
-			rawSettings: []byte(`{"minRequest": "1m", "maxRequest": "2m", "defaultLimit": "3m", "defaultRequest": "2m"}`),
+			name: "valid: maxRequest with minRequest consistency",
+			rawSettings: []byte(
+				`{"minRequest": "1m", "maxRequest": "2m", "defaultLimit": "3m", "defaultRequest": "2m"}`,
+			),
 		},
 		{
 			name:        "setting only maxLimit",
@@ -147,12 +170,16 @@ func TestParsingResourceConfiguration(t *testing.T) {
 			rawSettings: []byte(`{"minRequest": "1m", "maxRequest": "2m", "minLimit": "3m", "maxLimit": "4m"}`),
 		},
 		{
-			name:        "valid: equal values in constraint chain",
-			rawSettings: []byte(`{"minRequest": "2m", "maxRequest": "2m", "minLimit": "2m", "maxLimit": "2m", "defaultLimit": "2m", "defaultRequest": "2m"}`),
+			name: "valid: equal values in constraint chain",
+			rawSettings: []byte(
+				`{"minRequest": "2m", "maxRequest": "2m", "minLimit": "2m", "maxLimit": "2m", "defaultLimit": "2m", "defaultRequest": "2m"}`,
+			),
 		},
 		{
-			name:        "valid: maxRequest equals minLimit",
-			rawSettings: []byte(`{"minRequest": "1m", "maxRequest": "3m", "minLimit": "3m", "maxLimit": "4m", "defaultLimit": "3m", "defaultRequest": "3m"}`),
+			name: "valid: maxRequest equals minLimit",
+			rawSettings: []byte(
+				`{"minRequest": "1m", "maxRequest": "3m", "minLimit": "3m", "maxLimit": "4m", "defaultLimit": "3m", "defaultRequest": "3m"}`,
+			),
 		},
 		{
 			name:        "invalid: minRequest > minLimit",
@@ -218,8 +245,10 @@ func TestParsingSettings(t *testing.T) {
 			err:         errors.New("no settings provided. At least one resource limit or request must be verified"),
 		},
 		{
-			name:        "valid settings",
-			rawSettings: []byte(`{"cpu": {"maxLimit": "1m", "defaultRequest": "1m", "defaultLimit": "1m"}, "memory":{ "defaultLimit": "200M", "defaultRequest": "100M", "maxLimit": "500M"}, "ignoreImages": ["image:latest"]}`),
+			name: "valid settings",
+			rawSettings: []byte(
+				`{"cpu": {"maxLimit": "1m", "defaultRequest": "1m", "defaultLimit": "1m"}, "memory":{ "defaultLimit": "200M", "defaultRequest": "100M", "maxLimit": "500M"}, "ignoreImages": ["image:latest"]}`,
+			),
 		},
 		{
 			name:        "valid settings with cpu field only",
@@ -230,36 +259,52 @@ func TestParsingSettings(t *testing.T) {
 			rawSettings: []byte(`{"memory":{ "defaultLimit": "200M", "defaultRequest": "100M", "maxLimit": "500M"}}`),
 		},
 		{
-			name:        "no suffix",
-			rawSettings: []byte(`{"cpu": {"maxLimit": "3", "defaultLimit": "2", "defaultRequest": "1"}, "memory": {"maxLimit": "3", "defaultLimit": "2", "defaultRequest": "1"}, "ignoreImages": []}`),
+			name: "no suffix",
+			rawSettings: []byte(
+				`{"cpu": {"maxLimit": "3", "defaultLimit": "2", "defaultRequest": "1"}, "memory": {"maxLimit": "3", "defaultLimit": "2", "defaultRequest": "1"}, "ignoreImages": []}`,
+			),
 		},
 		{
-			name:        "invalid cpu settings",
-			rawSettings: []byte(`{"cpu": {"maxLimit": "2m", "defaultRequest": "3m", "defaultLimit": "4m"}, "memory":{ "defaultLimit": "2G", "defaultRequest": "1G", "maxLimit": "3G"}, "ignoreImages": ["image:latest"]}`),
-			err:         errors.New("default limit: 4m cannot be greater than max limit: 2m"),
+			name: "invalid cpu settings",
+			rawSettings: []byte(
+				`{"cpu": {"maxLimit": "2m", "defaultRequest": "3m", "defaultLimit": "4m"}, "memory":{ "defaultLimit": "2G", "defaultRequest": "1G", "maxLimit": "3G"}, "ignoreImages": ["image:latest"]}`,
+			),
+			err: errors.New("default limit: 4m cannot be greater than max limit: 2m"),
 		},
 		{
-			name:        "invalid memory settings",
-			rawSettings: []byte(`{"cpu": {"maxLimit": "2m", "defaultRequest": "1m", "defaultLimit": "1m"}, "memory":{ "defaultLimit": "2G", "defaultRequest": "3G", "maxLimit": "1G"}, "ignoreImages": ["image:latest"]}`),
-			err:         errors.New("default limit: 2G cannot be greater than max limit: 1G"),
+			name: "invalid memory settings",
+			rawSettings: []byte(
+				`{"cpu": {"maxLimit": "2m", "defaultRequest": "1m", "defaultLimit": "1m"}, "memory":{ "defaultLimit": "2G", "defaultRequest": "3G", "maxLimit": "1G"}, "ignoreImages": ["image:latest"]}`,
+			),
+			err: errors.New("default limit: 2G cannot be greater than max limit: 1G"),
 		},
 		{
-			name:        "invalid cpu request",
-			rawSettings: []byte(`{"cpu": {"minRequest": "2m", "maxLimit":	"4m", "defaultRequest": "1m", "defaultLimit": "3m"}}`),
-			err:         errors.New("min request: 2m cannot be greater than default request: 1m"),
+			name: "invalid cpu request",
+			rawSettings: []byte(
+				`{"cpu": {"minRequest": "2m", "maxLimit":	"4m", "defaultRequest": "1m", "defaultLimit": "3m"}}`,
+			),
+			err: errors.New("min request: 2m cannot be greater than default request: 1m"),
 		},
 		{
-			name:        "valid settings with empty memory settings",
-			rawSettings: []byte(`{"cpu": {"maxLimit": "1m", "defaultRequest": "1m", "defaultLimit": "1m"}, "memory":{"ignoreValues": false}, "ignoreImages": ["image:latest"]}`),
+			name: "valid settings with empty memory settings",
+			rawSettings: []byte(
+				`{"cpu": {"maxLimit": "1m", "defaultRequest": "1m", "defaultLimit": "1m"}, "memory":{"ignoreValues": false}, "ignoreImages": ["image:latest"]}`,
+			),
 		},
 		{
-			name:        "valid settings with empty cpu settings",
-			rawSettings: []byte(`{"cpu": {"ignoreValues": false}, "memory":{ "defaultLimit": "200M", "defaultRequest": "100M", "maxLimit": "500M", "ignoreValues": false}, "ignoreImages": ["image:latest"]}`),
+			name: "valid settings with empty cpu settings",
+			rawSettings: []byte(
+				`{"cpu": {"ignoreValues": false}, "memory":{ "defaultLimit": "200M", "defaultRequest": "100M", "maxLimit": "500M", "ignoreValues": false}, "ignoreImages": ["image:latest"]}`,
+			),
 		},
 		{
-			name:        "invalid settings with empty cpu and memory settings",
-			rawSettings: []byte(`{"cpu": {"ignoreValues": false}, "memory":{"ignoreValues": false}, "ignoreImages": ["image:latest"]}`),
-			err:         errors.New("invalid cpu settings\nall the quantities must be defined\ninvalid memory settings\nall the quantities must be defined"),
+			name: "invalid settings with empty cpu and memory settings",
+			rawSettings: []byte(
+				`{"cpu": {"ignoreValues": false}, "memory":{"ignoreValues": false}, "ignoreImages": ["image:latest"]}`,
+			),
+			err: errors.New(
+				"invalid cpu settings\nall the quantities must be defined\ninvalid memory settings\nall the quantities must be defined",
+			),
 		},
 		{
 			name:        "invalid cpu minLimit",
@@ -282,18 +327,24 @@ func TestParsingSettings(t *testing.T) {
 			err:         errors.New("default request: 3G cannot be greater than default limit: 2G"),
 		},
 		{
-			name:        "valid settings with minLimit and maxRequest",
-			rawSettings: []byte(`{"cpu": {"minLimit": "3m", "maxLimit": "4m", "maxRequest": "2m", "defaultLimit": "3m", "defaultRequest": "2m"}, "memory": {"minLimit": "3G", "maxLimit": "4G", "maxRequest": "2G", "defaultLimit": "3G", "defaultRequest": "2G"}}`),
+			name: "valid settings with minLimit and maxRequest",
+			rawSettings: []byte(
+				`{"cpu": {"minLimit": "3m", "maxLimit": "4m", "maxRequest": "2m", "defaultLimit": "3m", "defaultRequest": "2m"}, "memory": {"minLimit": "3G", "maxLimit": "4G", "maxRequest": "2G", "defaultLimit": "3G", "defaultRequest": "2G"}}`,
+			),
 		},
 		{
-			name:        "invalid cpu maxRequest greater than maxLimit",
-			rawSettings: []byte(`{"cpu": {"maxRequest": "5m", "maxLimit": "4m", "defaultLimit": "3m", "defaultRequest": "2m"}}`),
-			err:         errors.New("max request: 5m cannot be greater than max limit: 4m"),
+			name: "invalid cpu maxRequest greater than maxLimit",
+			rawSettings: []byte(
+				`{"cpu": {"maxRequest": "5m", "maxLimit": "4m", "defaultLimit": "3m", "defaultRequest": "2m"}}`,
+			),
+			err: errors.New("max request: 5m cannot be greater than max limit: 4m"),
 		},
 		{
-			name:        "invalid cpu minRequest greater than minLimit",
-			rawSettings: []byte(`{"cpu": {"minLimit": "2m", "minRequest": "3m", "defaultLimit": "4m", "defaultRequest": "1m"}}`),
-			err:         errors.New("min request: 3m cannot be greater than min limit: 2m"),
+			name: "invalid cpu minRequest greater than minLimit",
+			rawSettings: []byte(
+				`{"cpu": {"minLimit": "2m", "minRequest": "3m", "defaultLimit": "4m", "defaultRequest": "1m"}}`,
+			),
+			err: errors.New("min request: 3m cannot be greater than min limit: 2m"),
 		},
 	}
 	for _, test := range tests {
@@ -317,13 +368,15 @@ func TestParsingSettings(t *testing.T) {
 
 func TestNewSettingsFromValidationReq(t *testing.T) {
 	validationReq := &kubewarden_protocol.ValidationRequest{
-		Settings: []byte(`{"cpu": {"maxLimit": "3m","defaultRequest": "1m", "defaultLimit": "2m"}, "memory":{"maxLimit": "3G","defaultRequest": "1G", "defaultLimit": "2G"}}`),
+		Settings: []byte(
+			`{"cpu": {"maxLimit": "3m","defaultRequest": "1m", "defaultLimit": "2m"}, "memory":{"maxLimit": "3G","defaultRequest": "1G", "defaultLimit": "2G"}}`,
+		),
 	}
 	settings, err := NewSettingsFromValidationReq(validationReq)
 	if err != nil {
 		t.Fatalf("Unexpected error %+v", err)
 	}
-	checkSettingsValues(t, settings.Cpu, "3m", "1m", "2m", false)
+	checkSettingsValues(t, settings.CPU, "3m", "1m", "2m", false)
 	checkSettingsValues(t, settings.Memory, "3G", "1G", "2G", false)
 }
 
@@ -337,7 +390,7 @@ func TestNewSettingsPartialFieldsOnlyFromValidationReq(t *testing.T) {
 			t.Fatalf("Unexpected error %+v", err)
 		}
 
-		if settings.Cpu != nil {
+		if settings.CPU != nil {
 			t.Fatal("cpu settings should be null")
 		}
 		checkSettingsValues(t, settings.Memory, "3G", "1G", "2G", false)
@@ -355,24 +408,28 @@ func TestNewSettingsPartialFieldsOnlyFromValidationReq(t *testing.T) {
 			t.Fatal("memory settings should be null")
 		}
 
-		checkSettingsValues(t, settings.Cpu, "1", "1", "1", false)
+		checkSettingsValues(t, settings.CPU, "1", "1", "1", false)
 	})
 	t.Run("only memory fields with ignoreValues", func(t *testing.T) {
 		validationReq := &kubewarden_protocol.ValidationRequest{
-			Settings: []byte(`{"memory":{"maxLimit": "3G","defaultRequest": "1G", "defaultLimit": "2G", "ignoreValues": true}}`),
+			Settings: []byte(
+				`{"memory":{"maxLimit": "3G","defaultRequest": "1G", "defaultLimit": "2G", "ignoreValues": true}}`,
+			),
 		}
 		settings, err := NewSettingsFromValidationReq(validationReq)
 		if err != nil {
 			t.Fatalf("Unexpected error %+v", err)
 		}
-		if settings.Cpu != nil {
+		if settings.CPU != nil {
 			t.Fatal("cpu settings should be null")
 		}
 		checkSettingsValues(t, settings.Memory, "3G", "1G", "2G", true)
 	})
 	t.Run("only cpu fields with ignoreValues", func(t *testing.T) {
 		validationReq := &kubewarden_protocol.ValidationRequest{
-			Settings: []byte(`{"cpu":{"maxLimit": "1","defaultRequest": "1", "defaultLimit": "1", "ignoreValues": true}}`),
+			Settings: []byte(
+				`{"cpu":{"maxLimit": "1","defaultRequest": "1", "defaultLimit": "1", "ignoreValues": true}}`,
+			),
 		}
 		settings, err := NewSettingsFromValidationReq(validationReq)
 		if err != nil {
@@ -381,7 +438,7 @@ func TestNewSettingsPartialFieldsOnlyFromValidationReq(t *testing.T) {
 		if settings.Memory != nil {
 			t.Fatal("memory settings should be null")
 		}
-		checkSettingsValues(t, settings.Cpu, "1", "1", "1", true)
+		checkSettingsValues(t, settings.CPU, "1", "1", "1", true)
 	})
 	t.Run("both cpu and memory fields with ignoreValues", func(t *testing.T) {
 		validationReq := &kubewarden_protocol.ValidationRequest{
@@ -391,7 +448,7 @@ func TestNewSettingsPartialFieldsOnlyFromValidationReq(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Unexpected error %+v", err)
 		}
-		checkSettingsValues(t, settings.Cpu, "0", "0", "0", true)
+		checkSettingsValues(t, settings.CPU, "0", "0", "0", true)
 		checkSettingsValues(t, settings.Memory, "0", "0", "0", true)
 	})
 }

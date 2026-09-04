@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-	//nolint:mnd
-	if len(os.Args) != 2 {
+	const expectedArgsCount = 2
+
+	if len(os.Args) != expectedArgsCount {
 		log.Fatalln("Wrong usage, expected either 'validate' or `validate-settings'")
 	}
 
@@ -25,6 +26,7 @@ func main() {
 	case "validate-settings":
 		response, err = validateSettings(input)
 	default:
+		//nolint:gosec // os.Args[1] is the subcommand set by the host, not external untrusted input
 		log.Fatalf("wrong subcommand: '%s' - use either 'validate' or 'validate-settings'", os.Args[1])
 	}
 

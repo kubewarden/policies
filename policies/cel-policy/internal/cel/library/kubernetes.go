@@ -211,7 +211,11 @@ func k8sClientBuilderKind(arg1, arg2 ref.Val) ref.Val {
 		return types.MaybeNoSuchOverloadErr(arg2)
 	}
 
-	return k8sClient{receiverOnlyObjectVal: receiverOnlyVal(k8sClientType), apiVersion: apiVersionClient.apiVersion, kind: kind}
+	return k8sClient{
+		receiverOnlyObjectVal: receiverOnlyVal(k8sClientType),
+		apiVersion:            apiVersionClient.apiVersion,
+		kind:                  kind,
+	}
 }
 
 func k8sClientNamespace(arg1, arg2 ref.Val) ref.Val {
@@ -307,6 +311,7 @@ var k8sClientBuilderType = cel.ObjectType("kw.k8s.ClientBuilder")
 // It is used to build the client object.
 type k8sClientBuilder struct {
 	receiverOnlyObjectVal
+
 	apiVersion string
 }
 
@@ -316,6 +321,7 @@ var k8sClientType = cel.ObjectType("kw.k8s.Client")
 // and exposes the list and get functions.
 type k8sClient struct {
 	receiverOnlyObjectVal
+
 	apiVersion    string
 	kind          string
 	namespace     *string
@@ -355,7 +361,7 @@ func (c *k8sClient) list() ref.Val {
 		return types.NewErr("cannot list all Kubernetes resources: %s", err)
 	}
 
-	var response map[string]interface{}
+	var response map[string]any
 	if err = json.Unmarshal(responseBytes, &response); err != nil {
 		return types.NewErr("cannot unmarshal Kubernetes list resources response: %s", err)
 	}
@@ -378,7 +384,7 @@ func (c *k8sClient) get(name string) ref.Val {
 		return types.NewErr("cannot get Kubernetes resource: %s", err)
 	}
 
-	var response map[string]interface{}
+	var response map[string]any
 	if err = json.Unmarshal(responseBytes, &response); err != nil {
 		return types.NewErr("cannot unmarshal Kubernetes get resource response: %s", err)
 	}

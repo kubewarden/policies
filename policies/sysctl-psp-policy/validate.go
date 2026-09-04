@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
 	mapset "github.com/deckarep/golang-set/v2"
@@ -18,8 +19,8 @@ import (
 //
 // A (possibly not up-to-date) list of known safe sysctls can be found at:
 // https://kubernetes.io/docs/concepts/security/pod-security-standards/#baseline
-func CreateSafeSysctlsSet() (safeSysctls mapset.Set[string]) {
-	safeSysctls = mapset.NewThreadUnsafeSet[string]()
+func CreateSafeSysctlsSet() mapset.Set[string] {
+	safeSysctls := mapset.NewThreadUnsafeSet[string]()
 	safeSysctls.Add("kernel.shm_rmid_forced")
 	safeSysctls.Add("net.ipv4.ip_local_port_range")
 	safeSysctls.Add("net.ipv4.tcp_syncookies")
@@ -32,7 +33,7 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	logger.Info("validating request")
@@ -59,12 +60,12 @@ func validate(payload []byte) ([]byte, error) {
 	// build set of prefixes from patterns of forbidden sysctls:
 	globForbiddenSysctls := mapset.NewThreadUnsafeSet[string]()
 	for _, elem := range settings.ForbiddenSysctls.ToSlice() {
-		if strings.HasSuffix(elem, "*") {
-			globForbiddenSysctls.Add(strings.TrimSuffix(elem, "*"))
+		if before, ok := strings.CutSuffix(elem, "*"); ok {
+			globForbiddenSysctls.Add(before)
 		}
 	}
 
-	data.ForEach(func(key, value gjson.Result) bool {
+	data.ForEach(func(_, value gjson.Result) bool {
 		sysctl := gjson.Get(value.String(), "name").String()
 
 		if settings.ForbiddenSysctls.Contains(sysctl) {

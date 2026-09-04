@@ -13,7 +13,7 @@ type Settings struct {
 	IgnoreInitContainersVolumes bool               `json:"ignoreInitContainersVolumes,omitempty"`
 }
 
-// Builds a new Settings instance starting from a validation
+// NewSettingsFromValidationReq builds a new Settings instance starting from a validation
 // request payload:
 //
 //	{
@@ -30,10 +30,10 @@ type Settings struct {
 //	   }
 //	}
 func NewSettingsFromValidationReq(payload []byte) (Settings, error) {
-	settingsJson := gjson.GetBytes(payload, "settings")
+	settingsJSON := gjson.GetBytes(payload, "settings")
 	settings := Settings{}
 
-	err := json.Unmarshal([]byte(settingsJson.Raw), &settings)
+	err := json.Unmarshal([]byte(settingsJSON.Raw), &settings)
 	if err != nil {
 		return Settings{}, err
 	}
@@ -41,7 +41,7 @@ func NewSettingsFromValidationReq(payload []byte) (Settings, error) {
 	return settings, nil
 }
 
-// Builds a new Settings instance starting from a Settings
+// NewSettingsFromValidateSettingsPayload builds a new Settings instance starting from a Settings
 // payload:
 //
 //	{

@@ -49,13 +49,13 @@ func Validate(payload []byte) ([]byte, error) {
 		return nil, fmt.Errorf("failed to create CEL compiler: %w", err)
 	}
 
-	object := map[string]interface{}{}
+	object := map[string]any{}
 	err = json.Unmarshal(request.Object, &object)
 	if err != nil {
 		return nil, fmt.Errorf("cannot unmarshal request object %w", err)
 	}
 
-	oldObject := map[string]interface{}{}
+	oldObject := map[string]any{}
 	if request.OldObject != nil {
 		err = json.Unmarshal(request.OldObject, &oldObject)
 		if err != nil {
@@ -63,18 +63,18 @@ func Validate(payload []byte) ([]byte, error) {
 		}
 	}
 
-	requestMap := map[string]interface{}{}
+	requestMap := map[string]any{}
 	if err = json.Unmarshal(validationRequest.Request, &requestMap); err != nil {
 		return nil, fmt.Errorf("cannot unmarshal request %w", err)
 	}
 
-	vars := map[string]interface{}{
+	vars := map[string]any{
 		"object":    object,
 		"oldObject": oldObject,
 		"request":   requestMap,
 		"namespaceObject": func() ref.Val {
 			// lazy load namespaceObject
-			objectMeta, ok := object["metadata"].(map[string]interface{})
+			objectMeta, ok := object["metadata"].(map[string]any)
 			if !ok {
 				return types.NullValue
 			}
@@ -115,7 +115,7 @@ func Validate(payload []byte) ([]byte, error) {
 	return json.Marshal(response)
 }
 
-func evalVariables(compiler *cel.Compiler, vars map[string]interface{}, variables []settings.Variable) error {
+func evalVariables(compiler *cel.Compiler, vars map[string]any, variables []settings.Variable) error {
 	for _, variable := range variables {
 		ast, err := compiler.CompileCELExpression(variable.Expression)
 		if err != nil {
@@ -139,7 +139,11 @@ func evalVariables(compiler *cel.Compiler, vars map[string]interface{}, variable
 	return nil
 }
 
-func evalValidations(compiler *cel.Compiler, vars map[string]interface{}, validations []settings.Validation) (*protocol.ValidationResponse, error) {
+func evalValidations(
+	compiler *cel.Compiler,
+	vars map[string]any,
+	validations []settings.Validation,
+) (*protocol.ValidationResponse, error) {
 	for _, validation := range validations {
 		response, err := evaluateValidation(compiler, vars, validation)
 		if err != nil {
@@ -156,7 +160,11 @@ func evalValidations(compiler *cel.Compiler, vars map[string]interface{}, valida
 // evaluateValidation evaluates a single validation expression.
 // If the expression evaluates to false, it returns a rejection message and code.
 // If the expression evaluates to true, it returns empty message and code 0.
-func evaluateValidation(compiler *cel.Compiler, vars map[string]any, validation settings.Validation) (*protocol.ValidationResponse, error) {
+func evaluateValidation(
+	compiler *cel.Compiler,
+	vars map[string]any,
+	validation settings.Validation,
+) (*protocol.ValidationResponse, error) {
 	ast, err := compiler.CompileCELExpression(validation.Expression)
 	if err != nil {
 		return nil, fmt.Errorf("failed to compile expression: %w", err)
@@ -181,13 +189,16 @@ func evaluateValidation(compiler *cel.Compiler, vars map[string]any, validation 
 			return buildRejectResponse(kubewarden.Message(validation.Message), reason), nil
 		}
 
-		return buildRejectResponse(kubewarden.Message(fmt.Sprintf("failed expression: %s", strings.TrimSpace(validation.Expression))), reason), nil
+		return buildRejectResponse(
+			kubewarden.Message(fmt.Sprintf("failed expression: %s", strings.TrimSpace(validation.Expression))),
+			reason,
+		), nil
 	}
 
 	return buildAcceptResponse(), nil
 }
 
-func evalMessageExpression(compiler *cel.Compiler, vars map[string]interface{}, messageExpression string) (string, error) {
+func evalMessageExpression(compiler *cel.Compiler, vars map[string]any, messageExpression string) (string, error) {
 	ast, err := compiler.CompileCELExpression(messageExpression)
 	if err != nil {
 		return "", err

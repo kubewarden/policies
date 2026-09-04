@@ -474,7 +474,10 @@ func sigstoreKeylessPrefixVerifierKeylessPrefix(args ...ref.Val) ref.Val {
 		return types.MaybeNoSuchOverloadErr(args[2])
 	}
 
-	verifier.keylessPrefix = append(verifier.keylessPrefix, verify.KeylessPrefixInfo{Issuer: issuer, UrlPrefix: urlPrefix})
+	verifier.keylessPrefix = append(
+		verifier.keylessPrefix,
+		verify.KeylessPrefixInfo{Issuer: issuer, UrlPrefix: urlPrefix},
+	)
 
 	return verifier
 }
@@ -628,6 +631,7 @@ var sigstoreVerifierBuilderType = cel.ObjectType("kw.sigstore.VerifierBuilder")
 // sigstoreVerifierBuilder is an intermediate object is used to build a specific verifier.
 type sigstoreVerifierBuilder struct {
 	receiverOnlyObjectVal
+
 	image       string
 	annotations map[string]string
 }
@@ -637,6 +641,7 @@ var sigstorePubKeysVerifierType = cel.ObjectType("kw.sigstore.PubKeysVerifier")
 // sigstorePubKeysVerifier verifies the signature of an image using a set of public keys.
 type sigstorePubKeysVerifier struct {
 	receiverOnlyObjectVal
+
 	image       string
 	annotations map[string]string
 	pubKeys     []string
@@ -660,6 +665,7 @@ var sigstoreKeylessVerifierType = cel.ObjectType("kw.sigstore.KeylessVerifier")
 // sigstoreKeylessVerifier verifies the signature of an image using keyless signing.
 type sigstoreKeylessVerifier struct {
 	receiverOnlyObjectVal
+
 	image       string
 	annotations map[string]string
 	keyless     []oci.KeylessInfo
@@ -684,6 +690,7 @@ var sigstoreKeylessPrefixVerifierType = cel.ObjectType("kw.sigstore.KeylessPrefi
 // keyless signing.
 type sigstoreKeylessPrefixVerifier struct {
 	receiverOnlyObjectVal
+
 	image         string
 	annotations   map[string]string
 	keylessPrefix []verify.KeylessPrefixInfo
@@ -708,6 +715,7 @@ var sigstoreGitHubActionVerifierType = cel.ObjectType("kw.sigstore.GitHubActionV
 // keyless signatures made via Github Actions.
 type sigstoreGitHubActionVerifier struct {
 	receiverOnlyObjectVal
+
 	image       string
 	annotations map[string]string
 	owner       string
@@ -732,6 +740,7 @@ var sigstoreCertificateVerifierType = cel.ObjectType("kw.sigstore.CertificateVer
 // sigstoreCertificateVerifier verifies sigstore signatures of an image using a user provided certificate.
 type sigstoreCertificateVerifier struct {
 	receiverOnlyObjectVal
+
 	image              string
 	annotations        map[string]string
 	certificate        []rune
@@ -740,7 +749,14 @@ type sigstoreCertificateVerifier struct {
 }
 
 func (v *sigstoreCertificateVerifier) verify() ref.Val {
-	response, err := verify.VerifyCertificate(&host, v.image, v.certificate, v.certificateChain, v.requireRekorBundle, v.annotations)
+	response, err := verify.VerifyCertificate(
+		&host,
+		v.image,
+		v.certificate,
+		v.certificateChain,
+		v.requireRekorBundle,
+		v.annotations,
+	)
 	if err != nil {
 		return types.NewErr("failed to verify image: %s", err)
 	}
@@ -757,6 +773,7 @@ var sigstoreResponseType = cel.ObjectType("kw.sigstore.Response")
 // sigstoreResponse is the response object returned by the verify function.
 type sigstoreResponse struct {
 	receiverOnlyObjectVal
+
 	isTrusted bool
 	digest    string
 }

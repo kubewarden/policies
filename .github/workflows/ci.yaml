@@ -30,14 +30,50 @@ jobs:
             # list only changes of files in `policies/`:
             # it's necessary to add the `|| true` in the pipe because if the CI is running in a PR with no changes under
             # the policies directory, the script will fail in the grep command.
-            git_files="$(git diff --no-color --find-renames --find-copies --name-only origin/${{ github.base_ref }}...${{ github.sha }} -- policies | grep -v '^policies/crates/' || true)"
+            git_files="$(git diff --no-color --find-renames --find-copies --name-only origin/${{ github.base_ref }}...${{ github.sha }} -- policies || true)"
 
             # build policy_working_dirs:
-            policies_working_dirs=($(echo "$git_files" | cut -d/ -f1,2 ))
+            policies_working_dirs=($(echo "$git_files" | cut -d/ -f1,2 | sort -u))
+
+            # keep only real policy directories, i.e. those containing a Makefile.
+            # This drops shared/non-policy files living directly under `policies/`
+            # (e.g. policies/.golangci.yml, policies/Makefile.tinygo, policies/go-common.mk)
+            # without needing an explicit denylist. It also drops `policies/crates`
+            # itself (changes under policies/crates/** are handled by the fan-out
+            # below, and by the dedicated ci-crates.yaml workflow).
+            filtered_dirs=()
+            for dir in "${policies_working_dirs[@]}"; do
+              [ -f "$dir/Makefile" ] && filtered_dirs+=("$dir")
+            done
+            policies_working_dirs=("${filtered_dirs[@]}")
+
+            # Some files are shared by every policy of a given language. Changing
+            # one of them doesn't show up as a change of a specific policy
+            # directory above, but every policy of that language must still be
+            # rebuilt/tested.
+            rust_policies=($(find policies -mindepth 2 -maxdepth 2 -name Cargo.toml -exec dirname '{}' \;))
+            go_policies=($(find policies -mindepth 2 -maxdepth 2 -name go.mod -exec dirname '{}' \;))
+            rego_policies=($(find policies -mindepth 2 -maxdepth 2 -name Makefile -exec dirname '{}' \; \
+              | while read -r dir; do [ -f "$dir/Cargo.toml" ] || [ -f "$dir/go.mod" ] || echo "$dir"; done))
+
+            # Rust: shared crates, workspace manifest/lockfile, shared Makefile
+            if echo "$git_files" | grep -qE '^policies/(crates/|Cargo\.toml$|Cargo\.lock$|Makefile\.rust$)'; then
+              policies_working_dirs+=("${rust_policies[@]}")
+            fi
+
+            # Go: shared golangci-lint config, common Makefile fragment, shared Makefiles
+            if echo "$git_files" | grep -qE '^policies/(\.golangci\.yml|go-common\.mk|Makefile\.tinygo|Makefile\.wasigo)$'; then
+              policies_working_dirs+=("${go_policies[@]}")
+            fi
+
+            # Rego: shared Makefile
+            if echo "$git_files" | grep -qE '^policies/Makefile\.p-rego$'; then
+              policies_working_dirs+=("${rego_policies[@]}")
+            fi
           fi
 
           declare -p policies_working_dirs # for debug
-          policy_working_dirs=$(jq --compact-output --null-input '$ARGS.positional | map(select(. != "policies/Makefile.rust" and . != "policies/Makefile.wasigo" and . != "policies/Makefile.tinygo" and . != "policies/Makefile.p-rego" and . != "policies/go-common.mk" and . != "policies/Cargo.lock" and . != "policies/Cargo.toml" and . != "policies/go.mod" and . != "policies/go.sum")) | unique' --args -- "${policies_working_dirs[@]}")
+          policy_working_dirs=$(jq --compact-output --null-input '$ARGS.positional | unique' --args -- "${policies_working_dirs[@]}")
           echo "policy_working_dirs=$policy_working_dirs"
           echo "policy_working_dirs=$policy_working_dirs" >> $GITHUB_OUTPUT
 

@@ -7,10 +7,12 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 )
 
+const defaultResourceHay = "hay"
+
 func TestValidateSettingsAccept(t *testing.T) {
 	settings := &Settings{
 		ForbiddenResources: mapset.NewSet("banana"),
-		DefaultResource:    "hay",
+		DefaultResource:    defaultResourceHay,
 	}
 	settingsJSON, err := json.Marshal(&settings)
 	if err != nil {

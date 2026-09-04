@@ -21,7 +21,7 @@ type ResourceConfiguration struct {
 }
 
 type Settings struct {
-	Cpu          *ResourceConfiguration `json:"cpu,omitempty"`
+	CPU          *ResourceConfiguration `json:"cpu,omitempty"`
 	Memory       *ResourceConfiguration `json:"memory,omitempty"`
 	IgnoreImages []string               `json:"ignoreImages,omitempty"`
 }
@@ -32,13 +32,28 @@ func (e AllValuesAreZeroError) Error() string {
 	return "all the quantities must be defined"
 }
 
-func (s *Settings) shouldIgnoreCpuValues() bool {
-	return s.Cpu != nil && (s.Cpu.IgnoreValues || (!s.Cpu.IgnoreValues && s.Cpu.allValuesAreZero()))
+func NewSettingsFromValidationReq(validationReq *kubewarden_protocol.ValidationRequest) (Settings, error) {
+	settings := Settings{}
+	err := json.Unmarshal(validationReq.Settings, &settings)
+	return settings, err
+}
+
+func (s *Settings) shouldIgnoreCPUValues() bool {
+	return s.CPU != nil && (s.CPU.IgnoreValues || (!s.CPU.IgnoreValues && s.CPU.allValuesAreZero()))
 }
 
 func (s *Settings) shouldIgnoreMemoryValues() bool {
 	return s.Memory != nil && (s.Memory.IgnoreValues || (!s.Memory.IgnoreValues && s.Memory.allValuesAreZero()))
 }
+
+const (
+	nameMaxLimit       = "max limit"
+	nameMinLimit       = "min limit"
+	nameDefaultLimit   = "default limit"
+	nameMaxRequest     = "max request"
+	nameMinRequest     = "min request"
+	nameDefaultRequest = "default request"
+)
 
 func (r *ResourceConfiguration) valid() error {
 	if r.allValuesAreZero() && !r.IgnoreValues {
@@ -48,92 +63,64 @@ func (r *ResourceConfiguration) valid() error {
 	// Core chain: minRequest <= defaultRequest <= maxRequest <= minLimit <= defaultLimit <= maxLimit
 	// This enforces the constraint: limit >= request for all combinations
 	// The chain ensures that any limit is always >= any request
-
-	// Validate max limit relationships
-	// defaultLimit <= maxLimit
-	if !r.DefaultLimit.IsZero() && !r.MaxLimit.IsZero() && r.DefaultLimit.Cmp(r.MaxLimit) > 0 {
-		return fmt.Errorf("default limit: %s cannot be greater than max limit: %s", r.DefaultLimit.String(), r.MaxLimit.String())
-	}
-	// minLimit <= maxLimit
-	if !r.MinLimit.IsZero() && !r.MaxLimit.IsZero() && r.MinLimit.Cmp(r.MaxLimit) > 0 {
-		return fmt.Errorf("min limit: %s cannot be greater than max limit: %s", r.MinLimit.String(), r.MaxLimit.String())
-	}
-	// maxRequest <= maxLimit
-	if !r.MaxRequest.IsZero() && !r.MaxLimit.IsZero() && r.MaxRequest.Cmp(r.MaxLimit) > 0 {
-		return fmt.Errorf("max request: %s cannot be greater than max limit: %s", r.MaxRequest.String(), r.MaxLimit.String())
-	}
-	// defaultRequest <= maxLimit
-	if !r.DefaultRequest.IsZero() && !r.MaxLimit.IsZero() && r.DefaultRequest.Cmp(r.MaxLimit) > 0 {
-		return fmt.Errorf("default request: %s cannot be greater than max limit: %s", r.DefaultRequest.String(), r.MaxLimit.String())
-	}
-	// minRequest <= maxLimit
-	if !r.MinRequest.IsZero() && !r.MaxLimit.IsZero() && r.MinRequest.Cmp(r.MaxLimit) > 0 {
-		return fmt.Errorf("min request: %s cannot be greater than max limit: %s", r.MinRequest.String(), r.MaxLimit.String())
-	}
-
-	// Validate default limit relationships
-	// minLimit <= defaultLimit
-	if !r.MinLimit.IsZero() && !r.DefaultLimit.IsZero() && r.MinLimit.Cmp(r.DefaultLimit) > 0 {
-		return fmt.Errorf("min limit: %s cannot be greater than default limit: %s", r.MinLimit.String(), r.DefaultLimit.String())
-	}
-	// maxRequest <= defaultLimit
-	if !r.MaxRequest.IsZero() && !r.DefaultLimit.IsZero() && r.MaxRequest.Cmp(r.DefaultLimit) > 0 {
-		return fmt.Errorf("max request: %s cannot be greater than default limit: %s", r.MaxRequest.String(), r.DefaultLimit.String())
-	}
-	// defaultRequest <= defaultLimit
-	if !r.DefaultRequest.IsZero() && !r.DefaultLimit.IsZero() && r.DefaultRequest.Cmp(r.DefaultLimit) > 0 {
-		return fmt.Errorf("default request: %s cannot be greater than default limit: %s", r.DefaultRequest.String(), r.DefaultLimit.String())
-	}
-	// minRequest <= defaultLimit
-	if !r.MinRequest.IsZero() && !r.DefaultLimit.IsZero() && r.MinRequest.Cmp(r.DefaultLimit) > 0 {
-		return fmt.Errorf("min request: %s cannot be greater than default limit: %s", r.MinRequest.String(), r.DefaultLimit.String())
+	constraints := []struct {
+		lesser      resource.Quantity
+		lesserName  string
+		greater     resource.Quantity
+		greaterName string
+	}{
+		// Validate max limit relationships
+		{r.DefaultLimit, nameDefaultLimit, r.MaxLimit, nameMaxLimit},
+		{r.MinLimit, nameMinLimit, r.MaxLimit, nameMaxLimit},
+		{r.MaxRequest, nameMaxRequest, r.MaxLimit, nameMaxLimit},
+		{r.DefaultRequest, nameDefaultRequest, r.MaxLimit, nameMaxLimit},
+		{r.MinRequest, nameMinRequest, r.MaxLimit, nameMaxLimit},
+		// Validate default limit relationships
+		{r.MinLimit, nameMinLimit, r.DefaultLimit, nameDefaultLimit},
+		{r.MaxRequest, nameMaxRequest, r.DefaultLimit, nameDefaultLimit},
+		{r.DefaultRequest, nameDefaultRequest, r.DefaultLimit, nameDefaultLimit},
+		{r.MinRequest, nameMinRequest, r.DefaultLimit, nameDefaultLimit},
+		// Validate min limit relationships
+		{r.MaxRequest, nameMaxRequest, r.MinLimit, nameMinLimit},
+		{r.DefaultRequest, nameDefaultRequest, r.MinLimit, nameMinLimit},
+		{r.MinRequest, nameMinRequest, r.MinLimit, nameMinLimit},
+		// Validate max request relationships
+		{r.DefaultRequest, nameDefaultRequest, r.MaxRequest, nameMaxRequest},
+		{r.MinRequest, nameMinRequest, r.MaxRequest, nameMaxRequest},
+		// Validate default request relationships
+		{r.MinRequest, nameMinRequest, r.DefaultRequest, nameDefaultRequest},
 	}
 
-	// Validate min limit relationships
-	// maxRequest <= minLimit
-	if !r.MaxRequest.IsZero() && !r.MinLimit.IsZero() && r.MaxRequest.Cmp(r.MinLimit) > 0 {
-		return fmt.Errorf("max request: %s cannot be greater than min limit: %s", r.MaxRequest.String(), r.MinLimit.String())
-	}
-	// defaultRequest <= minLimit
-	if !r.DefaultRequest.IsZero() && !r.MinLimit.IsZero() && r.DefaultRequest.Cmp(r.MinLimit) > 0 {
-		return fmt.Errorf("default request: %s cannot be greater than min limit: %s", r.DefaultRequest.String(), r.MinLimit.String())
-	}
-	// minRequest <= minLimit
-	if !r.MinRequest.IsZero() && !r.MinLimit.IsZero() && r.MinRequest.Cmp(r.MinLimit) > 0 {
-		return fmt.Errorf("min request: %s cannot be greater than min limit: %s", r.MinRequest.String(), r.MinLimit.String())
-	}
-
-	// Validate max request relationships
-	// defaultRequest <= maxRequest
-	if !r.DefaultRequest.IsZero() && !r.MaxRequest.IsZero() && r.DefaultRequest.Cmp(r.MaxRequest) > 0 {
-		return fmt.Errorf("default request: %s cannot be greater than max request: %s", r.DefaultRequest.String(), r.MaxRequest.String())
-	}
-	// minRequest <= maxRequest
-	if !r.MinRequest.IsZero() && !r.MaxRequest.IsZero() && r.MinRequest.Cmp(r.MaxRequest) > 0 {
-		return fmt.Errorf("min request: %s cannot be greater than max request: %s", r.MinRequest.String(), r.MaxRequest.String())
-	}
-
-	// Validate default request relationships
-	// minRequest <= defaultRequest
-	if !r.MinRequest.IsZero() && !r.DefaultRequest.IsZero() && r.MinRequest.Cmp(r.DefaultRequest) > 0 {
-		return fmt.Errorf("min request: %s cannot be greater than default request: %s", r.MinRequest.String(), r.DefaultRequest.String())
+	for _, constraint := range constraints {
+		if !constraint.lesser.IsZero() && !constraint.greater.IsZero() &&
+			constraint.lesser.Cmp(constraint.greater) > 0 {
+			return fmt.Errorf(
+				"%s: %s cannot be greater than %s: %s",
+				constraint.lesserName,
+				constraint.lesser.String(),
+				constraint.greaterName,
+				constraint.greater.String(),
+			)
+		}
 	}
 
 	return nil
 }
 
 func (r *ResourceConfiguration) allValuesAreZero() bool {
-	return r.MaxLimit.IsZero() && r.DefaultLimit.IsZero() && r.DefaultRequest.IsZero() && r.MinRequest.IsZero() && r.MinLimit.IsZero() && r.MaxRequest.IsZero()
+	return r.MaxLimit.IsZero() && r.DefaultLimit.IsZero() && r.DefaultRequest.IsZero() && r.MinRequest.IsZero() &&
+		r.MinLimit.IsZero() &&
+		r.MaxRequest.IsZero()
 }
 
 func (s *Settings) Valid() error {
-	if s.Cpu == nil && s.Memory == nil {
+	if s.CPU == nil && s.Memory == nil {
 		return fmt.Errorf("no settings provided. At least one resource limit or request must be verified")
 	}
 
 	var cpuError, memoryError error
-	if s.Cpu != nil {
-		cpuError = s.Cpu.valid()
+	if s.CPU != nil {
+		cpuError = s.CPU.valid()
 		if cpuError != nil {
 			cpuError = errors.Join(fmt.Errorf("invalid cpu settings"), cpuError)
 		}
@@ -146,18 +133,13 @@ func (s *Settings) Valid() error {
 	}
 	if cpuError != nil || memoryError != nil {
 		// user want to validate only one type of resource. The other one should be ignored
-		if (cpuError == nil && errors.Is(memoryError, AllValuesAreZeroError{})) || (memoryError == nil && errors.Is(cpuError, AllValuesAreZeroError{})) {
+		if (cpuError == nil && errors.Is(memoryError, AllValuesAreZeroError{})) ||
+			(memoryError == nil && errors.Is(cpuError, AllValuesAreZeroError{})) {
 			return nil
 		}
 		return errors.Join(cpuError, memoryError)
 	}
 	return nil
-}
-
-func NewSettingsFromValidationReq(validationReq *kubewarden_protocol.ValidationRequest) (Settings, error) {
-	settings := Settings{}
-	err := json.Unmarshal(validationReq.Settings, &settings)
-	return settings, err
 }
 
 func validateSettings(payload []byte) ([]byte, error) {

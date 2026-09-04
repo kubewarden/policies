@@ -38,5 +38,9 @@ func TestLabelSelectorParsing(t *testing.T) {
 
 	labelSelectorString, err := formatLabelSelectorString(&labelSelector)
 	require.NoError(t, err)
-	require.Equal(t, "app=my-app,!bar,environment in (production,staging),foo,phase notin (final,initial)", labelSelectorString)
+	require.Equal(
+		t,
+		"app=my-app,!bar,environment in (production,staging),foo,phase notin (final,initial)",
+		labelSelectorString,
+	)
 }

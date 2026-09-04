@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"testing"
 
 	corev1 "github.com/kubewarden/k8s-objects/api/core/v1"
@@ -85,18 +86,20 @@ func TestParamFetchBehaviour(t *testing.T) {
 	validationRejectionMessage := "not true"
 	rejectionResponse := kubewardenProtocol.ValidationResponse{
 		Accepted: false,
-		Message:  message(validationRejectionMessage),
-		Code:     code(400),
+		Message:  new(validationRejectionMessage),
+		Code:     new(uint16(http.StatusBadRequest)),
 	}
 	rejectionResponseParamsNotFound := kubewardenProtocol.ValidationResponse{
 		Accepted: false,
-		Message:  message("failed to get params for performing policy evaluation: no parameters found"),
-		Code:     code(400),
+		Message:  new("failed to get params for performing policy evaluation: no parameters found"),
+		Code:     new(uint16(http.StatusBadRequest)),
 	}
 	rejectionResponseHostCallFailed := kubewardenProtocol.ValidationResponse{
 		Accepted: false,
-		Message:  message("failed to get params for performing policy evaluation: cannot list Kubernetes resources: Host call failed"),
-		Code:     code(400),
+		Message: new(
+			"failed to get params for performing policy evaluation: cannot list Kubernetes resources: Host call failed",
+		),
+		Code: new(uint16(http.StatusBadRequest)),
 	}
 	acceptanceResponse := kubewardenProtocol.ValidationResponse{
 		Accepted: true,
@@ -232,134 +235,150 @@ func TestParamFetchBehaviour(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("failurePolicy=%s-paramNotFoundAction=%s-invalidResouce=%t-paramsFound=%t-hostCallFailed=%t", test.failurePolicy, test.paramNotFoundAction, test.invalidResource, test.paramsFound, test.failedHostCall), func(t *testing.T) {
-			invalidPodName := "invalid-pod-name"
-			validPodName := "valid-pod-name"
-			mockWapcClient := &mocks.MockWapcClient{}
-			mockWapcClient.Test(t)
+		t.Run(
+			fmt.Sprintf(
+				"failurePolicy=%s-paramNotFoundAction=%s-invalidResouce=%t-paramsFound=%t-hostCallFailed=%t",
+				test.failurePolicy,
+				test.paramNotFoundAction,
+				test.invalidResource,
+				test.paramsFound,
+				test.failedHostCall,
+			),
+			func(t *testing.T) {
+				invalidPodName := "invalid-pod-name"
+				validPodName := "valid-pod-name"
+				mockWapcClient := &mocks.MockWapcClient{}
+				mockWapcClient.Test(t)
 
-			settings := settings.Settings{
-				FailurePolicy: test.failurePolicy,
-				ParamKind: &admissionregistration.ParamKind{
-					APIVersion: "v1",
-					Kind:       "ConfigMap",
-				},
-				ParamRef: &admissionregistration.ParamRef{
-					Selector: &k8smetav1.LabelSelector{
-						MatchLabels: map[string]string{
-							"environment": "test",
+				settings := settings.Settings{
+					FailurePolicy: test.failurePolicy,
+					ParamKind: &admissionregistration.ParamKind{
+						APIVersion: "v1",
+						Kind:       "ConfigMap",
+					},
+					ParamRef: &admissionregistration.ParamRef{
+						Selector: &k8smetav1.LabelSelector{
+							MatchLabels: map[string]string{
+								"environment": "test",
+							},
+						},
+						ParameterNotFoundAction: &test.paramNotFoundAction,
+					},
+					Validations: []settings.Validation{
+						{
+							Expression: "object.metadata.name == params.data.name",
+							Message:    validationRejectionMessage,
 						},
 					},
-					ParameterNotFoundAction: &test.paramNotFoundAction,
-				},
-				Validations: []settings.Validation{
-					{
-						Expression: "object.metadata.name == params.data.name",
-						Message:    validationRejectionMessage,
-					},
-				},
-			}
+				}
 
-			expectedLabelSelector, err := formatLabelSelectorString(settings.ParamRef.Selector)
-			require.NoError(t, err)
-			listRequest, err := json.Marshal(&kubernetes.ListResourcesByNamespaceRequest{
-				APIVersion:    "v1",
-				Kind:          "ConfigMap",
-				Namespace:     "test",
-				LabelSelector: &expectedLabelSelector,
-			})
-			require.NoError(t, err)
+				expectedLabelSelector, err := formatLabelSelectorString(settings.ParamRef.Selector)
+				require.NoError(t, err)
+				listRequest, err := json.Marshal(&kubernetes.ListResourcesByNamespaceRequest{
+					APIVersion:    "v1",
+					Kind:          "ConfigMap",
+					Namespace:     "test",
+					LabelSelector: &expectedLabelSelector,
+				})
+				require.NoError(t, err)
 
-			var paramsReturned k8scorev1.ConfigMapList
-			if test.paramsFound {
-				paramsReturned = k8scorev1.ConfigMapList{
-					Items: []k8scorev1.ConfigMap{
-						{
-							ObjectMeta: k8smetav1.ObjectMeta{
-								Name:      "config-1",
-								Namespace: "test",
-								Labels: map[string]string{
-									"environment": "test",
+				var paramsReturned k8scorev1.ConfigMapList
+				if test.paramsFound {
+					paramsReturned = k8scorev1.ConfigMapList{
+						Items: []k8scorev1.ConfigMap{
+							{
+								ObjectMeta: k8smetav1.ObjectMeta{
+									Name:      "config-1",
+									Namespace: "test",
+									Labels: map[string]string{
+										"environment": "test",
+									},
+								},
+								Data: map[string]string{
+									"name": validPodName,
 								},
 							},
-							Data: map[string]string{
-								"name": validPodName,
-							},
+						},
+					}
+				} else {
+					paramsReturned = k8scorev1.ConfigMapList{
+						Items: []k8scorev1.ConfigMap{},
+					}
+				}
+
+				listResponse, err := json.Marshal(paramsReturned)
+				require.NoError(t, err)
+
+				// Override the host capabilities client with a mock client
+				request, err := json.Marshal(&kubernetes.GetResourceRequest{
+					APIVersion: "v1",
+					Kind:       "Namespace",
+					Name:       "test",
+				})
+				require.NoError(t, err)
+
+				response, err := json.Marshal(&corev1.Namespace{
+					Metadata: &metav1.ObjectMeta{
+						Name: "test",
+						Labels: map[string]string{
+							"foo": "bar",
 						},
 					},
+				})
+				require.NoError(t, err)
+
+				var listResponseError error
+				if test.failedHostCall {
+					listResponseError = errors.New("Host call failed")
+					listResponse = nil
 				}
-			} else {
-				paramsReturned = k8scorev1.ConfigMapList{
-					Items: []k8scorev1.ConfigMap{},
-				}
-			}
 
-			listResponse, err := json.Marshal(paramsReturned)
-			require.NoError(t, err)
+				mockWapcClient.
+					On(
+						"HostCall",
+						"kubewarden",
+						"kubernetes",
+						"list_resources_by_namespace",
+						listRequest,
+					).Return(listResponse, listResponseError).
+					On("HostCall", "kubewarden", "kubernetes", "get_resource", request).Return(response, nil)
+				host.Client = mockWapcClient
 
-			// Override the host capabilities client with a mock client
-			request, err := json.Marshal(&kubernetes.GetResourceRequest{
-				APIVersion: "v1",
-				Kind:       "Namespace",
-				Name:       "test",
-			})
-			require.NoError(t, err)
-
-			response, err := json.Marshal(&corev1.Namespace{
-				Metadata: &metav1.ObjectMeta{
-					Name: "test",
-					Labels: map[string]string{
-						"foo": "bar",
+				object := corev1.Pod{
+					Metadata: &metav1.ObjectMeta{
+						Name:      validPodName,
+						Namespace: "test",
 					},
-				},
-			})
-			require.NoError(t, err)
+				}
+				if test.invalidResource {
+					object.Metadata.Name = invalidPodName
+				}
 
-			var listResponseError error
-			if test.failedHostCall {
-				listResponseError = errors.New("Host call failed")
-				listResponse = nil
-			}
+				objectJSON, err := json.Marshal(object)
+				require.NoError(t, err)
 
-			mockWapcClient.
-				On("HostCall", "kubewarden", "kubernetes", "list_resources_by_namespace", listRequest).Return(listResponse, listResponseError).
-				On("HostCall", "kubewarden", "kubernetes", "get_resource", request).Return(response, nil)
-			host.Client = mockWapcClient
+				settingsJSON, err := json.Marshal(settings)
+				require.NoError(t, err)
 
-			object := corev1.Pod{
-				Metadata: &metav1.ObjectMeta{
-					Name:      validPodName,
-					Namespace: "test",
-				},
-			}
-			if test.invalidResource {
-				object.Metadata.Name = invalidPodName
-			}
+				validationRequest := kubewardenProtocol.ValidationRequest{
+					Request: kubewardenProtocol.KubernetesAdmissionRequest{
+						Namespace: "test",
+						Object:    objectJSON,
+					},
+					Settings: settingsJSON,
+				}
+				payload, err := json.Marshal(validationRequest)
+				require.NoError(t, err)
 
-			objectJSON, err := json.Marshal(object)
-			require.NoError(t, err)
+				response, err = Validate(payload)
+				require.NoError(t, err)
 
-			settingsJSON, err := json.Marshal(settings)
-			require.NoError(t, err)
+				validationResponse := kubewardenProtocol.ValidationResponse{}
+				err = json.Unmarshal(response, &validationResponse)
+				require.NoError(t, err)
 
-			validationRequest := kubewardenProtocol.ValidationRequest{
-				Request: kubewardenProtocol.KubernetesAdmissionRequest{
-					Namespace: "test",
-					Object:    objectJSON,
-				},
-				Settings: settingsJSON,
-			}
-			payload, err := json.Marshal(validationRequest)
-			require.NoError(t, err)
-
-			response, err = Validate(payload)
-			require.NoError(t, err)
-
-			validationResponse := kubewardenProtocol.ValidationResponse{}
-			err = json.Unmarshal(response, &validationResponse)
-			require.NoError(t, err)
-
-			assert.Equal(t, test.expectedValidationResponse, validationResponse)
-		})
+				assert.Equal(t, test.expectedValidationResponse, validationResponse)
+			},
+		)
 	}
 }

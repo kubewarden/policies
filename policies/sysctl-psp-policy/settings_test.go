@@ -61,7 +61,6 @@ func TestParsingSettingsWithNoValueProvided(t *testing.T) {
 }
 
 func TestSettingsAreValid(t *testing.T) {
-
 	for _, tcase := range []struct {
 		name      string
 		request   string
@@ -142,10 +141,8 @@ func TestSettingsAreValid(t *testing.T) {
 			if err != nil {
 				if !tcase.wantError {
 					t.Errorf("on test %q, got unexpected error '%v'", tcase.name, err)
-				} else {
-					if tcase.error != err.Error() {
-						t.Errorf("on test %q, got error '%v', wanted error '%v'", tcase.name, err, tcase.error)
-					}
+				} else if tcase.error != err.Error() {
+					t.Errorf("on test %q, got error '%v', wanted error '%v'", tcase.name, err, tcase.error)
 				}
 			}
 			if tcase.wantError && valid {

@@ -58,7 +58,6 @@ func TestApproval(t *testing.T) {
 }
 
 func TestRejection(t *testing.T) {
-
 	for _, tcase := range []struct {
 		name     string
 		testData string
@@ -116,5 +115,4 @@ func TestRejection(t *testing.T) {
 				tcase.name, *response.Message, tcase.error)
 		}
 	}
-
 }

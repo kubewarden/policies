@@ -141,7 +141,10 @@ func cryptoVerifierCertificateChain(arg1, arg2 ref.Val) ref.Val {
 		return types.MaybeNoSuchOverloadErr(arg2)
 	}
 
-	verifier.certifcateChain = append(verifier.certifcateChain, cryptoCap.Certificate{Encoding: cryptoCap.Pem, Data: []rune(certifcate)})
+	verifier.certifcateChain = append(
+		verifier.certifcateChain,
+		cryptoCap.Certificate{Encoding: cryptoCap.Pem, Data: []rune(certifcate)},
+	)
 
 	return verifier
 }
@@ -170,7 +173,12 @@ func cryptoVerifierVerify(arg ref.Val) ref.Val {
 		return types.MaybeNoSuchOverloadErr(arg)
 	}
 
-	response, err := cryptoCap.VerifyCert(&host, verifier.certifcate, verifier.certifcateChain, verifier.notAfter.Format(time.RFC3339))
+	response, err := cryptoCap.VerifyCert(
+		&host,
+		verifier.certifcate,
+		verifier.certifcateChain,
+		verifier.notAfter.Format(time.RFC3339),
+	)
 	if err != nil {
 		return types.NewErr("%v", err.Error())
 	}
@@ -206,6 +214,7 @@ var cryptoVerifierType = cel.ObjectType("kw.crypto.Verifier")
 
 type cryptoVerifier struct {
 	receiverOnlyObjectVal
+
 	certifcate      cryptoCap.Certificate
 	certifcateChain []cryptoCap.Certificate
 	notAfter        *time.Time
@@ -216,6 +225,7 @@ var cryptoResponseType = cel.ObjectType("kw.crypto.Response")
 // cryptoResponse is the response object returned by the verify function.
 type cryptoResponse struct {
 	receiverOnlyObjectVal
+
 	isTrusted bool
 	reason    string
 }

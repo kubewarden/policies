@@ -16,7 +16,7 @@ import (
 
 var (
 	host                = capabilities.NewHost()
-	namespaceObjectData map[string]interface{}
+	namespaceObjectData map[string]any
 )
 
 func getNamespaceObject(name string) ref.Val {

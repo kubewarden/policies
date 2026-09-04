@@ -9,6 +9,9 @@ import (
 )
 
 func TestValidateSettings(t *testing.T) {
+	const ccCenterAnnotation = "cc-center"
+	const marketingValue = "marketing"
+
 	cases := []struct {
 		name                 string
 		requiredAnnotations  map[string]string
@@ -24,7 +27,7 @@ func TestValidateSettings(t *testing.T) {
 		{
 			"only required annotations",
 			map[string]string{
-				"cc-center": "marketing",
+				ccCenterAnnotation: marketingValue,
 			},
 			mapset.NewSet[string](),
 			true,
@@ -38,7 +41,7 @@ func TestValidateSettings(t *testing.T) {
 		{
 			"no contradictions",
 			map[string]string{
-				"cc-center": "marketing",
+				ccCenterAnnotation: marketingValue,
 			},
 			mapset.NewSet[string]("priority"),
 			true,
@@ -46,9 +49,9 @@ func TestValidateSettings(t *testing.T) {
 		{
 			"contradictions",
 			map[string]string{
-				"cc-center": "marketing",
+				ccCenterAnnotation: marketingValue,
 			},
-			mapset.NewSet[string]("cc-center"),
+			mapset.NewSet[string](ccCenterAnnotation),
 			false,
 		},
 	}

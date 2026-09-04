@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 
 	corev1 "github.com/kubewarden/k8s-objects/api/core/v1"
@@ -21,13 +22,13 @@ const (
 	// RancherResourceQuotaAnnotation is the annotation used by Rancher
 	// Manager inside of a Namespace object.
 	// The value is a JSON object holding the `ResourceQuotaLimit` of the
-	// Namespace
+	// Namespace.
 	RancherResourceQuotaAnnotation = "field.cattle.io/resourceQuota"
 
-	// RancherProjectAPIVersion is the Kubernetes Group + Version used by the Project resources
+	// RancherProjectAPIVersion is the Kubernetes Group + Version used by the Project resources.
 	RancherProjectAPIVersion = "management.cattle.io/v3"
 
-	// RancherProjectKind is the Kubernetes Kind used by the Project resources
+	// RancherProjectKind is the Kubernetes Kind used by the Project resources.
 	RancherProjectKind = "Project"
 )
 
@@ -40,7 +41,7 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	// Access the **raw** JSON that describes the object
@@ -49,11 +50,11 @@ func validate(payload []byte) ([]byte, error) {
 	// Try to create a Namespace instance using the RAW JSON we got from the
 	// ValidationRequest.
 	namespace := &corev1.Namespace{}
-	if err := json.Unmarshal([]byte(namespaceJSON), namespace); err != nil {
+	if err = json.Unmarshal([]byte(namespaceJSON), namespace); err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(
 				fmt.Sprintf("Cannot decode Namespace object: %s", err.Error())),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	nsMetadata := &meta_v1.ObjectMeta{}
@@ -70,17 +71,17 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	nsResourceQuota := NamespaceResourceQuota{}
 	nsResourceQuotaRaw, found := nsMetadata.Annotations[RancherResourceQuotaAnnotation]
 	if found {
-		if err := json.Unmarshal([]byte(nsResourceQuotaRaw), &nsResourceQuota); err != nil {
+		if err = json.Unmarshal([]byte(nsResourceQuotaRaw), &nsResourceQuota); err != nil {
 			return kubewarden.RejectRequest(
 				kubewarden.Message(
 					fmt.Sprintf("Cannot decode NamespaceResourceQuota object: %s", err.Error())),
-				kubewarden.Code(400))
+				kubewarden.Code(http.StatusBadRequest))
 		}
 	}
 
@@ -101,7 +102,7 @@ func validate(payload []byte) ([]byte, error) {
 	return kubewarden.AcceptRequest()
 }
 
-// LookupError is a custom error that provides extra information
+// LookupError is a custom error that provides extra information.
 type LookupError struct {
 	StatusCode kubewarden.Code
 	Message    kubewarden.Message
@@ -126,42 +127,43 @@ func findProject(projectID, projectNamespace string) (Project, *LookupError) {
 	if err != nil {
 		return project, &LookupError{
 			Message:    kubewarden.Message(fmt.Sprintf("Error retrieving the Project: %v", err)),
-			StatusCode: kubewarden.Code(500),
+			StatusCode: kubewarden.Code(http.StatusInternalServerError),
 		}
 	}
 
 	if len(projectRaw) == 0 {
 		return project, &LookupError{
 			Message:    kubewarden.Message("Project not found"),
-			StatusCode: kubewarden.Code(404),
+			StatusCode: kubewarden.Code(http.StatusNotFound),
 		}
 	}
 
-	if err := json.Unmarshal(projectRaw, &project); err != nil {
+	if err = json.Unmarshal(projectRaw, &project); err != nil {
 		return project, &LookupError{
 			Message:    kubewarden.Message(fmt.Sprintf("Cannot decode Project object: %s", err.Error())),
-			StatusCode: kubewarden.Code(500),
+			StatusCode: kubewarden.Code(http.StatusInternalServerError),
 		}
 	}
 
 	return project, nil
 }
 
-func parseProjectIDAnnotation(annotation string) (projectNamespace string, projectID string, err error) {
+// projectIDAnnotationChunks is the expected number of colon-separated
+// components in the Rancher project ID annotation ("namespace:id").
+const projectIDAnnotationChunks = 2
+
+func parseProjectIDAnnotation(annotation string) (string, string, error) {
 	chunks := strings.Split(annotation, ":")
-	if len(chunks) != 2 {
-		err = fmt.Errorf("cannot parse projectID annotation: wrong format")
-		return
+	if len(chunks) != projectIDAnnotationChunks {
+		return "", "", fmt.Errorf("cannot parse projectID annotation: wrong format")
 	}
 
 	if len(chunks[0]) == 0 {
-		err = fmt.Errorf("Project Namespace is empty")
-		return
+		return "", "", fmt.Errorf("Project Namespace is empty")
 	}
 
 	if len(chunks[1]) == 0 {
-		err = fmt.Errorf("Project ID is empty")
-		return
+		return "", "", fmt.Errorf("Project ID is empty")
 	}
 
 	return chunks[0], chunks[1], nil

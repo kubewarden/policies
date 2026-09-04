@@ -17,9 +17,9 @@ func TestCrypto(t *testing.T) {
 		name              string
 		expression        string
 		expectedOperation string
-		expectedRequest   interface{}
-		response          interface{}
-		expectedResult    interface{}
+		expectedRequest   any
+		response          any
+		expectedResult    any
 	}{
 		{
 			"verify",
@@ -58,7 +58,8 @@ func TestCrypto(t *testing.T) {
 			require.NoError(t, err)
 
 			mockWapcClient := &mocks.MockWapcClient{}
-			mockWapcClient.On("HostCall", "kubewarden", "crypto", test.expectedOperation, expectedRequest).Return(response, nil)
+			mockWapcClient.On("HostCall", "kubewarden", "crypto", test.expectedOperation, expectedRequest).
+				Return(response, nil)
 
 			host.Client = mockWapcClient
 
@@ -73,7 +74,7 @@ func TestCrypto(t *testing.T) {
 			prog, err := env.Program(ast)
 			require.NoError(t, err)
 
-			val, _, err := prog.Eval(map[string]interface{}{})
+			val, _, err := prog.Eval(map[string]any{})
 			require.NoError(t, err)
 
 			result, err := val.ConvertToNative(reflect.TypeOf(test.expectedResult))

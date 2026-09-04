@@ -8,7 +8,7 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 )
 
-// Settings defines the settings of the policy
+// Settings defines the settings of the policy.
 type Settings struct {
 	ValidUsers     mapset.Set[string] `json:"validUsers"`
 	ValidActions   mapset.Set[string] `json:"validActions"`

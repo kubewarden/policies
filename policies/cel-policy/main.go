@@ -34,6 +34,7 @@ func main() {
 	case "validate-settings":
 		response, err = settings.ValidateSettings(input)
 	default:
+		//nolint:gosec // os.Args[1] is the subcommand set by the host, not external untrusted input
 		log.Fatalf("wrong subcommand: '%s' - use either 'validate' or 'validate-settings'", os.Args[1])
 	}
 

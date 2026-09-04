@@ -19,9 +19,9 @@ func TestSigstore(t *testing.T) {
 		name              string
 		expression        string
 		expectedOperation string
-		expectedRequest   interface{}
-		response          interface{}
-		expectedResult    interface{}
+		expectedRequest   any
+		response          any
+		expectedResult    any
 	}{
 		{
 			"pubKey verifier",
@@ -43,8 +43,11 @@ func TestSigstore(t *testing.T) {
 			"kw.sigstore.image('image:latest').annotation('foo', 'bar').keyless('issuer', 'subject').keyless('otherIssuer', 'otherSubject').verify().digest()",
 			"v2/verify",
 			verify.SigstoreKeylessVerifyExact{
-				Image:   "image:latest",
-				Keyless: []oci.KeylessInfo{{Issuer: "issuer", Subject: "subject"}, {Issuer: "otherIssuer", Subject: "otherSubject"}},
+				Image: "image:latest",
+				Keyless: []oci.KeylessInfo{
+					{Issuer: "issuer", Subject: "subject"},
+					{Issuer: "otherIssuer", Subject: "otherSubject"},
+				},
 				Annotations: map[string]string{
 					"foo": "bar",
 				},
@@ -60,8 +63,11 @@ func TestSigstore(t *testing.T) {
 			"kw.sigstore.image('image:latest').annotation('foo', 'bar').keylessPrefix('issuer', 'subject').keylessPrefix('otherIssuer', 'otherSubject').verify().isTrusted()",
 			"v2/verify",
 			verify.SigstoreKeylessPrefixVerify{
-				Image:         "image:latest",
-				KeylessPrefix: []verify.KeylessPrefixInfo{{Issuer: "issuer", UrlPrefix: "subject"}, {Issuer: "otherIssuer", UrlPrefix: "otherSubject"}},
+				Image: "image:latest",
+				KeylessPrefix: []verify.KeylessPrefixInfo{
+					{Issuer: "issuer", UrlPrefix: "subject"},
+					{Issuer: "otherIssuer", UrlPrefix: "otherSubject"},
+				},
 				Annotations: map[string]string{
 					"foo": "bar",
 				},
@@ -137,7 +143,8 @@ func TestSigstore(t *testing.T) {
 			require.NoError(t, err)
 
 			mockWapcClient := &mocks.MockWapcClient{}
-			mockWapcClient.On("HostCall", "kubewarden", "oci", test.expectedOperation, expectedRequest).Return(response, nil)
+			mockWapcClient.On("HostCall", "kubewarden", "oci", test.expectedOperation, expectedRequest).
+				Return(response, nil)
 
 			host.Client = mockWapcClient
 
@@ -152,7 +159,7 @@ func TestSigstore(t *testing.T) {
 			prog, err := env.Program(ast)
 			require.NoError(t, err)
 
-			val, _, err := prog.Eval(map[string]interface{}{})
+			val, _, err := prog.Eval(map[string]any{})
 			require.NoError(t, err)
 
 			result, err := val.ConvertToNative(reflect.TypeOf(test.expectedResult))

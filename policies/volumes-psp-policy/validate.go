@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"net/http"
 
 	onelog "github.com/francoispqt/onelog"
 	"github.com/kubewarden/gjson"
@@ -14,7 +15,7 @@ func validate(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectRequest(
 			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+			kubewarden.Code(http.StatusBadRequest))
 	}
 
 	if settings.AllowedTypes.Cardinality() == 0 {
@@ -38,6 +39,34 @@ func validate(payload []byte) ([]byte, error) {
 		return kubewarden.AcceptRequest()
 	}
 
+	logger.DebugWithFields("validating pod object", func(e onelog.Entry) {
+		name := gjson.GetBytes(payload, "request.object.metadata.name").String()
+		namespace := gjson.GetBytes(payload,
+			"request.object.metadata.namespace").String()
+		e.String("name", name)
+		e.String("namespace", namespace)
+	})
+
+	if err = checkVolumeTypes(payload, volumes, &settings); err != nil {
+		logger.DebugWithFields("rejecting pod object", func(e onelog.Entry) {
+			name := gjson.GetBytes(payload, "request.object.metadata.name").String()
+			namespace := gjson.
+				GetBytes(payload, "request.object.metadata.namespace").String()
+			e.String("name", name)
+			e.String("namespace", namespace)
+		})
+		return kubewarden.RejectRequest(
+			kubewarden.Message(err.Error()),
+			kubewarden.NoCode)
+	}
+
+	return kubewarden.AcceptRequest()
+}
+
+// checkVolumeTypes verifies that every volume defined by the pod uses one of
+// the allowed volume types, returning an aggregated error describing every
+// violation found.
+func checkVolumeTypes(payload []byte, volumes gjson.Result, settings *Settings) error {
 	// Collect volume names used by initContainers and containers
 	initContainerVolumeNames := map[string]struct{}{}
 	containerVolumeNames := map[string]struct{}{}
@@ -49,13 +78,7 @@ func validate(payload []byte) ([]byte, error) {
 		containerVolumeNames = getVolumeMountNames(containers)
 	}
 
-	logger.DebugWithFields("validating pod object", func(e onelog.Entry) {
-		name := gjson.GetBytes(payload, "request.object.metadata.name").String()
-		namespace := gjson.GetBytes(payload,
-			"request.object.metadata.namespace").String()
-		e.String("name", name)
-		e.String("namespace", namespace)
-	})
+	var err error
 
 	for _, volume := range volumes.Array() {
 		// obtain volumeName, volumeType:
@@ -91,20 +114,7 @@ func validate(payload []byte) ([]byte, error) {
 		}
 	}
 
-	if err != nil {
-		logger.DebugWithFields("rejecting pod object", func(e onelog.Entry) {
-			name := gjson.GetBytes(payload, "request.object.metadata.name").String()
-			namespace := gjson.
-				GetBytes(payload, "request.object.metadata.namespace").String()
-			e.String("name", name)
-			e.String("namespace", namespace)
-		})
-		return kubewarden.RejectRequest(
-			kubewarden.Message(err.Error()),
-			kubewarden.NoCode)
-	}
-
-	return kubewarden.AcceptRequest()
+	return err
 }
 
 // getVolumeMountNames extracts volume mount names from a list of containers.

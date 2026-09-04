@@ -16,7 +16,7 @@ func TestValidateRequestAccept(t *testing.T) {
 		},
 		Settings: Settings{
 			ForbiddenResources: mapset.NewSet[string]("carrot", "banana"),
-			DefaultResource:    "hay",
+			DefaultResource:    defaultResourceHay,
 		},
 	}
 
@@ -37,7 +37,7 @@ func TestValidateRequestAccept(t *testing.T) {
 		t.Errorf("response should be accepted: %s", *response.Message)
 	}
 
-	if response.MutatedObject.Resource != "hay" {
+	if response.MutatedObject.Resource != defaultResourceHay {
 		t.Errorf("response should be mutated")
 	}
 }
@@ -51,7 +51,7 @@ func TestValidateAcceptWithoutMutating(t *testing.T) {
 		},
 		Settings: Settings{
 			ForbiddenResources: mapset.NewSet[string]("carrot", "banana"),
-			DefaultResource:    "hay",
+			DefaultResource:    defaultResourceHay,
 		},
 	}
 

@@ -52,7 +52,7 @@ type Validation struct {
 	Reason            string `json:"reason"`
 }
 
-// Write a custom unmarshaller to set default values for FailurePolicy to replicate
+// UnmarshalJSON sets default values for FailurePolicy to replicate
 // Kubernetes behavior.
 func (s *Settings) UnmarshalJSON(data []byte) error {
 	type Alias Settings
@@ -166,14 +166,22 @@ func validateParams(settings Settings) error {
 		return newRequiredValueError("paramRef", "paramRef must have either Name or Selector specified")
 	}
 	if settings.ParamRef != nil && (settings.ParamRef.Name != "" && settings.ParamRef.Selector != nil) {
-		return newInvalidValueError("paramRef", settings.ParamRef.Name, "paramRef cannot have both Name and Selector specified")
+		return newInvalidValueError(
+			"paramRef",
+			settings.ParamRef.Name,
+			"paramRef cannot have both Name and Selector specified",
+		)
 	}
 	if isParameterNotFoundActionInvalid(settings.ParamRef) {
 		parameterNotFoundAction := "nil"
 		if settings.ParamRef.ParameterNotFoundAction != nil {
 			parameterNotFoundAction = string(*settings.ParamRef.ParameterNotFoundAction)
 		}
-		return newInvalidValueError("paramRef", parameterNotFoundAction, "parameterNotFoundAction must be 'Deny' or 'Allow' if paramRef is specified")
+		return newInvalidValueError(
+			"paramRef",
+			parameterNotFoundAction,
+			"parameterNotFoundAction must be 'Deny' or 'Allow' if paramRef is specified",
+		)
 	}
 	return nil
 }
@@ -197,10 +205,18 @@ func validateVariable(compiler *cel.Compiler, index int, variable Variable) (*ty
 		err := newRequiredValueError(fmt.Sprintf("variables[%d].name", index), "name is not specified")
 		result = multierror.Append(result, err)
 	case !cel.IsCELIdentifier(variable.Name):
-		err := newInvalidValueError(fmt.Sprintf("variables[%d].name", index), variable.Name, "name is not a valid CEL identifier")
+		err := newInvalidValueError(
+			fmt.Sprintf("variables[%d].name", index),
+			variable.Name,
+			"name is not a valid CEL identifier",
+		)
 		result = multierror.Append(result, err)
 	case name == "params":
-		err := newInvalidValueError(fmt.Sprintf("variables[%d].name", index), variable.Name, "'params' name is not allowed. It conflicts with 'params' from the policy paramaters configuration")
+		err := newInvalidValueError(
+			fmt.Sprintf("variables[%d].name", index),
+			variable.Name,
+			"'params' name is not allowed. It conflicts with 'params' from the policy paramaters configuration",
+		)
 		result = multierror.Append(result, err)
 	}
 
@@ -212,7 +228,10 @@ func validateVariable(compiler *cel.Compiler, index int, variable Variable) (*ty
 	} else {
 		ast, err := compiler.CompileCELExpression(variable.Expression)
 		if err != nil {
-			result = multierror.Append(result, newInvalidValueError(fmt.Sprintf("variables[%d].expression", index), variable.Expression, err.Error()))
+			result = multierror.Append(
+				result,
+				newInvalidValueError(fmt.Sprintf("variables[%d].expression", index), variable.Expression, err.Error()),
+			)
 
 			return nil, result
 		}
@@ -234,31 +253,54 @@ func validateValidations(compiler *cel.Compiler, index int, validation Validatio
 		result = multierror.Append(result, err)
 	} else {
 		if e := compiler.ValidateBoolExpression(validation.Expression); e != nil {
-			err := newInvalidValueError(fmt.Sprintf("validations[%d].expression", index), validation.Expression, e.Error())
+			err := newInvalidValueError(
+				fmt.Sprintf("validations[%d].expression", index),
+				validation.Expression,
+				e.Error(),
+			)
 			result = multierror.Append(result, err)
 		}
 	}
 
 	if len(validation.MessageExpression) > 0 && len(trimmedMessageExpression) == 0 {
-		err := newInvalidValueError(fmt.Sprintf("validations[%d].messageExpression", index), validation.MessageExpression, "must be non-empty if specified")
+		err := newInvalidValueError(
+			fmt.Sprintf("validations[%d].messageExpression", index),
+			validation.MessageExpression,
+			"must be non-empty if specified",
+		)
 		result = multierror.Append(result, err)
 	} else if len(trimmedMessageExpression) != 0 {
 		// use validation.MessageExpression instead of trimmedMessageExpression so that
 		// the compiler output shows the correct column.
 		if err := compiler.ValidateStringExpression(validation.MessageExpression); err != nil {
-			err := newInvalidValueError(fmt.Sprintf("validations[%d].messageExpression", index), validation.MessageExpression, err.Error())
+			err := newInvalidValueError(
+				fmt.Sprintf("validations[%d].messageExpression", index),
+				validation.MessageExpression,
+				err.Error(),
+			)
 			result = multierror.Append(result, err)
 		}
 	}
 	//nolint:gocritic // Rewriting this code as switch would not make it more readable
 	if len(validation.Message) > 0 && len(trimmedMsg) == 0 {
-		err := newInvalidValueError(fmt.Sprintf("validations[%d].message", index), validation.Message, "message must be non-empty if specified")
+		err := newInvalidValueError(
+			fmt.Sprintf("validations[%d].message", index),
+			validation.Message,
+			"message must be non-empty if specified",
+		)
 		result = multierror.Append(result, err)
 	} else if hasNewlines(trimmedMsg) {
-		err := newInvalidValueError(fmt.Sprintf("validations[%d].message", index), validation.Message, "message must not contain line breaks")
+		err := newInvalidValueError(
+			fmt.Sprintf("validations[%d].message", index),
+			validation.Message,
+			"message must not contain line breaks",
+		)
 		result = multierror.Append(result, err)
 	} else if hasNewlines(trimmedMsg) && trimmedMsg == "" {
-		err := newRequiredValueError(fmt.Sprintf("validations[%d].message", index), "message must be specified if expression contains line breaks")
+		err := newRequiredValueError(
+			fmt.Sprintf("validations[%d].message", index),
+			"message must be specified if expression contains line breaks",
+		)
 		result = multierror.Append(result, err)
 	}
 
