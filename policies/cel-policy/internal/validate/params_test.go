@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"testing"
 
 	corev1 "github.com/kubewarden/k8s-objects/api/core/v1"
@@ -86,19 +87,19 @@ func TestParamFetchBehaviour(t *testing.T) {
 	rejectionResponse := kubewardenProtocol.ValidationResponse{
 		Accepted: false,
 		Message:  new(validationRejectionMessage),
-		Code:     code(400),
+		Code:     new(uint16(http.StatusBadRequest)),
 	}
 	rejectionResponseParamsNotFound := kubewardenProtocol.ValidationResponse{
 		Accepted: false,
 		Message:  new("failed to get params for performing policy evaluation: no parameters found"),
-		Code:     code(400),
+		Code:     new(uint16(http.StatusBadRequest)),
 	}
 	rejectionResponseHostCallFailed := kubewardenProtocol.ValidationResponse{
 		Accepted: false,
 		Message: new(
 			"failed to get params for performing policy evaluation: cannot list Kubernetes resources: Host call failed",
 		),
-		Code: code(400),
+		Code: new(uint16(http.StatusBadRequest)),
 	}
 	acceptanceResponse := kubewardenProtocol.ValidationResponse{
 		Accepted: true,
