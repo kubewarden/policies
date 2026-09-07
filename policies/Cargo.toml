@@ -56,7 +56,7 @@ assert-json-diff = "2.0.2"
 criteria_policy_base = { path = "crates/criteria_policy_base" }
 versions = { path = "crates/versions" }
 regex = "1"
-rstest = "0.26.0"
+rstest = "0.27.0"
 lazy_static = "1.5"
 mockall = "0.15"
 serial_test = "4.0"
