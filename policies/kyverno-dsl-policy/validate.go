@@ -57,6 +57,9 @@ func validateAdmissionReview(
 			Message(fmt.Sprintf("cannot unmarshal policy: %v", err)),
 			Code(http.StatusBadRequest))
 	}
+	if policy == nil {
+		return RejectRequest(Message("policy cannot be empty"), Code(http.StatusBadRequest))
+	}
 
 	cfg := config.NewDefaultConfiguration(false)
 	jp := jmespath.New(cfg)

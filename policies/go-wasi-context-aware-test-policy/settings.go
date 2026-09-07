@@ -25,7 +25,14 @@ func NewSettingsFromValidationReq(validationReq *kubewardenProtocol.ValidationRe
 	if err != nil {
 		return Settings{}, fmt.Errorf("cannot unmarshal settings %w", err)
 	}
+	settings.ensureSets()
 	return settings, nil
+}
+
+func (s *Settings) ensureSets() {
+	if s.ForbiddenAnnotations == nil {
+		s.ForbiddenAnnotations = mapset.NewSet[string]()
+	}
 }
 
 func validateSettings(input []byte) ([]byte, error) {
@@ -33,10 +40,11 @@ func validateSettings(input []byte) ([]byte, error) {
 		// this is required to make the unmarshal work
 		ForbiddenAnnotations: mapset.NewSet[string](),
 	}
-	err := json.Unmarshal(input, &settings)
+	err := json.Unmarshal(input, settings)
 	if err != nil {
 		return kubewarden.RejectSettings(kubewarden.Message(fmt.Sprintf("cannot unmarshal settings: %v", err)))
 	}
+	settings.ensureSets()
 
 	return validateCliSettings(settings)
 }

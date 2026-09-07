@@ -90,3 +90,39 @@ func TestValidateSettings(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateSettingsNullDoesNotPanic(t *testing.T) {
+	responseJSON, err := validateSettings([]byte("null"))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var response kubewardenProtocol.SettingsValidationResponse
+	err = json.Unmarshal(responseJSON, &response)
+	if err != nil {
+		t.Fatalf("cannot unmarshal response: %v", err)
+	}
+
+	if !response.Valid {
+		t.Error("null settings should use the initialized empty settings")
+	}
+}
+
+func TestValidateSettingsWithNullSetDoesNotPanic(t *testing.T) {
+	responseJSON, err := validateSettings([]byte(`{
+		"requiredAnnotations":{"owner":"team"},
+		"forbiddenAnnotations":null
+	}`))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var response kubewardenProtocol.SettingsValidationResponse
+	err = json.Unmarshal(responseJSON, &response)
+	if err != nil {
+		t.Fatalf("cannot unmarshal response: %v", err)
+	}
+	if !response.Valid {
+		t.Error("null set should use an initialized empty set")
+	}
+}

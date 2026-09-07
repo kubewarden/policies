@@ -14,6 +14,12 @@ type Settings struct {
 	DefaultResource    string             `json:"defaultResource"`
 }
 
+func (s *Settings) ensureSets() {
+	if s.ForbiddenResources == nil {
+		s.ForbiddenResources = mapset.NewSet[string]()
+	}
+}
+
 func validateSettings(input []byte) []byte {
 	var response SettingsValidationResponse
 
@@ -21,10 +27,11 @@ func validateSettings(input []byte) []byte {
 		// this is required to make the unmarshal work
 		ForbiddenResources: mapset.NewSet[string](),
 	}
-	err := json.Unmarshal(input, &settings)
+	err := json.Unmarshal(input, settings)
 	if err != nil {
 		response = RejectSettings(Message(fmt.Sprintf("cannot unmarshal settings: %v", err)))
 	} else {
+		settings.ensureSets()
 		response = validateCliSettings(settings)
 	}
 

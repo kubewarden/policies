@@ -62,3 +62,33 @@ func TestValidateSettingsReject(t *testing.T) {
 		t.Errorf("wrong message: %s", *response.Message)
 	}
 }
+
+func TestValidateSettingsNullDoesNotPanic(t *testing.T) {
+	responseJSON := validateSettings([]byte("null"))
+
+	var response SettingsValidationResponse
+
+	err := json.Unmarshal(responseJSON, &response)
+	if err != nil {
+		t.Fatalf("cannot unmarshal response: %v", err)
+	}
+
+	if response.Valid {
+		t.Error("null settings should be invalid")
+	}
+}
+
+func TestValidateSettingsWithNullSetDoesNotPanic(t *testing.T) {
+	responseJSON := validateSettings([]byte(`{"validUsers":null,"validActions":["get"],"validResources":["pods"]}`))
+
+	var response SettingsValidationResponse
+
+	err := json.Unmarshal(responseJSON, &response)
+	if err != nil {
+		t.Fatalf("cannot unmarshal response: %v", err)
+	}
+
+	if response.Valid {
+		t.Error("empty validUsers should be invalid")
+	}
+}

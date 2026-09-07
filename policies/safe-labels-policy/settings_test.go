@@ -74,6 +74,13 @@ func TestParseSettingsWithInvalidRegexp(t *testing.T) {
 	}
 }
 
+func TestParseSettingsWithNullRegexp(t *testing.T) {
+	_, err := NewSettingsFromValidateSettingsPayload([]byte(`{"constrained_labels":{"cost-center":null}}`))
+	if err == nil {
+		t.Fatal("expected null regular expression to be rejected")
+	}
+}
+
 func TestDetectValidSettings(t *testing.T) {
 	request := `
 	{

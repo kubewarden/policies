@@ -147,6 +147,11 @@ func (s *Settings) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
+	for name, expression := range rawSettings.ConstrainedLabels {
+		if expression == nil {
+			return fmt.Errorf("constrained label %q cannot be null", name)
+		}
+	}
 
 	s.DeniedLabels = mapset.NewThreadUnsafeSet[string](rawSettings.DeniedLabels...)
 	s.MandatoryLabels = mapset.NewThreadUnsafeSet[string](rawSettings.MandatoryLabels...)

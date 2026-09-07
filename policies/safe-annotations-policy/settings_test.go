@@ -66,6 +66,13 @@ func TestParseSettingsWithInvalidRegexp(t *testing.T) {
 	}
 }
 
+func TestParseSettingsWithNullRegexp(t *testing.T) {
+	err := json.Unmarshal([]byte(`{"constrained_annotations":{"cost-center":null}}`), &Settings{})
+	if err == nil {
+		t.Fatal("expected null regular expression to be rejected")
+	}
+}
+
 func TestDetectValidSettings(t *testing.T) {
 	request := `
 	{

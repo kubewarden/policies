@@ -159,6 +159,9 @@ func validateParams(settings Settings) error {
 	if settings.ParamKind == nil && settings.ParamRef == nil {
 		return nil
 	}
+	if settings.ParamRef != nil && settings.ParamKind == nil {
+		return newRequiredValueError("paramKind", "paramKind must be specified when paramRef is configured")
+	}
 	if settings.ParamKind != nil && (settings.ParamKind.APIVersion == "" || settings.ParamKind.Kind == "") {
 		return newRequiredValueError("paramKind", "paramKind must have both APIVersion and Kind specified")
 	}

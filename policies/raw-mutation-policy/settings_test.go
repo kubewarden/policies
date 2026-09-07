@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"testing"
 
 	mapset "github.com/deckarep/golang-set/v2"
@@ -18,6 +19,23 @@ func TestValidateSettingsAccept(t *testing.T) {
 	}
 	if err != nil {
 		t.Errorf("Unexpected error %+v", err)
+	}
+}
+
+func TestValidateSettingsWithNullSetDoesNotPanic(t *testing.T) {
+	responseJSON, err := validateSettings([]byte(`{"forbiddenResources":null,"defaultResource":"hay"}`))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var response struct {
+		Valid bool `json:"valid"`
+	}
+	if err := json.Unmarshal(responseJSON, &response); err != nil {
+		t.Fatalf("cannot unmarshal response: %v", err)
+	}
+	if !response.Valid {
+		t.Error("null set should use an initialized empty set")
 	}
 }
 

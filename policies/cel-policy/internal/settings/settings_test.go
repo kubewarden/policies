@@ -16,6 +16,7 @@ import (
 // https://github.com/kubernetes/kubernetes/blob/master/pkg/apis/admissionregistration/validation/validation_test.go
 func TestValidateSettings(t *testing.T) {
 	otherAction := admissionregistration.ParameterNotFoundActionType("Other")
+	denyAction := admissionregistration.DenyAction
 	tests := []struct {
 		name          string
 		settings      Settings
@@ -235,6 +236,17 @@ func TestValidateSettings(t *testing.T) {
 				},
 			},
 			expectedError: `paramRef must have either Name or Selector specified`,
+		},
+		{
+			name: "ParamRef requires ParamKind",
+			settings: Settings{
+				ParamRef: &admissionregistration.ParamRef{
+					Name:                    "my-config",
+					ParameterNotFoundAction: &denyAction,
+				},
+				Validations: []Validation{{Expression: "true"}},
+			},
+			expectedError: `paramKind must be specified when paramRef is configured`,
 		},
 		{
 			name: "ParamRef cannot have both Name and Selector",

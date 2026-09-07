@@ -97,3 +97,22 @@ func TestValidateSettingsRejectInvalidPayload(t *testing.T) {
 		t.Errorf("wrong message: %s", *response.Message)
 	}
 }
+
+func TestValidateRequestWithNullSetDoesNotPanic(t *testing.T) {
+	payload := []byte(`{
+		"request":{"user":"tonio","action":"eats","resource":"hay"},
+		"settings":{"validUsers":null,"validActions":["eats"],"validResources":["hay"]}
+	}`)
+	responseJSON := validate(payload)
+
+	var response ValidationResponse
+
+	err := json.Unmarshal(responseJSON, &response)
+	if err != nil {
+		t.Fatalf("cannot unmarshal response: %v", err)
+	}
+
+	if response.Accepted {
+		t.Error("request should be rejected because validUsers is empty")
+	}
+}

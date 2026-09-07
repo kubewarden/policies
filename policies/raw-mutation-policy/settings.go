@@ -14,6 +14,12 @@ type Settings struct {
 	DefaultResource    string             `json:"defaultResource"`
 }
 
+func (s *Settings) ensureSets() {
+	if s.ForbiddenResources == nil {
+		s.ForbiddenResources = mapset.NewSet[string]()
+	}
+}
+
 func (s *Settings) Valid() (bool, error) {
 	if s.DefaultResource == "" {
 		return false, fmt.Errorf("defaultResource cannot be empty")
@@ -36,6 +42,7 @@ func validateSettings(payload []byte) ([]byte, error) {
 	if err != nil {
 		return kubewarden.RejectSettings(kubewarden.Message(fmt.Sprintf("Provided settings are not valid: %v", err)))
 	}
+	settings.ensureSets()
 
 	valid, err := settings.Valid()
 	if err != nil {

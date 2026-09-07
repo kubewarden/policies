@@ -24,6 +24,7 @@ func validate(payload []byte) ([]byte, error) {
 			kubewarden.Message(err.Error()),
 			kubewarden.Code(http.StatusBadRequest))
 	}
+	validationRequest.Settings.ensureSets()
 
 	request := validationRequest.Request
 	settings := validationRequest.Settings

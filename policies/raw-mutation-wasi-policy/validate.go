@@ -24,6 +24,7 @@ func validate(input []byte) []byte {
 				Message(fmt.Sprintf("Error deserializing validation request: %v", err)),
 				Code(http.StatusBadRequest)))
 	}
+	validationRequest.Settings.ensureSets()
 
 	return marshalValidationResponseOrFail(
 		mutateRequest(&validationRequest.Settings, &validationRequest.Request))

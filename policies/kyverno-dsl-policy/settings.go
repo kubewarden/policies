@@ -13,7 +13,7 @@ func validateSettings(input []byte) []byte {
 	var response SettingsValidationResponse
 
 	settings := &CliPolicySettings{}
-	if err := json.Unmarshal(input, &settings); err != nil {
+	if err := json.Unmarshal(input, settings); err != nil {
 		response = RejectSettings(Message(fmt.Sprintf("cannot unmarshal settings: %v", err)))
 	} else {
 		response = validateCliSettings(settings)
@@ -37,6 +37,9 @@ func validateCliSettings(settings *CliPolicySettings) SettingsValidationResponse
 	err = json.Unmarshal(policyBytes, &policy)
 	if err != nil {
 		return RejectSettings(Message(fmt.Sprintf("cannot unmarshal policy: %v", err)))
+	}
+	if policy == nil {
+		return RejectSettings(Message("policy cannot be empty"))
 	}
 
 	//TODO: perform more validations

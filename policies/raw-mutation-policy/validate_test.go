@@ -120,3 +120,22 @@ func TestRejectInvalidPayload(t *testing.T) {
 		t.Errorf("Unexpected status code")
 	}
 }
+
+func TestValidateRequestWithNullSetDoesNotPanic(t *testing.T) {
+	payload := []byte(`{
+		"request":{"user":"tonio","action":"eats","resource":"spinach"},
+		"settings":{"forbiddenResources":null,"defaultResource":"hay"}
+	}`)
+
+	responsePayload, err := validate(payload)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	var response kubewarden_protocol.ValidationResponse
+	if err := json.Unmarshal(responsePayload, &response); err != nil {
+		t.Fatalf("cannot unmarshal response: %v", err)
+	}
+	if !response.Accepted {
+		t.Error("request should be accepted")
+	}
+}

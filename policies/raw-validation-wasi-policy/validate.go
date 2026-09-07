@@ -30,6 +30,8 @@ func validate(input []byte) []byte {
 				Code(http.StatusBadRequest)))
 	}
 
+	validationRequest.Settings.ensureSets()
+
 	return marshalValidationResponseOrFail(
 		validateRequest(validationRequest.Settings, validationRequest.Request))
 }

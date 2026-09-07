@@ -129,6 +129,11 @@ func (s *Settings) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
+	for name, expression := range rawSettings.ConstrainedAnnotations {
+		if expression == nil {
+			return fmt.Errorf("constrained annotation %q cannot be null", name)
+		}
+	}
 
 	s.DeniedAnnotations = mapset.NewThreadUnsafeSet[string](rawSettings.DeniedAnnotations...)
 	s.MandatoryAnnotations = mapset.NewThreadUnsafeSet[string](rawSettings.MandatoryAnnotations...)
