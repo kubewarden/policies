@@ -12,7 +12,6 @@ jobs:
     outputs:
       policy-working-dir: ${{ steps.calculate-vars.outputs.policy_working_dir }}
       policy-version: ${{ steps.calculate-vars.outputs.policy_version }}
-      policy-id: ${{ steps.calculate-vars.outputs.policy_id }}
       policy-name: ${{ steps.calculate-vars.outputs.policy_name }}
       has-artifacthub-metadata: ${{ steps.calculate-vars.outputs.has_artifacthub_metadata }}
       skip-publishing: ${{ steps.calculate-vars.outputs.skip_publishing }}
@@ -47,14 +46,11 @@ jobs:
             echo "::error title=Invalid annotation::io.kubewarden.policy.ociUrl of $policy_working_dir uses the '$policy_namespace' namespace. Use 'policies'"
             exit 1;
           fi
-          policy_id=${policy_ociUrl##*/}
 
-          echo "policy_id=$policy_id"
           echo "policy_name=$policy_name"
           echo "policy_working_dir=$policy_working_dir"
           echo "policy_version=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\2/' | cut -c2- )"
 
-          echo "policy_id=$policy_id" >> $GITHUB_OUTPUT
           echo "policy_name=$policy_name" >> $GITHUB_OUTPUT
           echo "policy_working_dir=$policy_working_dir" >> $GITHUB_OUTPUT
           echo "policy_version=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\2/' | cut -c2- )" >> $GITHUB_OUTPUT
@@ -126,6 +122,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # Runs before `kwctl annotate`, so that the Wasm module carries the URL
+      # to which this workflow publishes the policy.
+      - name: Set the policy OCI URL
+        id: oci
+        uses: ./.github/actions/set-policy-oci-url
+        with:
+          policy-working-dir: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
+          oci-base: ${{ vars.POLICIES_OCI_BASE }}
+
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
 
@@ -165,10 +170,10 @@ jobs:
             ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/policy-sbom.spdx.json
             ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/policy-sbom.spdx.jsonl.bundle.sigstore
 
-      - name: Login to GitHub Container Registry
+      - name: Login to the OCI registry
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
-          registry: ghcr.io
+          registry: ${{ steps.oci.outputs.registry }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -178,7 +183,7 @@ jobs:
         run: |
           set -ex
           echo Pushing :latest policy to OCI container registry
-          IMMUTABLE_REF=$(kwctl push -o json annotated-policy.wasm ghcr.io/${{ github.repository_owner }}/policies/${{ needs.calculate-policy-from-tag.outputs.policy-id }}:latest | jq -r .immutable_ref)
+          IMMUTABLE_REF=$(kwctl push -o json annotated-policy.wasm ${{ steps.oci.outputs.oci-url }}:latest | jq -r .immutable_ref)
 
           echo Keyless signing of policy using cosign
 
@@ -199,7 +204,7 @@ jobs:
           export OCI_TAG="v${{ needs.calculate-policy-from-tag.outputs.policy-version }}"
 
           echo Pushing tagged policy to OCI container registry
-          IMMUTABLE_REF=$(kwctl push -o json annotated-policy.wasm ghcr.io/${{ github.repository_owner }}/policies/${{ needs.calculate-policy-from-tag.outputs.policy-id }}:${OCI_TAG} | jq -r .immutable_ref)
+          IMMUTABLE_REF=$(kwctl push -o json annotated-policy.wasm ${{ steps.oci.outputs.oci-url }}:${OCI_TAG} | jq -r .immutable_ref)
 
           echo Keyless signing of policy using cosign
 
@@ -292,6 +297,14 @@ jobs:
 
       - name: install dependencies
         uses: ./.github/actions/install-dependencies
+
+      # Runs before `kwctl scaffold artifacthub`, so that artifacthub-pkg.yml
+      # gives users the URL from which they can pull the policy.
+      - name: Set the policy OCI URL
+        uses: ./.github/actions/set-policy-oci-url
+        with:
+          policy-working-dir: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
+          oci-base: ${{ vars.POLICIES_OCI_BASE }}
 
       - name: generate artifacthub-pkg.yml
         shell: bash

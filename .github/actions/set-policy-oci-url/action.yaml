@@ -1,0 +1,63 @@
+name: "Set the policy OCI URL"
+description: |
+  Calculates the OCI URL to which the CI publishes the policy, and writes it
+  into the `io.kubewarden.policy.ociUrl` annotation of the checked out
+  metadata.yml.
+
+  The rewrite keeps `kwctl annotate`, `kwctl push` and
+  `kwctl scaffold artifacthub` in agreement. All three read the same
+  annotation, so the URL in the Wasm module, the URL in artifacthub-pkg.yml
+  and the location of the policy are the same.
+
+  The action does not commit the change. It only modifies the checkout of the
+  workflow.
+branding:
+  icon: "package"
+  color: "blue"
+inputs:
+  policy-working-dir:
+    description: "Policy folder"
+    required: true
+    type: string
+  oci-base:
+    description: |
+      Registry, organization and namespace to which the CI publishes, without
+      the name of the policy (for example "registry.example.com/team/policies").
+      Keep empty to publish to "ghcr.io/<repository-owner>/policies".
+    required: false
+    type: string
+    default: ""
+outputs:
+  oci-url:
+    description: "OCI URL of the policy, without a tag"
+    value: ${{ steps.set-oci-url.outputs.oci-url }}
+  registry:
+    description: "Host of the registry, for the login step"
+    value: ${{ steps.set-oci-url.outputs.registry }}
+runs:
+  using: "composite"
+  steps:
+    - name: Set the OCI URL
+      shell: bash
+      id: set-oci-url
+      run: |
+        set -e
+        metadata='${{ inputs.policy-working-dir }}/metadata.yml'
+
+        # `calculate-policy-from-tag` already stopped the workflow when the
+        # annotation is absent or uses a namespace other than "policies".
+        policy_ociUrl=$(yq -r '.annotations."io.kubewarden.policy.ociUrl"' "$metadata")
+        policy_id=${policy_ociUrl##*/}
+
+        oci_base='${{ inputs.oci-base }}'
+        oci_base=${oci_base:-ghcr.io/${{ github.repository_owner }}/policies}
+        oci_url="${oci_base}/${policy_id}"
+        registry=${oci_base%%/*}
+
+        yq -i ".annotations.\"io.kubewarden.policy.ociUrl\" = \"${oci_url}\"" "$metadata"
+
+        echo "oci-url=$oci_url"
+        echo "registry=$registry"
+
+        echo "oci-url=$oci_url" >> $GITHUB_OUTPUT
+        echo "registry=$registry" >> $GITHUB_OUTPUT

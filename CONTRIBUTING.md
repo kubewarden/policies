@@ -160,18 +160,23 @@ ghcr.io/kubewarden/policies/<policy-name>
 ```
 
 The CI reads only the last segment of the annotation, `<policy-name>`.
-The CI then builds the push target with a hardcoded prefix:
+The CI then builds the OCI URL from a base and the `POLICIES_OCI_BASE`
+repository variable:
 
 ```bash
-ghcr.io/${{ github.repository_owner }}/policies/${policy_id}:<tag>
+<POLICIES_OCI_BASE>/<policy-name>
 ```
 
-Two results come from this:
-- On a fork, the CI publishes to the `policies` namespace of the owner of the
-  fork. It does not publish to `kubewarden`.
+When `POLICIES_OCI_BASE` is empty, the base is
+`ghcr.io/<repository-owner>/policies`.
+
+Therefore:
+
 - The registry and the namespace of the annotation have no effect. Keep them at
   `ghcr.io/kubewarden/policies` so that the annotation shows the true location
   of the policy of the upstream repository.
+- Upstream repository publishes to `ghcr.io/kubewarden/policies`
+- A fork publishes to its own registry. It never publishes to `kubewarden`.
 
 To keep the annotation and the push target in agreement, the CI stops with an
 error when:
@@ -179,11 +184,16 @@ error when:
 - the annotation is absent, or
 - the namespace of the annotation is not `policies`.
 
+The `set-policy-oci-url` action then writes the calculated URL into the
+annotation of the checked out `metadata.yml`. The action does not commit this
+change. It runs in the `release` job before `kwctl annotate`, and in the
+`push-artifacthub` job before `kwctl scaffold artifacthub`.
+
 > [!IMPORTANT]
-> The value of the annotation is also written into the Wasm module by
-> `kwctl annotate`, and into `artifacthub-pkg.yml` by
-> `kwctl scaffold artifacthub`. An annotation that does not agree with the push
-> target gives users a URL from which they cannot pull the policy.
+> `kwctl annotate` writes the annotation into the Wasm module, `kwctl push`
+> uses it as the push target, and `kwctl scaffold artifacthub` writes it into
+> `artifacthub-pkg.yml`. All three read the same value, so the URL that
+> ArtifactHub shows is the URL from which users can pull the policy.
 
 ## The OCI tests/ namespace
 
