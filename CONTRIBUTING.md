@@ -173,6 +173,12 @@ Two results come from this:
   `ghcr.io/kubewarden/policies` so that the annotation shows the true location
   of the policy of the upstream repository.
 
+To keep the annotation and the push target in agreement, the CI stops with an
+error when:
+
+- the annotation is absent, or
+- the namespace of the annotation is not `policies`.
+
 > [!IMPORTANT]
 > The value of the annotation is also written into the Wasm module by
 > `kwctl annotate`, and into `artifacthub-pkg.yml` by

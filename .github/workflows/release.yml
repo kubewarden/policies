@@ -24,6 +24,12 @@ jobs:
           policy_name=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\1/' )
           policy_working_dir=$( find policies -type d -name "$policy_name")
 
+          policy_language=""
+          if [ ! -d "$policy_working_dir" ]; then
+            echo "$policy_working_dir does not exist, policy not found";
+            exit 1;
+          fi
+
           policy_ociUrl=$(yq -r '.annotations."io.kubewarden.policy.ociUrl"' $policy_working_dir/metadata.yml)
           # `yq -r` prints the string "null" when the annotation is missing.
           # Without this check the policy is pushed to a repository named
@@ -33,13 +39,15 @@ jobs:
             echo "::error title=Missing annotation::$policy_working_dir/metadata.yml has no io.kubewarden.policy.ociUrl annotation"
             exit 1;
           fi
-          policy_id=${policy_ociUrl##*/}
-
-          policy_language=""
-          if [ ! -d "$policy_working_dir" ]; then
-            echo "$policy_working_dir does not exist, policy not found";
+          # The CI reads only the last segment of the annotation. A namespace
+          # other than "policies" has no effect on the push target, so it makes
+          # the annotation disagree with the location of the policy.
+          policy_namespace=$(basename $(dirname "$policy_ociUrl"))
+          if [ "$policy_namespace" != "policies" ]; then
+            echo "::error title=Invalid annotation::io.kubewarden.policy.ociUrl of $policy_working_dir uses the '$policy_namespace' namespace. Use 'policies'"
             exit 1;
           fi
+          policy_id=${policy_ociUrl##*/}
 
           echo "policy_id=$policy_id"
           echo "policy_name=$policy_name"

@@ -44,6 +44,14 @@ runs:
           echo "::error title=Missing annotation::${{ inputs.policy-working-dir }}/metadata.yml has no io.kubewarden.policy.ociUrl annotation"
           exit 1;
         fi
+        # The CI reads only the last segment of the annotation. A namespace
+        # other than "policies" has no effect on the push target, so it makes
+        # the annotation disagree with the location of the policy.
+        policy_namespace=$(basename $(dirname "$policy_ociUrl"))
+        if [ "$policy_namespace" != "policies" ]; then
+          echo "::error title=Invalid annotation::io.kubewarden.policy.ociUrl of ${{ inputs.policy-working-dir }} uses the '$policy_namespace' namespace. Use 'policies'"
+          exit 1;
+        fi
         policy_version=$(yq -r '.annotations."io.kubewarden.policy.version"' '${{ inputs.policy-working-dir}}/metadata.yml')
         policy_id=${policy_ociUrl##*/}
         policy_basename=$(basename ${{inputs.policy-working-dir}})
