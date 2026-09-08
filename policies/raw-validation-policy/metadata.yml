@@ -14,6 +14,7 @@ annotations:
   io.kubewarden.policy.version: 0.1.5
   io.kubewarden.policy.description: A policy that validates raw requests
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/tests/raw-validation-policy
   io.kubewarden.policy.url: https://github.com/kubewarden/policies
   io.kubewarden.policy.source: https://github.com/kubewarden/policies
   io.kubewarden.policy.license: Apache-2.0
