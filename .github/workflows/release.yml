@@ -23,10 +23,19 @@ jobs:
         run: |
           policy_name=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\1/' )
           policy_working_dir=$( find policies -type d -name "$policy_name")
-          policy_ociUrl=$(yq -r '.annotations."io.kubewarden.policy.ociUrl"' $policy_working_dir/metadata.yml)
-          policy_id=${policy_ociUrl##*/}
-          policy_language=""
 
+          policy_ociUrl=$(yq -r '.annotations."io.kubewarden.policy.ociUrl"' $policy_working_dir/metadata.yml)
+          # `yq -r` prints the string "null" when the annotation is missing.
+          # Without this check the policy is pushed to a repository named
+          # "null", where it collides with every other policy that lacks the
+          # annotation.
+          if [ -z "$policy_ociUrl" ] || [ "$policy_ociUrl" == "null" ]; then
+            echo "::error title=Missing annotation::$policy_working_dir/metadata.yml has no io.kubewarden.policy.ociUrl annotation"
+            exit 1;
+          fi
+          policy_id=${policy_ociUrl##*/}
+
+          policy_language=""
           if [ ! -d "$policy_working_dir" ]; then
             echo "$policy_working_dir does not exist, policy not found";
             exit 1;
