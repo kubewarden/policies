@@ -193,7 +193,7 @@ kind: ClusterAdmissionPolicy
 metadata:
   name: rancher-project-propagate-labels
 spec:
-  module: registry://ghcr.io/kubewarden/policies/rancher-project-propagate-labels:latest
+  module: registry://ghcr.io/kubewarden/policies/rancher-project-propagate-labels:<tag>
   settings: {}
   rules:
   - apiGroups:

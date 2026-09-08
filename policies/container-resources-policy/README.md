@@ -101,7 +101,7 @@ metadata:
   name: container-resources-policy
 spec:
   policyServer: container-resources-policy
-  module: registry://ghcr.io/kubewarden/policies/container-resources:latest
+  module: registry://ghcr.io/kubewarden/policies/container-resources:<tag>
   rules:
     - apiGroups: [""]
       apiVersions: ["v1"]

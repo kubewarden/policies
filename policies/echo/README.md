@@ -48,7 +48,7 @@ metadata:
   name: echo
   namespace: default
 spec:
-  module: "registry://ghcr.io/kubewarden/policies/echo:latest"
+  module: "registry://ghcr.io/kubewarden/policies/echo:<tag>"
   settings: {}
   rules:
     - apiGroups:

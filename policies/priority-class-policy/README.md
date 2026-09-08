@@ -55,7 +55,7 @@ metadata:
     io.kubewarden.policy.severity: medium
   name: priority-class-policy
 spec:
-  module: ghcr.io/kubewarden/policies/priority-class-policy:latest
+  module: ghcr.io/kubewarden/policies/priority-class-policy:<tag>
   rules:
     - apiGroups:
         - ""
@@ -90,7 +90,7 @@ metadata:
     io.kubewarden.policy.severity: medium
   name: priority-class-policy
 spec:
-  module: ghcr.io/kubewarden/policies/priority-class-policy:latest
+  module: ghcr.io/kubewarden/policies/priority-class-policy:<tag>
   rules:
     - apiGroups:
         - ""
@@ -128,7 +128,7 @@ metadata:
     io.kubewarden.policy.severity: medium
   name: priority-class-policy
 spec:
-  module: ghcr.io/kubewarden/policies/priority-class-policy:latest
+  module: ghcr.io/kubewarden/policies/priority-class-policy:<tag>
   rules:
     - apiGroups:
         - ""

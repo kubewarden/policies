@@ -128,7 +128,7 @@ metadata:
     io.kubewarden.policy.severity: low
   name: "demo-policy.example.com"
 spec:
-  module: registry://ghcr.io/kubewarden/policies/cel-policy:latest
+  module: registry://ghcr.io/kubewarden/policies/cel-policy:<tag>
   settings:
     failurePolicy: Fail # this settings is optional. When not defined, the default value is `Fail`
     paramKind:
