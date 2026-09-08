@@ -13,7 +13,9 @@ on:
   workflow_dispatch:
     inputs:
       policy-working-dir:
-        description: "working directory under policies folder"
+        description: |
+          Path of the policy directory, with the 'policies/' prefix. For
+          example 'policies/sleeping-policy'.
         required: true
         type: string
 
