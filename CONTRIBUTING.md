@@ -149,3 +149,38 @@ the `policies` directory modified:
 
 Example: If you update the `pod-privileged-policy` policy to version `0.1.5`,
 the CI will generate the tag: `pod-privileged-policy/v0.1.5`
+
+# OCI Namespaces
+
+Each policy declares its OCI URL in the `io.kubewarden.policy.ociUrl` annotation
+of `metadata.yml`. All policies of this repository use the `policies` namespace:
+
+```
+ghcr.io/kubewarden/policies/<policy-name>
+```
+
+The CI reads only the last segment of the annotation, `<policy-name>`.
+The CI then builds the push target with a hardcoded prefix:
+
+```bash
+ghcr.io/${{ github.repository_owner }}/policies/${policy_id}:<tag>
+```
+
+Two results come from this:
+- On a fork, the CI publishes to the `policies` namespace of the owner of the
+  fork. It does not publish to `kubewarden`.
+- The registry and the namespace of the annotation have no effect. Keep them at
+  `ghcr.io/kubewarden/policies` so that the annotation shows the true location
+  of the policy of the upstream repository.
+
+> [!IMPORTANT]
+> The value of the annotation is also written into the Wasm module by
+> `kwctl annotate`, and into `artifacthub-pkg.yml` by
+> `kwctl scaffold artifacthub`. An annotation that does not agree with the push
+> target gives users a URL from which they cannot pull the policy.
+
+## The OCI tests/ namespace
+
+The `ghcr.io/kubewarden/tests/<policy-name>` namespace is reserved for manual
+pushes. The CI never writes to it. The policies in this namespace are used by
+integration tests and the like.
