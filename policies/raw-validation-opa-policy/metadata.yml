@@ -10,7 +10,7 @@ executionMode: opa
 backgroundAudit: true
 annotations:
   # kubewarden specific:
-  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/tests/raw-validation-opa-policy # must match release workflow oci-target
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/raw-validation-opa-policy
   io.kubewarden.policy.title: raw-validation-opa-policy
   io.kubewarden.policy.version: 0.0.6
   io.kubewarden.policy.description: An OPA policy that validates a raw request

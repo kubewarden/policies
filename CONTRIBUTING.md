@@ -138,6 +138,29 @@ F --> H[Policy released]
 I[User push a new tag] --> E
 ```
 
+## Publish the 'latest' tag of one policy
+
+You can also run `release.yaml` manually from a branch. Such a run builds one
+policy and publishes it with the `:latest` tag:
+
+```console
+gh workflow run release.yaml \
+    -f "policy-working-dir=allowed-proc-mount-types-psp-policy" \
+    -R kubewarden/policies
+```
+
+The version comes from the `io.kubewarden.policy.version` annotation of
+`metadata.yml`. A run from a branch only puhses the `:latest` OCI tag. It doesn't
+create a git tag nor a GitHub release, and doesn't update neither ArtifactHub
+nor the policy catalog.
+
+> [!NOTE]
+> A run of `release.yaml` from a tag is a normal release. It takes the policy
+> and the version from the tag, and it ignores the `policy-working-dir` input.
+> `release-tag.yaml` uses this: GitHub fires no workflow for a tag that
+> `GITHUB_TOKEN` pushes, so `release-tag.yaml` starts `release.yaml` with
+> `gh workflow run release.yml --ref <tag>`.
+
 # Tag Pattern
 
 The CI creates tags using the following logic based on the subdirectory under
@@ -149,3 +172,110 @@ the `policies` directory modified:
 
 Example: If you update the `pod-privileged-policy` policy to version `0.1.5`,
 the CI will generate the tag: `pod-privileged-policy/v0.1.5`
+
+# OCI Namespaces
+
+Each policy declares its OCI URL in the `io.kubewarden.policy.ociUrl` annotation
+of `metadata.yml`. All policies of this repository use the `policies` namespace:
+
+```
+ghcr.io/kubewarden/policies/<policy-name>
+```
+
+The CI reads only the last segment of the annotation, `<policy-name>`.
+The CI then builds the OCI URL from a base and the `POLICIES_OCI_BASE`
+repository variable:
+
+```bash
+<POLICIES_OCI_BASE>/<policy-name>
+```
+
+When `POLICIES_OCI_BASE` is empty, the base is
+`ghcr.io/<repository-owner>/policies`.
+
+Therefore:
+
+- The registry and the namespace of the annotation have no effect. Keep them at
+  `ghcr.io/kubewarden/policies` so that the annotation shows the true location
+  of the policy of the upstream repository.
+- Upstream repository publishes to `ghcr.io/kubewarden/policies`
+- A fork publishes to its own registry. It never publishes to `kubewarden`.
+
+To keep the annotation and the push target in agreement, the CI stops with an
+error when:
+
+- the annotation is absent, or
+- the namespace of the annotation is not `policies`.
+
+The `set-policy-oci-url` action then writes the calculated URL into the
+annotation of the checked out `metadata.yml`. The action does not commit this
+change. It runs in the `release` job before `kwctl annotate`, and in the
+`push-artifacthub` job before `kwctl scaffold artifacthub`.
+
+> [!IMPORTANT]
+> `kwctl annotate` writes the annotation into the Wasm module, `kwctl push`
+> uses it as the push target, and `kwctl scaffold artifacthub` writes it into
+> `artifacthub-pkg.yml`. All three read the same value, so the URL that
+> ArtifactHub shows is the URL from which users can pull the policy.
+
+## The OCI tests/ namespace
+
+The `ghcr.io/kubewarden/tests/<policy-name>` namespace is reserved for manual
+pushes. The CI never writes to it. The policies in this namespace are used by
+integration tests and the like.
+
+# Forks
+
+A fork releases the policies to its own registry. It does not need a change of
+the files that this repository tracks. Thus a fork stays easy to synchronize
+with the upstream repository.
+
+## Forks on GitHub
+
+A fork on GitHub needs no configuration. The CI publishes to
+`ghcr.io/<repository-owner>/policies/<policy-name>` with the token of the
+workflow.
+
+## Forks that use another registry
+
+Give the fork one repository variable and two repository secrets:
+
+| Name                    | Type     | Example                                |
+| ----------------------- | -------- | -------------------------------------- |
+| `POLICIES_OCI_BASE`     | variable | `registry.example.com/team/policies`   |
+| `POLICIES_OCI_USERNAME` | secret   | `robot$policies`                       |
+| `POLICIES_OCI_PASSWORD` | secret   | the password or the token of that user |
+
+The value of `POLICIES_OCI_BASE` is the registry, the organization and the
+namespace, without the name of the policy. The CI adds the name of the policy
+and the tag.
+
+When `POLICIES_OCI_BASE` is empty, the CI ignores the two secrets and it logs
+in to GHCR with the token of the workflow.
+
+## What a fork must know
+
+- The `io.kubewarden.policy.url` and `io.kubewarden.policy.source` annotations
+  still point to the upstream repository. Therefore the link to the GitHub
+  release in `artifacthub-pkg.yml` also points to the upstream repository.
+- The `push-artifacthub` job runs on a fork. It writes to the `artifacthub`
+  branch of the fork only.
+- The `release-catalog` job runs on the upstream repository only.
+
+## Signatures on a fork
+
+`cosign` signs the policies of a fork with the GitHub Actions identity of that
+fork. Three results come from this:
+
+- The signature goes to the registry of the fork, next to the policy.
+- The certificate comes from the public Fulcio, and the entry goes to the
+  public Rekor. The digest of the policy and the name of the fork become
+  public, also when the registry is private.
+- Users must verify with the identity of the fork:
+
+```console
+cosign verify \
+  --certificate-identity-regexp 'https://github.com/<owner>/<repo>/.github/workflows/release.yml@.*' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  <base>/<policy-name>:<tag>
+```

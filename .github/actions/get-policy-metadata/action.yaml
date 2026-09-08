@@ -8,9 +8,6 @@ inputs:
     required: true
     type: string
 outputs:
-  policy-id:
-    description: "Policy ID extract from the policy OCI URL"
-    value: ${{ steps.policy-info.outputs.policy-id}}
   policy-rust-package:
     description: "Rust package name from Cargo.toml"
     value: ${{ steps.policy-info.outputs.policy-rust-package}}
@@ -36,8 +33,23 @@ runs:
         fi
 
         policy_ociUrl=$(yq -r '.annotations."io.kubewarden.policy.ociUrl"' '${{ inputs.policy-working-dir}}/metadata.yml')
+        # `yq -r` prints the string "null" when the annotation is missing.
+        # Without this check the policy is pushed to a repository named
+        # "null", where it collides with every other policy that lacks the
+        # annotation.
+        if [ -z "$policy_ociUrl" ] || [ "$policy_ociUrl" == "null" ]; then
+          echo "::error title=Missing annotation::${{ inputs.policy-working-dir }}/metadata.yml has no io.kubewarden.policy.ociUrl annotation"
+          exit 1;
+        fi
+        # The CI reads only the last segment of the annotation. A namespace
+        # other than "policies" has no effect on the push target, so it makes
+        # the annotation disagree with the location of the policy.
+        policy_namespace=$(basename $(dirname "$policy_ociUrl"))
+        if [ "$policy_namespace" != "policies" ]; then
+          echo "::error title=Invalid annotation::io.kubewarden.policy.ociUrl of ${{ inputs.policy-working-dir }} uses the '$policy_namespace' namespace. Use 'policies'"
+          exit 1;
+        fi
         policy_version=$(yq -r '.annotations."io.kubewarden.policy.version"' '${{ inputs.policy-working-dir}}/metadata.yml')
-        policy_id=${policy_ociUrl##*/}
         policy_basename=$(basename ${{inputs.policy-working-dir}})
         policy_language=""
         policy_rust_package=""
@@ -56,12 +68,10 @@ runs:
 
         echo "policy_language=$policy_language"
         echo "policy_rust_package=$policy_rust_package"
-        echo "policy-id=$policy_id"
         echo "policy-version=$policy_version"
         echo "policy-basename=$policy_basename"
 
         echo "policy-language=$policy_language" >> $GITHUB_OUTPUT
         echo "policy-rust-package=$policy_rust_package" >> $GITHUB_OUTPUT
-        echo "policy-id=$policy_id" >> $GITHUB_OUTPUT
         echo "policy-version=$policy_version" >> $GITHUB_OUTPUT
         echo "policy-basename=$policy_basename" >> $GITHUB_OUTPUT

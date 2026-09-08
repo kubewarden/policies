@@ -18,7 +18,7 @@ backgroundAudit: false
 executionMode: kubewarden-wapc
 annotations:
   # artifacthub specific:
-  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/tests/context-aware-policy-demo
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/context-aware-policy-demo
   # kubewarden specific:
   io.kubewarden.policy.title: context-aware-policy
   io.kubewarden.policy.version: 0.1.15

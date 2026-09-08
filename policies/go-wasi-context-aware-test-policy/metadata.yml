@@ -23,7 +23,7 @@ executionMode: wasi
 backgroundAudit: true
 annotations:
   # artifacthub specific:
-  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/tests/go-wasi-context-aware-test-policy
+  io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/go-wasi-context-aware-test-policy
   # kubewarden specific:
   io.kubewarden.policy.title: go-wasi-context-aware-test-policy
   io.kubewarden.policy.version: 0.0.6
