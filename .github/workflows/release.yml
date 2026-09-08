@@ -170,12 +170,24 @@ jobs:
             ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/policy-sbom.spdx.json
             ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/policy-sbom.spdx.jsonl.bundle.sigstore
 
-      - name: Login to the OCI registry
+      # The upstream repository and forks on GitHub publish to GHCR, and the
+      # token of the workflow gives access to it.
+      - name: Login to GitHub Container Registry
+        if: ${{ vars.POLICIES_OCI_BASE == '' }}
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ${{ steps.oci.outputs.registry }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      # A fork that publishes to another registry gives its own credentials.
+      - name: Login to the configured OCI registry
+        if: ${{ vars.POLICIES_OCI_BASE != '' }}
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ${{ steps.oci.outputs.registry }}
+          username: ${{ secrets.POLICIES_OCI_USERNAME }}
+          password: ${{ secrets.POLICIES_OCI_PASSWORD }}
 
       - name: Publish Wasm policy artifact to OCI registry with the 'latest' tag
         shell: bash

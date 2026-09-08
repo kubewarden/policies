@@ -200,3 +200,59 @@ change. It runs in the `release` job before `kwctl annotate`, and in the
 The `ghcr.io/kubewarden/tests/<policy-name>` namespace is reserved for manual
 pushes. The CI never writes to it. The policies in this namespace are used by
 integration tests and the like.
+
+# Forks
+
+A fork releases the policies to its own registry. It does not need a change of
+the files that this repository tracks. Thus a fork stays easy to synchronize
+with the upstream repository.
+
+## Forks on GitHub
+
+A fork on GitHub needs no configuration. The CI publishes to
+`ghcr.io/<repository-owner>/policies/<policy-name>` with the token of the
+workflow.
+
+## Forks that use another registry
+
+Give the fork one repository variable and two repository secrets:
+
+| Name                    | Type     | Example                                |
+| ----------------------- | -------- | -------------------------------------- |
+| `POLICIES_OCI_BASE`     | variable | `registry.example.com/team/policies`   |
+| `POLICIES_OCI_USERNAME` | secret   | `robot$policies`                       |
+| `POLICIES_OCI_PASSWORD` | secret   | the password or the token of that user |
+
+The value of `POLICIES_OCI_BASE` is the registry, the organization and the
+namespace, without the name of the policy. The CI adds the name of the policy
+and the tag.
+
+When `POLICIES_OCI_BASE` is empty, the CI ignores the two secrets and it logs
+in to GHCR with the token of the workflow.
+
+## What a fork must know
+
+- The `io.kubewarden.policy.url` and `io.kubewarden.policy.source` annotations
+  still point to the upstream repository. Therefore the link to the GitHub
+  release in `artifacthub-pkg.yml` also points to the upstream repository.
+- The `push-artifacthub` job runs on a fork. It writes to the `artifacthub`
+  branch of the fork only.
+- The `release-catalog` job runs on the upstream repository only.
+
+## Signatures on a fork
+
+`cosign` signs the policies of a fork with the GitHub Actions identity of that
+fork. Three results come from this:
+
+- The signature goes to the registry of the fork, next to the policy.
+- The certificate comes from the public Fulcio, and the entry goes to the
+  public Rekor. The digest of the policy and the name of the fork become
+  public, also when the registry is private.
+- Users must verify with the identity of the fork:
+
+```console
+cosign verify \
+  --certificate-identity-regexp 'https://github.com/<owner>/<repo>/.github/workflows/release.yml@.*' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  <base>/<policy-name>:<tag>
+```
