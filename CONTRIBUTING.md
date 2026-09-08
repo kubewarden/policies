@@ -138,6 +138,29 @@ F --> H[Policy released]
 I[User push a new tag] --> E
 ```
 
+## Publish the 'latest' tag of one policy
+
+You can also run `release.yaml` manually from a branch. Such a run builds one
+policy and publishes it with the `:latest` tag:
+
+```console
+gh workflow run release.yaml \
+    -f "policy-working-dir=allowed-proc-mount-types-psp-policy" \
+    -R kubewarden/policies
+```
+
+The version comes from the `io.kubewarden.policy.version` annotation of
+`metadata.yml`. A run from a branch only puhses the `:latest` OCI tag. It doesn't
+create a git tag nor a GitHub release, and doesn't update neither ArtifactHub
+nor the policy catalog.
+
+> [!NOTE]
+> A run of `release.yaml` from a tag is a normal release. It takes the policy
+> and the version from the tag, and it ignores the `policy-working-dir` input.
+> `release-tag.yaml` uses this: GitHub fires no workflow for a tag that
+> `GITHUB_TOKEN` pushes, so `release-tag.yaml` starts `release.yaml` with
+> `gh workflow run release.yml --ref <tag>`.
+
 # Tag Pattern
 
 The CI creates tags using the following logic based on the subdirectory under

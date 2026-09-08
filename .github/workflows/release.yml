@@ -1,5 +1,16 @@
 on:
   workflow_dispatch:
+    inputs:
+      policy-working-dir:
+        description: |
+          Policy directory under the policies folder. Give it when you run this
+          workflow from a branch: the run builds that policy and publishes it
+          with the ':latest' tag, and it creates no git tag and no GitHub
+          release. A run from a tag ignores this input and takes the policy and
+          the version from the tag.
+        required: false
+        type: string
+        default: ""
   push:
     tags:
       - "*/v*"
@@ -20,12 +31,26 @@ jobs:
       - id: calculate-vars
         shell: bash
         run: |
-          policy_name=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\1/' )
+          # A run from a tag gives the policy and the version through the tag.
+          # This happens on a push of a tag, and also on a manual run that
+          # `release-tag.yaml` starts: GitHub fires no workflow for a tag that
+          # GITHUB_TOKEN pushes, so `release-tag.yaml` starts this workflow with
+          # `gh workflow run release.yml --ref <tag>` and gives no input.
+          # A run from a branch has no tag, so it needs the input.
+          if [ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]; then
+            policy_name=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\1/' )
+          else
+            policy_name='${{ inputs.policy-working-dir }}'
+            if [ -z "$policy_name" ]; then
+              echo "::error title=Missing input::a run from a branch needs the 'policy-working-dir' input"
+              exit 1;
+            fi
+          fi
           policy_working_dir=$( find policies -type d -name "$policy_name")
 
           policy_language=""
           if [ ! -d "$policy_working_dir" ]; then
-            echo "$policy_working_dir does not exist, policy not found";
+            echo "::error title=Policy not found::there is no directory 'policies/$policy_name'"
             exit 1;
           fi
 
@@ -47,13 +72,20 @@ jobs:
             exit 1;
           fi
 
+          if [ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]; then
+            policy_version=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\2/' | cut -c2- )
+          else
+            # A run from a branch has no tag. The version comes from metadata.yml.
+            policy_version=$(yq -r '.annotations."io.kubewarden.policy.version"' $policy_working_dir/metadata.yml)
+          fi
+
           echo "policy_name=$policy_name"
           echo "policy_working_dir=$policy_working_dir"
-          echo "policy_version=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\2/' | cut -c2- )"
+          echo "policy_version=$policy_version"
 
           echo "policy_name=$policy_name" >> $GITHUB_OUTPUT
           echo "policy_working_dir=$policy_working_dir" >> $GITHUB_OUTPUT
-          echo "policy_version=$( echo ${{ github.ref_name }} | sed 's/\(.*\)\/\(.*\)$/\2/' | cut -c2- )" >> $GITHUB_OUTPUT
+          echo "policy_version=$policy_version" >> $GITHUB_OUTPUT
 
           # Check for ArtifactHub metadata, to skip if none
           if yq -e '.annotations."io.artifacthub.displayName"' $policy_working_dir/metadata.yml >/dev/null; then
@@ -192,6 +224,7 @@ jobs:
       - name: Publish Wasm policy artifact to OCI registry with the 'latest' tag
         shell: bash
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
+        working-directory: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
         run: |
           set -ex
           echo Pushing :latest policy to OCI container registry
@@ -207,7 +240,7 @@ jobs:
           # Sign also with cosign v3 signature format
           cosign sign --yes --new-bundle-format=true --use-signing-config=true ${IMMUTABLE_REF}
 
-      - name: Publish Wasm policy artifact to OCI registry with the version tag and 'latest'
+      - name: Publish Wasm policy artifact to OCI registry with the version tag
         shell: bash
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
         working-directory: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
@@ -228,8 +261,11 @@ jobs:
           # Sign also with cosign v3 signature format
           cosign sign --yes --new-bundle-format=true --use-signing-config=true ${IMMUTABLE_REF}
 
+      # A manual run publishes the ':latest' tag only. A GitHub release needs a
+      # tag, and a manual run does not create one.
       - name: Create release
         id: create-release
+        if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
         uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
         with:
           config-name: "release-drafter-${{ needs.calculate-policy-from-tag.outputs.policy-name }}.yml"
@@ -269,6 +305,7 @@ jobs:
       - name: Publish release
         # if we are on a single repo, we obtain the last draft release as it contains the changelog
         # and edit it by adding the artifacts. Then we mark the release as latest
+        if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           RELEASE_ID: ${{ steps.create-release.outputs.id }}
@@ -290,6 +327,7 @@ jobs:
 
   push-artifacthub:
     if: |
+      ! startsWith(github.ref, 'refs/heads/') &&
       needs.calculate-policy-from-tag.outputs.has-artifacthub-metadata == 'true' &&
       needs.calculate-policy-from-tag.outputs.skip-publishing != 'true'
     needs: [calculate-policy-from-tag, release]
