@@ -1530,7 +1530,7 @@ dependencies = [
 
 [[package]]
 name = "raw-validation-policy"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
