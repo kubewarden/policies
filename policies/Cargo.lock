@@ -1479,7 +1479,7 @@ dependencies = [
 
 [[package]]
 name = "psa-label-enforcer"
-version = "1.0.14"
+version = "1.0.15"
 dependencies = [
  "k8s-openapi",
  "kubewarden-policy-sdk",
