@@ -1031,7 +1031,7 @@ dependencies = [
 
 [[package]]
 name = "labels-policy"
-version = "0.1.10"
+version = "0.1.11"
 dependencies = [
  "anyhow",
  "criteria_policy_base",
