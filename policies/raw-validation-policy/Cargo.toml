@@ -1,6 +1,6 @@
 [package]
 name = "raw-validation-policy"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
 edition = "2024"
 
