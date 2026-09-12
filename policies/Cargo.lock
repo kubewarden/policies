@@ -739,7 +739,7 @@ dependencies = [
 
 [[package]]
 name = "host-namespaces-psp"
-version = "1.1.11"
+version = "1.1.12"
 dependencies = [
  "anyhow",
  "k8s-openapi",
