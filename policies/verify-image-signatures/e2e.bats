@@ -242,3 +242,38 @@
   [ $(expr "$output" : '.*subject: !equal kubewarden@cncf.io.*') -ne 0 ]
 }
 
+@test "Public key verification with cosign v3 format" {
+  # This test verifies an image signed using cosign v3 (OCI referrers / Sigstore
+  # bundle format) with a public key. The image has ONLY a v3 OCI referrer
+  # signature and no legacy .sig tag, ensuring we test v3 verification
+  # exclusively.
+  #
+  # Need to run the command inside of `bash -c` because of a bats
+  # limitation: https://bats-core.readthedocs.io/en/stable/gotchas.html?highlight=pipe#my-piped-command-does-not-work-under-run
+
+  run bash -c 'kwctl run \
+    --request-path test_data/pod_creation_signed_with_pubkey_cosign_v3.json \
+    --settings-path test_data/settings-pubkey-cosign-v3.yaml \
+    annotated-policy.wasm 2>/dev/null | jq -r ".patch | @base64d"'
+
+  # this prints the output when one the checks below fails
+  echo "output = ${output}"
+
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*ghcr.io/kubewarden/test-verify-image-signatures:signed-v3-only@sha256:706446e9c6667c0880d5da3f39c09a6c7d2114f5a5d6b74a2fafd24ae30d2078.*') -ne 0 ]
+}
+
+@test "Reject image with wrong public key using cosign v3 format" {
+  run kwctl run \
+    --request-path test_data/pod_creation_signed_with_pubkey_cosign_v3.json \
+    --settings-path test_data/settings-mutation-enabled.yaml \
+    annotated-policy.wasm
+
+  # this prints the output when one the checks below fails
+  echo "output = ${output}"
+
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*"allowed":false.*') -ne 0 ]
+  [ $(expr "$output" : '.*verification of image ghcr.io/kubewarden/test-verify-image-signatures:signed-v3-only failed.*') -ne 0 ]
+}
+
