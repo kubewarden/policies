@@ -295,23 +295,25 @@ jobs:
           git reset HEAD -- .
           # we need to replicate the policy-working-dir structure,
           # see https://artifacthub.io/docs/topics/repositories/kubewarden-policies
-          #   path/to/packages
-          #   └── policies
-          #       └── <policy name>
-          #           ├── artifacthub-pkg.yml
-          #           └── README.md
+          #   path/to/packages/artifacthub-repo.yml
+          #   path/to/packages/policies/<policy name>/<version>/artifacthub-pkg.yml
+          #   path/to/packages/policies/<policy name>/<version>/README.md
             
           # checkout the specific files we need from the specific tag that triggered this workflow:
           git checkout ${{ github.ref_name }} -- artifacthub-repo.yml
-          mkdir -p ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
-          mv ${{ runner.temp }}/artifacthub-pkg.yml ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/artifacthub-pkg.yml
-          git checkout ${{ github.ref_name }} -- ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/README.md
+          VERSION=$(sed --posix -n 's,^version: \(.*\),\1,p' ${{ runner.temp }}/artifacthub-pkg.yml)
+          ARTIFACTHUB_POLICY_VERSION_DIR="${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/$VERSION"
+          mkdir -p "$ARTIFACTHUB_POLICY_VERSION_DIR"
+          mv ${{ runner.temp }}/artifacthub-pkg.yml "$ARTIFACTHUB_POLICY_VERSION_DIR/artifacthub-pkg.yml"
+          git show "${{ github.ref_name }}:${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/README.md" > "$ARTIFACTHUB_POLICY_VERSION_DIR/README.md"
+          git rm -f --ignore-unmatch \
+            "${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/artifacthub-pkg.yml" \
+            "${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/README.md"
 
           # add and commit the needed files:
           git add artifacthub-repo.yml
-          git add ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/artifacthub-pkg.yml
-          git add ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/README.md # used if artifacthub-pkg.yml.readme is missing
-          VERSION=$(sed --posix -n 's,^version: \(.*\),\1,p' ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}/artifacthub-pkg.yml)
+          git add "$ARTIFACTHUB_POLICY_VERSION_DIR/artifacthub-pkg.yml"
+          git add "$ARTIFACTHUB_POLICY_VERSION_DIR/README.md" # used if artifacthub-pkg.yml.readme is missing
           git commit -m "Bump ArtifactHub files for ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}, version $VERSION"
 
           # The ArtifactHub branch is updated by many release runs. The job
