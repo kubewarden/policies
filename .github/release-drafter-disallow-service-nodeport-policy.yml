@@ -1,4 +1,4 @@
-_extends: policies:.github/release-drafter.yml
+_extends: policies:release-drafter.yml
 name-template: "disallow-service-nodeport-policy/v$RESOLVED_VERSION"
 tag-template: "disallow-service-nodeport-policy/v$RESOLVED_VERSION"
 tag-prefix: disallow-service-nodeport-policy/v
