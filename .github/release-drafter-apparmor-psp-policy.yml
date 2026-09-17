@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "apparmor-psp-policy/v$RESOLVED_VERSION"
-tag-template: "apparmor-psp-policy/v$RESOLVED_VERSION"
-tag-prefix: apparmor-psp-policy/v
-include-paths:
-  - "policies/apparmor-psp-policy/"

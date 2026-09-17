@@ -128,3 +128,7 @@ e2e-tests-rust:
 
 e2e-tests-go:
 	$(call run-go-policy-target,e2e-tests)
+
+release-please-config:
+	go run ./hack/release-please-config-generator.go
+

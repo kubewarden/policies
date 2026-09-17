@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "labels-policy/v$RESOLVED_VERSION"
-tag-template: "labels-policy/v$RESOLVED_VERSION"
-tag-prefix: labels-policy/v
-include-paths:
-  - "policies/labels-policy/"

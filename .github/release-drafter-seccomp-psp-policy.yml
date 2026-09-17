@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "seccomp-psp-policy/v$RESOLVED_VERSION"
-tag-template: "seccomp-psp-policy/v$RESOLVED_VERSION"
-tag-prefix: seccomp-psp-policy/v
-include-paths:
-  - "policies/seccomp-psp-policy/"

@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "verify-image-signatures/v$RESOLVED_VERSION"
-tag-template: "verify-image-signatures/v$RESOLVED_VERSION"
-tag-prefix: verify-image-signatures/v
-include-paths:
-  - "policies/verify-image-signatures/"

@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "kyverno-dsl-policy/v$RESOLVED_VERSION"
-tag-template: "kyverno-dsl-policy/v$RESOLVED_VERSION"
-tag-prefix: kyverno-dsl-policy/v
-include-paths:
-  - "policies/kyverno-dsl-policy/"

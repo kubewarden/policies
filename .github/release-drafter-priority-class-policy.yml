@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "priority-class-policy/v$RESOLVED_VERSION"
-tag-template: "priority-class-policy/v$RESOLVED_VERSION"
-tag-prefix: priority-class-policy/v
-include-paths:
-  - "policies/priority-class-policy/"

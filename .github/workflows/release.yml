@@ -6,14 +6,16 @@ on:
           Bare policy directory name, without the 'policies/' prefix. Give this
           input when the workflow runs against a branch. That run builds the
           policy and publishes it with the ':latest' tag only. It creates no
-          git tag and no GitHub release. A run against a tag ignores this
-          input. The policy name and the version come from the tag name.
+          git tag and no GitHub release.
+
+          A run against a tag ignores this input. The policy name and the
+          version come from the tag name instead. release-please.yaml starts
+          this kind of run automatically, with '--ref <tag>', once it tags a
+          release. release-tag.yaml can also start one by hand, for a manual
+          release.
         required: false
         type: string
         default: ""
-  push:
-    tags:
-      - "*/v*"
 
 name: Release policy
 
@@ -271,67 +273,49 @@ jobs:
 
       # A manual run publishes the ':latest' tag only. A GitHub release needs a
       # tag, and a manual run does not create one.
-      - name: Create release
-        id: create-release
+      #
+      # A run against a tag started by release-please.yaml already has a
+      # draft release, made by release-please itself. A run started by hand
+      # through release-tag.yaml has no release yet, since that workflow only
+      # pushes the tag. Create one in that case, so the two paths converge.
+      - name: Ensure a release exists
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
-        uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
-        with:
-          config-name: "release-drafter-${{ needs.calculate-policy-from-tag.outputs.policy-name }}.yml"
-          prerelease: ${{ contains(needs.calculate-policy-from-tag.outputs.policy-version, '-alpha') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-beta') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-rc') }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          if ! gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            gh release create "$TAG_NAME" --title "$TAG_NAME" --draft --generate-notes
+          fi
 
       - name: Upload release assets
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        shell: bash
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ github.ref_name }}
           POLICY_WORKING_DIR: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
-          RELEASE_ID: ${{ steps.create-release.outputs.id }}
-        with:
-          script: |
-            let fs = require('fs');
-            let path = require('path');
-            let workingDir = process.env.POLICY_WORKING_DIR || '.';
+        run: |
+          gh release upload "$TAG_NAME" \
+            "$POLICY_WORKING_DIR/policy.wasm" \
+            "$POLICY_WORKING_DIR/policy-sbom.spdx.json" \
+            "$POLICY_WORKING_DIR/policy-sbom.spdx.jsonl.bundle.sigstore"
 
-            let files = [
-            `${workingDir}/policy.wasm`,
-            `${workingDir}/policy-sbom.spdx.json`,
-            `${workingDir}/policy-sbom.spdx.jsonl.bundle.sigstore`,
-            ]
-            const {RELEASE_ID} = process.env
-
-            for (const file of files) {
-              let file_data = fs.readFileSync(file);
-
-              let response = await github.rest.repos.uploadReleaseAsset({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: `${RELEASE_ID}`,
-                name: path.basename(file),
-                data: file_data,
-              });
-            }
-      - name: Publish release
-        # if we are on a single repo, we obtain the last draft release as it contains the changelog
-        # and edit it by adding the artifacts. Then we mark the release as latest
+      - name: Publish the release
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        shell: bash
         env:
-          RELEASE_ID: ${{ steps.create-release.outputs.id }}
-        with:
-          script: |
-            const {RELEASE_ID} = process.env
-            const TAG_NAME = "${{ github.ref_name }}";
-            isPreRelease = ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}
-            github.rest.repos.updateRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: `${RELEASE_ID}`,
-              draft: false,
-              tag_name: TAG_NAME,
-              name: TAG_NAME,
-              prerelease: isPreRelease,
-              make_latest: !isPreRelease
-            });
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ github.ref_name }}
+          POLICY_VERSION: ${{ needs.calculate-policy-from-tag.outputs.policy-version }}
+        run: |
+          EXTRA_FLAGS=(--draft=false --latest)
+          case "$POLICY_VERSION" in
+            *-alpha*|*-beta*|*-rc*) EXTRA_FLAGS=(--draft=false --prerelease --latest=false) ;;
+          esac
+
+          gh release edit "$TAG_NAME" "${EXTRA_FLAGS[@]}"
 
   push-artifacthub:
     if: |

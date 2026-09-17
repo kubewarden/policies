@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+# Release flow check: exercises release-please for a Rust policy.
+
 @test "reject because privileged container" {
   run kwctl run annotated-policy.wasm -r test_data/privileged_container.json
 

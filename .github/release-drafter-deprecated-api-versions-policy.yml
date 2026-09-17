@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "deprecated-api-versions-policy/v$RESOLVED_VERSION"
-tag-template: "deprecated-api-versions-policy/v$RESOLVED_VERSION"
-tag-prefix: deprecated-api-versions-policy/v
-include-paths:
-  - "policies/deprecated-api-versions-policy/"

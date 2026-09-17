@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "pod-runtime-class-policy/v$RESOLVED_VERSION"
-tag-template: "pod-runtime-class-policy/v$RESOLVED_VERSION"
-tag-prefix: pod-runtime-class-policy/v
-include-paths:
-  - "policies/pod-runtime-class-policy/"

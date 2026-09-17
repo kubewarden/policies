@@ -20,7 +20,7 @@
       "groupName": "Rust dependencies",
       "groupSlug": "rust-updates",
       "semanticCommits": "enabled",
-      "semanticCommitType": "build"
+      "semanticCommitType": "fix"
     },
     {
       "description": "do not bump github.com/deckarep/golang-set/v2 - latest versions panic at runtime when tinygo is used.",
@@ -35,7 +35,7 @@
       "groupName": "Go dependencies",
       "groupSlug": "go-updates",
       "semanticCommits": "enabled",
-      "semanticCommitType": "build"
+      "semanticCommitType": "fix"
     },
     {
       "description": "bundle GitHub Actions updates together",
@@ -53,7 +53,7 @@
       "groupName": "Go toolchain",
       "groupSlug": "go-toolchain",
       "semanticCommits": "enabled",
-      "semanticCommitType": "build"
+      "semanticCommitType": "fix"
     }
   ],
   "rebaseWhen": "behind-base-branch",

@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "raw-validation-policy/v$RESOLVED_VERSION"
-tag-template: "raw-validation-policy/v$RESOLVED_VERSION"
-tag-prefix: raw-validation-policy/v
-include-paths:
-  - "policies/raw-validation-policy/"

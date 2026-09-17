@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+# Release flow check: exercises release-please for a TinyGo policy.
+
 @test "reject because allowedTypes is empty" {
   run kwctl run annotated-policy.wasm -r test_data/request-pod-volumes.json \
     --settings-json \

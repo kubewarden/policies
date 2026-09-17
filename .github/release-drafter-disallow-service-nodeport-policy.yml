@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "disallow-service-nodeport-policy/v$RESOLVED_VERSION"
-tag-template: "disallow-service-nodeport-policy/v$RESOLVED_VERSION"
-tag-prefix: disallow-service-nodeport-policy/v
-include-paths:
-  - "policies/disallow-service-nodeport-policy/"

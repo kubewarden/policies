@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+# Release flow check: exercises release-please for a Go wasip1 policy.
+
 @test "accept" {
   run kwctl run annotated-policy.wasm \
     --allow-context-aware \

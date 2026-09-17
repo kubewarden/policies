@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+# Release flow check: exercises release-please for a Rego/opa policy.
+
 @test "accept because not a NodePort service" {
   run kwctl run -e opa annotated-policy.wasm -r test_data/service-clusterip.json
 

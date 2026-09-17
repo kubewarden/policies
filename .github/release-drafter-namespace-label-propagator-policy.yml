@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "namespace-label-propagator-policy/v$RESOLVED_VERSION"
-tag-template: "namespace-label-propagator-policy/v$RESOLVED_VERSION"
-tag-prefix: namespace-label-propagator-policy/v
-include-paths:
-  - "policies/namespace-label-propagator-policy/"

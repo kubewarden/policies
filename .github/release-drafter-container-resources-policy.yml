@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "container-resources-policy/v$RESOLVED_VERSION"
-tag-template: "container-resources-policy/v$RESOLVED_VERSION"
-tag-prefix: container-resources-policy/v
-include-paths:
-  - "policies/container-resources-policy/"

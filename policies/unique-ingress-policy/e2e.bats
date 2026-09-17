@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+# Release flow check: exercises release-please for a Rego/gatekeeper policy.
+
 @test "accept because Ingress host is unique" {
   run kwctl run annotated-policy.wasm \
               -r ./test_data/ingress.json \

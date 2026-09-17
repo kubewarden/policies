@@ -1,0 +1,51 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: Release please
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    # release-please creates the tag and the GitHub release for a merged
+    # release pull request. A tag created with GITHUB_TOKEN does not fire a
+    # `push: tags` event, and this run must also dispatch release.yml itself
+    # (see the last step). Use the GitHub App token for both reasons.
+    steps:
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: generate-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      # release-please tags each released policy and drafts its GitHub
+      # release, but it does not build or publish anything. Start
+      # release.yml for each released policy so it can do that.
+      - name: Trigger the release workflow for each released policy
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          PATHS_RELEASED: ${{ steps.release.outputs.paths_released }}
+          RELEASE_OUTPUTS: ${{ toJSON(steps.release.outputs) }}
+        run: |
+          for path in $(jq -r '.[]' <<<"$PATHS_RELEASED"); do
+            tag=$(jq -r --arg p "$path" '.[$p + "--tag_name"]' <<<"$RELEASE_OUTPUTS")
+            if [ -z "$tag" ] || [ "$tag" == "null" ]; then
+              echo "::error title=Missing tag::no tag_name output for path $path"
+              exit 1
+            fi
+            gh workflow run release.yml --ref "$tag"
+          done

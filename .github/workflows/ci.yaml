@@ -21,6 +21,8 @@ jobs:
       - name: calculate which policies need a CI job
         id: calculate-policy-dirs
         shell: bash
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           set -
           git remote -v
@@ -56,19 +58,27 @@ jobs:
             rego_policies=($(find policies -mindepth 2 -maxdepth 2 -name Makefile -exec dirname '{}' \; \
               | while read -r dir; do [ -f "$dir/Cargo.toml" ] || [ -f "$dir/go.mod" ] || echo "$dir"; done))
 
-            # Rust: shared crates, workspace manifest/lockfile, shared Makefile
-            if echo "$git_files" | grep -qE '^policies/(crates/|Cargo\.toml$|Cargo\.lock$|Makefile\.rust$)'; then
-              policies_working_dirs+=("${rust_policies[@]}")
-            fi
+            # A release-please pull request only bumps a version. For a Rust
+            # policy that bump also touches the shared `policies/Cargo.lock`,
+            # which would otherwise fan out to every Rust policy below. The
+            # bumped policy is already in the matrix through its own files, so
+            # the fan-out is never needed for these pull requests.
+            if [[ "$HEAD_REF" != release-please--* ]]; then
 
-            # Go: shared golangci-lint config, common Makefile fragment, shared Makefiles
-            if echo "$git_files" | grep -qE '^policies/(\.golangci\.yml|go-common\.mk|Makefile\.tinygo|Makefile\.wasigo)$'; then
-              policies_working_dirs+=("${go_policies[@]}")
-            fi
+              # Rust: shared crates, workspace manifest/lockfile, shared Makefile
+              if echo "$git_files" | grep -qE '^policies/(crates/|Cargo\.toml$|Cargo\.lock$|Makefile\.rust$)'; then
+                policies_working_dirs+=("${rust_policies[@]}")
+              fi
 
-            # Rego: shared Makefile
-            if echo "$git_files" | grep -qE '^policies/Makefile\.p-rego$'; then
-              policies_working_dirs+=("${rego_policies[@]}")
+              # Go: shared golangci-lint config, common Makefile fragment, shared Makefiles
+              if echo "$git_files" | grep -qE '^policies/(\.golangci\.yml|go-common\.mk|Makefile\.tinygo|Makefile\.wasigo)$'; then
+                policies_working_dirs+=("${go_policies[@]}")
+              fi
+
+              # Rego: shared Makefile
+              if echo "$git_files" | grep -qE '^policies/Makefile\.p-rego$'; then
+                policies_working_dirs+=("${rego_policies[@]}")
+              fi
             fi
           fi
 
@@ -88,3 +98,16 @@ jobs:
         policy-working-dir: ${{ fromJSON(needs.calculate-policy-matrix.outputs.policy_working_dirs) }}
     with:
       policy-working-dir: ${{ matrix.policy-working-dir }}
+
+  check-release-please-config:
+    name: Check release-please config is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.27"
+      - name: Regenerate the config and manifest
+        run: make release-please-config
+      - name: Fail if the regenerated files differ
+        run: git diff --exit-code -- release-please-config.json .release-please-manifest.json

@@ -1,0 +1,772 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "a999e0c78fb0a882221dfe058c1e3caacf2b34e1",
+  "separate-pull-requests": true,
+  "skip-changelog": true,
+  "draft": true,
+  "force-tag-creation": true,
+  "include-component-in-tag": true,
+  "include-v-in-tag": true,
+  "tag-separator": "/",
+  "extra-label": "kind/chore,area/release",
+  "pull-request-title-pattern": "build: Prepare for release${component} ${version}",
+  "release-search-depth": 600,
+  "sequential-calls": true,
+  "packages": {
+    "policies/allow-privilege-escalation-psp-policy": {
+      "component": "allow-privilege-escalation-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='allow-privilege-escalation-psp')].version"
+        }
+      ]
+    },
+    "policies/allowed-fsgroups-psp-policy": {
+      "component": "allowed-fsgroups-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='psp-allowed-fsgroups')].version"
+        }
+      ]
+    },
+    "policies/allowed-proc-mount-types-psp-policy": {
+      "component": "allowed-proc-mount-types-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='allowed-proc-mount-types-psp')].version"
+        }
+      ]
+    },
+    "policies/annotations-policy": {
+      "component": "annotations-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='annotations-policy')].version"
+        }
+      ]
+    },
+    "policies/apparmor-psp-policy": {
+      "component": "apparmor-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='apparmor-psp')].version"
+        }
+      ]
+    },
+    "policies/capabilities-psp-policy": {
+      "component": "capabilities-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='capabilities-psp')].version"
+        }
+      ]
+    },
+    "policies/cel-policy": {
+      "component": "cel-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/container-resources-policy": {
+      "component": "container-resources-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/context-aware-demo": {
+      "component": "context-aware-demo",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='context-aware-policy-demo')].version"
+        }
+      ]
+    },
+    "policies/deprecated-api-versions-policy": {
+      "component": "deprecated-api-versions-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='deprecated-api-versions')].version"
+        }
+      ]
+    },
+    "policies/disallow-service-loadbalancer-policy": {
+      "component": "disallow-service-loadbalancer-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/disallow-service-nodeport-policy": {
+      "component": "disallow-service-nodeport-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/do-not-expose-admission-controller-webhook-services-policy": {
+      "component": "do-not-expose-admission-controller-webhook-services-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='do-not-expose-admission-controller-webhook-services')].version"
+        }
+      ]
+    },
+    "policies/echo": {
+      "component": "echo",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='echo')].version"
+        }
+      ]
+    },
+    "policies/env-variable-secrets-scanner-policy": {
+      "component": "env-variable-secrets-scanner-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='env-variable-secrets-scanner-policy')].version"
+        }
+      ]
+    },
+    "policies/environment-variable-policy": {
+      "component": "environment-variable-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='environment-variable-policy')].version"
+        }
+      ]
+    },
+    "policies/flexvolume-drivers-psp-policy": {
+      "component": "flexvolume-drivers-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='flexvolume-drivers-psp')].version"
+        }
+      ]
+    },
+    "policies/go-wasi-context-aware-test-policy": {
+      "component": "go-wasi-context-aware-test-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/high-risk-service-account-policy": {
+      "component": "high-risk-service-account-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='high-risk-service-account-policy')].version"
+        }
+      ]
+    },
+    "policies/host-namespaces-psp-policy": {
+      "component": "host-namespaces-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='host-namespaces-psp')].version"
+        }
+      ]
+    },
+    "policies/hostpaths-psp-policy": {
+      "component": "hostpaths-psp-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/image-cve-policy": {
+      "component": "image-cve-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='image-cve-policy')].version"
+        }
+      ]
+    },
+    "policies/ingress-policy": {
+      "component": "ingress-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/kyverno-dsl-policy": {
+      "component": "kyverno-dsl-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/labels-policy": {
+      "component": "labels-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='labels-policy')].version"
+        }
+      ]
+    },
+    "policies/namespace-label-propagator-policy": {
+      "component": "namespace-label-propagator-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/ns-policyserver-mapper-policy": {
+      "component": "ns-policyserver-mapper-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='ns-policyserver-mapper')].version"
+        }
+      ]
+    },
+    "policies/persistentvolumeclaim-storageclass-policy": {
+      "component": "persistentvolumeclaim-storageclass-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='persistentvolumeclaim-storageclass-policy')].version"
+        }
+      ]
+    },
+    "policies/pod-ndots-policy": {
+      "component": "pod-ndots-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='pod-ndots')].version"
+        }
+      ]
+    },
+    "policies/pod-privileged-policy": {
+      "component": "pod-privileged-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='pod-privileged-policy')].version"
+        }
+      ]
+    },
+    "policies/pod-runtime-class-policy": {
+      "component": "pod-runtime-class-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='pod-runtime-class-policy')].version"
+        }
+      ]
+    },
+    "policies/priority-class-policy": {
+      "component": "priority-class-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='priority-class-policy')].version"
+        }
+      ]
+    },
+    "policies/probes-policy": {
+      "component": "probes-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='probes-policy')].version"
+        }
+      ]
+    },
+    "policies/psa-label-enforcer-policy": {
+      "component": "psa-label-enforcer-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='psa-label-enforcer')].version"
+        }
+      ]
+    },
+    "policies/rancher-project-propagate-labels": {
+      "component": "rancher-project-propagate-labels",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='rancher-project-propagate-labels')].version"
+        }
+      ]
+    },
+    "policies/rancher-project-quotas-namespace-validator": {
+      "component": "rancher-project-quotas-namespace-validator",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/raw-mutation-policy": {
+      "component": "raw-mutation-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/raw-mutation-wasi-policy": {
+      "component": "raw-mutation-wasi-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/raw-validation-opa-policy": {
+      "component": "raw-validation-opa-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/raw-validation-policy": {
+      "component": "raw-validation-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='raw-validation-policy')].version"
+        }
+      ]
+    },
+    "policies/raw-validation-wasi-policy": {
+      "component": "raw-validation-wasi-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/readonly-root-filesystem-psp-policy": {
+      "component": "readonly-root-filesystem-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='readonly-root-filesystem-psp-policy')].version"
+        }
+      ]
+    },
+    "policies/runtime-enforcer-policy": {
+      "component": "runtime-enforcer-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/safe-annotations-policy": {
+      "component": "safe-annotations-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/safe-labels-policy": {
+      "component": "safe-labels-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/seccomp-psp-policy": {
+      "component": "seccomp-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='seccomp-psp-policy')].version"
+        }
+      ]
+    },
+    "policies/selinux-psp-policy": {
+      "component": "selinux-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='selinux-psp')].version"
+        }
+      ]
+    },
+    "policies/share-pid-namespace-policy": {
+      "component": "share-pid-namespace-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='share-pid-namespace-policy')].version"
+        }
+      ]
+    },
+    "policies/sleeping-policy": {
+      "component": "sleeping-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='sleeping-policy')].version"
+        }
+      ]
+    },
+    "policies/sysctl-psp-policy": {
+      "component": "sysctl-psp-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/trusted-repos-policy": {
+      "component": "trusted-repos-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='trusted-repos-policy')].version"
+        }
+      ]
+    },
+    "policies/unique-ingress-policy": {
+      "component": "unique-ingress-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    },
+    "policies/unique-service-selector-policy": {
+      "component": "unique-service-selector-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='unique-service-selector-policy')].version"
+        }
+      ]
+    },
+    "policies/user-group-psp-policy": {
+      "component": "user-group-psp-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='user-group-psp')].version"
+        }
+      ]
+    },
+    "policies/verify-image-signatures": {
+      "component": "verify-image-signatures",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='verify-image-signatures')].version"
+        }
+      ]
+    },
+    "policies/volumeMounts-policy": {
+      "component": "volumeMounts-policy",
+      "release-type": "rust",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        },
+        {
+          "type": "toml",
+          "path": "/policies/Cargo.lock",
+          "jsonpath": "$.package[?(@.name.value=='volumemounts-policy')].version"
+        }
+      ]
+    },
+    "policies/volumes-psp-policy": {
+      "component": "volumes-psp-policy",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "metadata.yml"
+        }
+      ]
+    }
+  }
+}

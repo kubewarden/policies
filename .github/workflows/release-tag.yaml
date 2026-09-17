@@ -1,15 +1,4 @@
 on:
-  pull_request:
-    types:
-      - closed
-    paths:
-      # This workflow is run when a PR is closed to trigger policy release. If
-      # the PR does not change any file under policies directory there is no
-      # need to run it.
-      - "policies/**"
-      # If a PR has changes inside the policies/crates only. There is no need to
-      # trigger this job to release policies
-      - "!policies/crates/**"
   workflow_dispatch:
     inputs:
       policy-working-dir:
@@ -19,63 +8,23 @@ on:
         required: true
         type: string
 
-name: Tag and Release on PR Merge
+name: Tag and release a policy manually
 
 jobs:
-  calculate-policy-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      policy_working_dirs: ${{ steps.calculate-policy-working-dirs.outputs.policy_working_dirs }}
-    steps:
-      - name: calculate which policies need a CI job
-        id: calculate-policy-working-dirs
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ "${{github.event_name}}" == "workflow_dispatch" ]; then
-            dir_bash_array=("${{ inputs.policy-working-dir }}")
-          else
-            # Use the GitHub API to get the exact list of files changed in this
-            # PR. This is more reliable than git diff because it uses GitHub's
-            # own record of what changed, which is independent of the local git
-            # state, merge strategy (squash/rebase), and concurrent job race
-            # conditions.
-            git_files="$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files \
-              --paginate --jq '.[].filename' | grep '^policies/')"
-
-            # build policy_working_dirs:
-            dir_bash_array=($(echo "$git_files" | cut -d/ -f1,2 ))
-          fi
-          declare -p dir_bash_array
-          policy_working_dirs=$(jq --compact-output --null-input '$ARGS.positional | map(select(. != "policies/Cargo.lock" and . != "policies/Cargo.toml" and . != "policies/go.mod" and . != "policies/go.sum")) | unique' --args -- "${dir_bash_array[@]}")
-          echo "policy_working_dirs=$policy_working_dirs"
-          echo "policy_working_dirs=$policy_working_dirs" >> $GITHUB_OUTPUT
-
   release-tag:
     name: Tag and push, triggering release
-    needs: calculate-policy-matrix
-    if: >
-      github.event.pull_request.merged == true &&
-      contains(github.event.pull_request.labels.*.name, 'TRIGGER-RELEASE') ||
-      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    continue-on-error: true
-    concurrency:
-      group: ${{ github.workflow }}-${{ matrix.policy-working-dir }}
-    strategy:
-      matrix:
-        policy-working-dir: ${{ fromJSON(needs.calculate-policy-matrix.outputs.policy_working_dirs) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # also checkout tags
+
       - name: Extract version from metadata.yml
         id: extract-version
         shell: bash
         run: |
-          POLICY_DIR="${{ matrix.policy-working-dir }}"
+          POLICY_DIR="${{ inputs.policy-working-dir }}"
           POLICY_NAME=""
           FILES=("metadata.yml" "metadata.yaml")
           VERSION=""
@@ -92,21 +41,63 @@ jobs:
               POLICY_NAME="$(basename $POLICY_DIR)"
             fi
             if [ -f "$FILE" ]; then
-              VERSION="v$(yq e '.annotations."io.kubewarden.policy.version"' $FILE)"
-              if [ -z "$VERSION" ]; then
+              RAW_VERSION="$(yq e '.annotations."io.kubewarden.policy.version"' $FILE)"
+              if [ -z "$RAW_VERSION" ]; then
                 echo "annotation 'io.kubewarden.policy.version' is missing in $FILE"
                 exit 1
               fi
+              VERSION="v$RAW_VERSION"
               if  [ -n "$POLICY_NAME" ]; then
                 VERSION="$POLICY_NAME/$VERSION"
               fi
               echo "found version $VERSION"
               echo "VERSION=$VERSION" >> $GITHUB_ENV
+              echo "policy_name=$POLICY_NAME" >> $GITHUB_OUTPUT
+              echo "raw_version=$RAW_VERSION" >> $GITHUB_OUTPUT
               exit 0
             fi
           done
           echo "Error: metadata.yml or metadata.yaml not found" >&2
           exit 1
+
+      # release-please expects every tag it has not seen to be newer than the
+      # last one it read from .release-please-manifest.json. A manual release
+      # that goes backward, or that leaves the manifest behind, makes
+      # release-please propose a version that is already released, with
+      # nothing downstream to catch it. These two checks make that mistake
+      # fail here instead.
+      - name: Refuse to tag a version lower than an existing tag
+        shell: bash
+        env:
+          POLICY_NAME: ${{ steps.extract-version.outputs.policy_name }}
+          RAW_VERSION: ${{ steps.extract-version.outputs.raw_version }}
+        run: |
+          LATEST_TAG="$(git tag -l "${POLICY_NAME}/v*" | sed "s#^${POLICY_NAME}/v##" | sort -V | tail -1)"
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No existing tag for $POLICY_NAME, nothing to compare against"
+            exit 0
+          fi
+          HIGHEST="$(printf '%s\n%s\n' "$LATEST_TAG" "$RAW_VERSION" | sort -V | tail -1)"
+          if [ "$HIGHEST" != "$RAW_VERSION" ] || [ "$LATEST_TAG" == "$RAW_VERSION" ]; then
+            echo "::error title=Version not higher::metadata.yml has $RAW_VERSION, the latest tag is $LATEST_TAG. The new version must be higher."
+            exit 1
+          fi
+
+      - name: Refuse to tag when .release-please-manifest.json disagrees
+        shell: bash
+        env:
+          POLICY_DIR: ${{ inputs.policy-working-dir }}
+          RAW_VERSION: ${{ steps.extract-version.outputs.raw_version }}
+        run: |
+          MANIFEST_VERSION="$(jq -r --arg key "$POLICY_DIR" '.[$key]' .release-please-manifest.json)"
+          if [ "$MANIFEST_VERSION" == "null" ] || [ -z "$MANIFEST_VERSION" ]; then
+            echo "::error title=Missing manifest entry::.release-please-manifest.json has no entry for $POLICY_DIR"
+            exit 1
+          fi
+          if [ "$MANIFEST_VERSION" != "$RAW_VERSION" ]; then
+            echo "::error title=Manifest out of sync::.release-please-manifest.json has $MANIFEST_VERSION for $POLICY_DIR, metadata.yml has $RAW_VERSION. Update both together before a manual release, or release-please will propose a version that is already released."
+            exit 1
+          fi
 
       - name: Configure Git author
         run: |
@@ -124,10 +115,3 @@ jobs:
         run: gh workflow run release.yml --ref "$VERSION"
         env:
           GH_TOKEN: ${{ github.token }}
-
-      - name: Delete branch corresponding to the PR
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.ref != 'main'
-        run: |
-          git push origin --delete ${{ github.event.pull_request.head.ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

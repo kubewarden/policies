@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "user-group-psp-policy/v$RESOLVED_VERSION"
-tag-template: "user-group-psp-policy/v$RESOLVED_VERSION"
-tag-prefix: user-group-psp-policy/v
-include-paths:
-  - "policies/user-group-psp-policy/"
