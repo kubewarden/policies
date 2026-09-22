@@ -48,7 +48,7 @@
                     "labels": {
                         "app": "ubuntu",
                         "type": "deployment",
-                        "security.rancher.io/policy": "workloadpolicy-sample"
+                        "runtimeenforcer.kubewarden.io/policy": "workloadpolicy-sample"
                     }
                 },
                 "spec": {

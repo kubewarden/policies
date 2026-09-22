@@ -17,13 +17,30 @@ import (
 
 const (
 	// PolicyLabelKey is defined at:
-	// https://github.com/rancher-sandbox/runtime-enforcer/blob/242bc76dcf0593110ee0a8edb2aaf2eb5b726fe8/api/v1alpha1/workloadpolicyproposal_types.go#L16
-	PolicyLabelKey = "security.rancher.io/policy"
+	// https://github.com/kubewarden/runtime-enforcer/blob/main/api/v1alpha1/keys.go
+	PolicyLabelKey = "runtimeenforcer.kubewarden.io/policy"
 )
 
 var (
 	host = capabilities.NewHost()
 )
+
+// Settings holds the configuration of the policy.
+type Settings struct {
+	// RequireProtection, when true, rejects workloads whose Pod template does
+	// not have the Runtime Enforcer label. When false (the default), workloads
+	// without the label are accepted.
+	RequireProtection bool `json:"requireProtection"`
+}
+
+func validateSettings(payload []byte) ([]byte, error) {
+	settings := Settings{}
+	if err := json.Unmarshal(payload, &settings); err != nil {
+		return kubewarden.RejectSettings(
+			kubewarden.Message(fmt.Sprintf("Provided settings are not valid: %v", err)))
+	}
+	return kubewarden.AcceptSettings()
+}
 
 func extractPodLabelsFromObject(object kubewarden_protocol.ValidationRequest) (map[string]string, error) {
 	switch object.Request.Kind.Kind {
@@ -84,6 +101,15 @@ func validate(payload []byte) ([]byte, error) {
 			kubewarden.Code(http.StatusBadRequest))
 	}
 
+	settings := Settings{}
+	if len(validationRequest.Settings) > 0 {
+		if err = json.Unmarshal(validationRequest.Settings, &settings); err != nil {
+			return kubewarden.RejectRequest(
+				kubewarden.Message(fmt.Sprintf("Provided settings are not valid: %v", err)),
+				kubewarden.Code(http.StatusBadRequest))
+		}
+	}
+
 	podLabels, err := extractPodLabelsFromObject(validationRequest)
 	if err != nil {
 		return kubewarden.RejectRequest(kubewarden.Message(err.Error()), kubewarden.Code(http.StatusBadRequest))
@@ -91,19 +117,32 @@ func validate(payload []byte) ([]byte, error) {
 
 	wpName, wpReferenced := podLabels[PolicyLabelKey]
 	if !wpReferenced {
+		if settings.RequireProtection {
+			return kubewarden.RejectRequest(
+				kubewarden.Message(
+					fmt.Sprintf(
+						"The %s '%s/%s' is not protected by Runtime Enforcer: the '%s' label is missing from its Pod template",
+						validationRequest.Request.Kind.Kind,
+						validationRequest.Request.Namespace,
+						validationRequest.Request.Name,
+						PolicyLabelKey,
+					)),
+				kubewarden.Code(http.StatusForbidden),
+			)
+		}
 		return kubewarden.AcceptRequest()
 	}
 
 	// We only verifies if the WorkloadPolicy exists, we don't care about its content.
 	_, err = kubernetes.GetResource(&host, kubernetes.GetResourceRequest{
-		APIVersion: "security.rancher.io/v1alpha1",
+		APIVersion: "runtimeenforcer.kubewarden.io/v1alpha1",
 		Kind:       "WorkloadPolicy",
 		Name:       wpName,
 		Namespace:  &validationRequest.Request.Namespace,
 	})
 
 	if err != nil {
-		if strings.Contains(err.Error(), "Cannot find security.rancher.io/v1alpha1/WorkloadPolicy") {
+		if strings.Contains(err.Error(), "Cannot find runtimeenforcer.kubewarden.io/v1alpha1/WorkloadPolicy") {
 			return kubewarden.RejectRequest(
 				kubewarden.Message(
 					fmt.Sprintf(

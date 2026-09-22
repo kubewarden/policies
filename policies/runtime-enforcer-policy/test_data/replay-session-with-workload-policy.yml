@@ -1,11 +1,11 @@
 - type: Exchange
   request: |
     !KubernetesGetResource
-    api_version: security.rancher.io/v1alpha1
+    api_version: runtimeenforcer.kubewarden.io/v1alpha1
     kind: WorkloadPolicy
     namespace: default
     name: workloadpolicy-sample
     disable_cache: false
   response:
     type: Success
-    payload: '{"apiVersion":"security.rancher.io/v1alpha1","kind":"WorkloadPolicy","metadata":{"annotations":{"kubectl.kubernetes.io/last-applied-configuration":"{\"apiVersion\":\"security.rancher.io/v1alpha1\",\"kind\":\"WorkloadPolicy\",\"metadata\":{\"annotations\":{},\"name\":\"workloadpolicy-sample\",\"namespace\":\"default\"},\"spec\":{\"mode\":\"protect\",\"rulesByContainer\":{\"ubuntu\":{\"executables\":{\"allowed\":[\"/usr/bin/bash\"]}}}}}\n"},"creationTimestamp":"2026-04-06T19:35:25Z","generation":1,"name":"workloadpolicy-sample","namespace":"default","resourceVersion":"7651954","uid":"dd811b53-dd83-48df-b0b9-e10343d85eb5"},"spec":{"mode":"protect","rulesByContainer":{"ubuntu":{"executables":{"allowed":["/usr/bin/bash"]}}}},"status":{"observedGeneration":1,"phase":"Active","successfulNodes":2,"totalNodes":2}}'
+    payload: '{"apiVersion":"runtimeenforcer.kubewarden.io/v1alpha1","kind":"WorkloadPolicy","metadata":{"annotations":{"kubectl.kubernetes.io/last-applied-configuration":"{\"apiVersion\":\"runtimeenforcer.kubewarden.io/v1alpha1\",\"kind\":\"WorkloadPolicy\",\"metadata\":{\"annotations\":{},\"name\":\"workloadpolicy-sample\",\"namespace\":\"default\"},\"spec\":{\"mode\":\"protect\",\"rulesByContainer\":{\"ubuntu\":{\"executables\":{\"allowed\":[\"/usr/bin/bash\"]}}}}}\n"},"creationTimestamp":"2026-04-06T19:35:25Z","generation":1,"name":"workloadpolicy-sample","namespace":"default","resourceVersion":"7651954","uid":"dd811b53-dd83-48df-b0b9-e10343d85eb5"},"spec":{"mode":"protect","rulesByContainer":{"ubuntu":{"executables":{"allowed":["/usr/bin/bash"]}}}},"status":{"observedGeneration":1,"phase":"Active","successfulNodes":2,"totalNodes":2}}'

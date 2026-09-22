@@ -1,11 +1,11 @@
 - type: Exchange
   request: |
     !KubernetesGetResource
-    api_version: security.rancher.io/v1alpha1
+    api_version: runtimeenforcer.kubewarden.io/v1alpha1
     kind: WorkloadPolicy
     namespace: default
     name: not-existing
     disable_cache: false
   response:
     type: Error
-    message: "not found"
+    message: "Cannot find runtimeenforcer.kubewarden.io/v1alpha1/WorkloadPolicy named 'not-existing' inside of namespace 'Some(\"default\")'"

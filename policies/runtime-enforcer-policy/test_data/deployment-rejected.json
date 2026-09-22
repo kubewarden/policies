@@ -48,7 +48,7 @@
                     "labels": {
                         "app": "ubuntu",
                         "type": "deployment",
-                        "security.rancher.io/policy": "not-existing"
+                        "runtimeenforcer.kubewarden.io/policy": "not-existing"
                     }
                 },
                 "spec": {
