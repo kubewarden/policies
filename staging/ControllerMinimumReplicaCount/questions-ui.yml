@@ -1,0 +1,7 @@
+questions:
+  - variable: replica_count
+    default: 2
+    required: true
+    group: Settings
+    type: integer
+    label: Replica count

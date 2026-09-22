@@ -1,0 +1,7 @@
+questions:
+  - variable: max_history
+    default: 100
+    required: true
+    group: Settings
+    type: int
+    label: Max history

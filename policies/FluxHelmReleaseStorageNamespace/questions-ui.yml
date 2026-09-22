@@ -1,0 +1,7 @@
+questions:
+  - variable: storage_namespaces
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Storage namespaces

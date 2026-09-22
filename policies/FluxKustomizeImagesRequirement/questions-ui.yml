@@ -1,0 +1,7 @@
+questions:
+  - variable: images_required
+    default: true
+    required: true
+    group: Settings
+    type: boolean
+    label: Images required

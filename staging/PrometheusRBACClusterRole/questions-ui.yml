@@ -1,0 +1,7 @@
+questions:
+  - variable: prometheus_verb
+    default: put
+    required: true
+    group: Settings
+    type: string
+    label: Prometheus verb

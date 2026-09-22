@@ -1,0 +1,7 @@
+questions:
+  - variable: os
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Os

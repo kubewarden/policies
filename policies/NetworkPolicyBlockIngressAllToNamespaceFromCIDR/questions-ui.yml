@@ -1,0 +1,13 @@
+questions:
+  - variable: namespace
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Namespace
+  - variable: cidr
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Cidr

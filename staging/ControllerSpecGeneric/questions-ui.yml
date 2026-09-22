@@ -1,0 +1,7 @@
+questions:
+  - variable: controller_spec_key
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Controller spec key

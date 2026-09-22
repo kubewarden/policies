@@ -1,0 +1,25 @@
+questions:
+  - variable: probe_type
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Probe type
+  - variable: command
+    default:
+    required: false
+    group: Settings
+    type: array[
+    label: Command
+  - variable: path
+    default:
+    required: false
+    group: Settings
+    type: string
+    label: Path
+  - variable: port
+    default:
+    required: false
+    group: Settings
+    type: integer
+    label: Port

@@ -1,0 +1,7 @@
+questions:
+  - variable: provider
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Provider

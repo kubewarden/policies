@@ -1,0 +1,13 @@
+questions:
+  - variable: resource
+    default: "secrets"
+    required: true
+    group: Settings
+    type: string
+    label: Resource
+  - variable: verb
+    default: "list"
+    required: true
+    group: Settings
+    type: string
+    label: Verb

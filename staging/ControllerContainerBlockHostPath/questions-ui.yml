@@ -1,0 +1,7 @@
+questions:
+  - variable: hostpath_key
+    default: hostPath
+    required: true
+    group: Settings
+    type: string
+    label: Hostpath key

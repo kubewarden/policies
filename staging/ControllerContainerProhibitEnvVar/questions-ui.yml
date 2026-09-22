@@ -1,0 +1,13 @@
+questions:
+  - variable: envvar_name
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Envvar name
+  - variable: app_name
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: App name

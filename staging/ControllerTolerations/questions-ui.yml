@@ -1,0 +1,7 @@
+questions:
+  - variable: toleration_key
+    default: node-role.kubernetes.io/master
+    required: true
+    group: Settings
+    type: string
+    label: Toleration key

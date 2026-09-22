@@ -1,0 +1,72 @@
+{
+  "apiVersion": "admission.k8s.io/v1",
+  "kind": "AdmissionReview",
+  "request": {
+    "uid": "705ab4f5-6393-11e8-b7cc-42010a800002",
+    "kind": {
+      "group": "apps",
+      "version": "v1",
+      "kind": "Deployment"
+    },
+    "resource": {
+      "group": "apps",
+      "version": "v1",
+      "resource": "deployments"
+    },
+    "namespace": "default",
+    "operation": "CREATE",
+    "userInfo": {
+      "username": "admin",
+      "groups": ["system:masters", "system:authenticated"]
+    },
+    "object": {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": "nginx-deployment",
+        "namespace": "default",
+        "creationTimestamp": null
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+            "app": "nginx"
+          }
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "app": "nginx"
+            },
+            "creationTimestamp": null
+          },
+          "spec": {
+            "securityContext": {
+              "sysctls": [
+                {
+                  "name": "net.ipv4.ip_forward",
+                  "value": "1"
+                }
+              ]
+            },
+            "containers": [
+              {
+                "name": "nginx-container",
+                "image": "dockerhub.io/nginx:123",
+                "ports": [
+                  {
+                    "containerPort": 80
+                  }
+                ],
+                "resources": {}
+              }
+            ]
+          }
+        },
+        "strategy": {}
+      },
+      "status": {}
+    }
+  }
+}

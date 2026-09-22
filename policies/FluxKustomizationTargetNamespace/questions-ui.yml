@@ -1,0 +1,7 @@
+questions:
+  - variable: target_namespaces
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Target namespaces

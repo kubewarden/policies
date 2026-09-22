@@ -1,0 +1,7 @@
+questions:
+  - variable: target_port
+    default: 1024
+    required: true
+    group: Settings
+    type: integer
+    label: Target port

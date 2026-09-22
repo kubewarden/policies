@@ -1,0 +1,13 @@
+questions:
+  - variable: snapshot_class
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Snapshot class
+  - variable: pvc_name
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Pvc name

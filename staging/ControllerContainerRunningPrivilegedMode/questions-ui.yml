@@ -1,0 +1,7 @@
+questions:
+  - variable: privilege
+    default: false
+    required: true
+    group: Settings
+    type: boolean
+    label: Privilege

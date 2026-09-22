@@ -1,0 +1,7 @@
+questions:
+  - variable: node_label
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Node label

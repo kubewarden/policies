@@ -1,0 +1,7 @@
+questions:
+  - variable: docker_sock
+    default: docker.sock
+    required: true
+    group: Settings
+    type: string
+    label: Docker sock
