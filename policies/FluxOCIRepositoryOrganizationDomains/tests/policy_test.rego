@@ -1,7 +1,6 @@
 package policy
 
 import future.keywords.in
-import data.policy
 
 test_allowed_domain {
     testcase := {

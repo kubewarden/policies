@@ -1,7 +1,6 @@
 package policy
 
 import future.keywords.in
-import data.k8s.matches
 
 default exclude_namespaces := []
 default exclude_label_key := ""

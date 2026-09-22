@@ -1,7 +1,6 @@
 package policy
 
 import future.keywords.in
-import data.policy
 
 test_patch_annotation_matches_provider {
     testcase := {
