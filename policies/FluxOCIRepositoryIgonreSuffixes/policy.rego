@@ -40,7 +40,7 @@ line_has_allowed_suffix(line, suffixes) {
 
 is_extension_pattern(line) {
     # Check if the line has a file extension pattern (e.g., "*.md" or "/**/*.txt")
-    re_match(`.*\*\.[a-zA-Z0-9]+`, line)
+    regex.match(`.*\*\.[a-zA-Z0-9]+`, line)
 }
 
 controller_input = input.review.object
