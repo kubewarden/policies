@@ -1,11 +1,27 @@
 questions:
-- default: null
-  description: >-
-    This policy is designed to enforce runtime-enforcer policies to be
-    present when a Kubernetes workload is deployed.
-  group: Settings
-  label: Description
-  required: false
-  hide_input: true
-  type: string
-  variable: description
+  - default: null
+    description: >-
+      If a Pod template has the `runtimeenforcer.kubewarden.io/policy` label,
+      Runtime Enforcer protects that Pod. The label value is the name of a
+      WorkloadPolicy (the Runtime Enforcer resource that holds the rules).
+      If the named WorkloadPolicy does not exist in the same namespace, this
+      policy rejects the workload. This policy accepts workloads without the
+      label. When `requireProtection` is enabled, this policy also rejects
+      workloads without the label.
+    group: Settings
+    label: Description
+    required: false
+    hide_input: true
+    type: string
+    variable: description
+  - default: false
+    tooltip: >-
+      When enabled, this policy rejects workloads whose Pod template does not
+      have the `runtimeenforcer.kubewarden.io/policy` label. When disabled,
+      this policy accepts those workloads and only validates the workloads
+      that have the label.
+    group: Settings
+    label: Require Runtime Enforcer protection
+    required: false
+    type: boolean
+    variable: requireProtection
