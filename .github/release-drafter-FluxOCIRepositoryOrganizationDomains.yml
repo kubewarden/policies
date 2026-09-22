@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxOCIRepositoryOrganizationDomains/v$RESOLVED_VERSION"
+tag-template: "FluxOCIRepositoryOrganizationDomains/v$RESOLVED_VERSION"
+tag-prefix: FluxOCIRepositoryOrganizationDomains/v
+include-paths:
+  - "policies/FluxOCIRepositoryOrganizationDomains/"

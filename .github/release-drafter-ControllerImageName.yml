@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerImageName/v$RESOLVED_VERSION"
+tag-template: "ControllerImageName/v$RESOLVED_VERSION"
+tag-prefix: ControllerImageName/v
+include-paths:
+  - "policies/ControllerImageName/"

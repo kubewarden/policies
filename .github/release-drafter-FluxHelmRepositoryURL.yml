@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmRepositoryURL/v$RESOLVED_VERSION"
+tag-template: "FluxHelmRepositoryURL/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmRepositoryURL/v
+include-paths:
+  - "policies/FluxHelmRepositoryURL/"

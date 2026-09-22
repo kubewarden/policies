@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmChartCosignVerification/v$RESOLVED_VERSION"
+tag-template: "FluxHelmChartCosignVerification/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmChartCosignVerification/v
+include-paths:
+  - "policies/FluxHelmChartCosignVerification/"

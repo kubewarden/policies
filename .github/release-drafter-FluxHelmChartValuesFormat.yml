@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmChartValuesFormat/v$RESOLVED_VERSION"
+tag-template: "FluxHelmChartValuesFormat/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmChartValuesFormat/v
+include-paths:
+  - "policies/FluxHelmChartValuesFormat/"

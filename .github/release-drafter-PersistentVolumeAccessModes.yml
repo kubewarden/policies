@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "PersistentVolumeAccessModes/v$RESOLVED_VERSION"
+tag-template: "PersistentVolumeAccessModes/v$RESOLVED_VERSION"
+tag-prefix: PersistentVolumeAccessModes/v
+include-paths:
+  - "policies/PersistentVolumeAccessModes/"

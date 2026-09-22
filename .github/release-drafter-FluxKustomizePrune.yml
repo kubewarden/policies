@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxKustomizePrune/v$RESOLVED_VERSION"
+tag-template: "FluxKustomizePrune/v$RESOLVED_VERSION"
+tag-prefix: FluxKustomizePrune/v
+include-paths:
+  - "policies/FluxKustomizePrune/"

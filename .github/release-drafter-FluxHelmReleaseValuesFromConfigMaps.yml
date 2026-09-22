@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmReleaseValuesFromConfigMaps/v$RESOLVED_VERSION"
+tag-template: "FluxHelmReleaseValuesFromConfigMaps/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmReleaseValuesFromConfigMaps/v
+include-paths:
+  - "policies/FluxHelmReleaseValuesFromConfigMaps/"

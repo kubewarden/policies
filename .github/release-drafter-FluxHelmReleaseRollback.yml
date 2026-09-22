@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmReleaseRollback/v$RESOLVED_VERSION"
+tag-template: "FluxHelmReleaseRollback/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmReleaseRollback/v
+include-paths:
+  - "policies/FluxHelmReleaseRollback/"

@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxKustomizeImagesRequirement/v$RESOLVED_VERSION"
+tag-template: "FluxKustomizeImagesRequirement/v$RESOLVED_VERSION"
+tag-prefix: FluxKustomizeImagesRequirement/v
+include-paths:
+  - "policies/FluxKustomizeImagesRequirement/"

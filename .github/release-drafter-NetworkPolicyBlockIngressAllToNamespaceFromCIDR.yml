@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "NetworkPolicyBlockIngressAllToNamespaceFromCIDR/v$RESOLVED_VERSION"
+tag-template: "NetworkPolicyBlockIngressAllToNamespaceFromCIDR/v$RESOLVED_VERSION"
+tag-prefix: NetworkPolicyBlockIngressAllToNamespaceFromCIDR/v
+include-paths:
+  - "policies/NetworkPolicyBlockIngressAllToNamespaceFromCIDR/"

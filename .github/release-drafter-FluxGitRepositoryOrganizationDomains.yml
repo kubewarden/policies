@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxGitRepositoryOrganizationDomains/v$RESOLVED_VERSION"
+tag-template: "FluxGitRepositoryOrganizationDomains/v$RESOLVED_VERSION"
+tag-prefix: FluxGitRepositoryOrganizationDomains/v
+include-paths:
+  - "policies/FluxGitRepositoryOrganizationDomains/"

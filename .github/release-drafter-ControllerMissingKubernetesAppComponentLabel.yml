@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerMissingKubernetesAppComponentLabel/v$RESOLVED_VERSION"
+tag-template: "ControllerMissingKubernetesAppComponentLabel/v$RESOLVED_VERSION"
+tag-prefix: ControllerMissingKubernetesAppComponentLabel/v
+include-paths:
+  - "policies/ControllerMissingKubernetesAppComponentLabel/"

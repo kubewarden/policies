@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxBucketInsecure/v$RESOLVED_VERSION"
+tag-template: "FluxBucketInsecure/v$RESOLVED_VERSION"
+tag-prefix: FluxBucketInsecure/v
+include-paths:
+  - "policies/FluxBucketInsecure/"

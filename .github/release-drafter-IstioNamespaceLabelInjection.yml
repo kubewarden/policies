@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "IstioNamespaceLabelInjection/v$RESOLVED_VERSION"
+tag-template: "IstioNamespaceLabelInjection/v$RESOLVED_VERSION"
+tag-prefix: IstioNamespaceLabelInjection/v
+include-paths:
+  - "policies/IstioNamespaceLabelInjection/"

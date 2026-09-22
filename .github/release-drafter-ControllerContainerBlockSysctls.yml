@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerContainerBlockSysctls/v$RESOLVED_VERSION"
+tag-template: "ControllerContainerBlockSysctls/v$RESOLVED_VERSION"
+tag-prefix: ControllerContainerBlockSysctls/v
+include-paths:
+  - "policies/ControllerContainerBlockSysctls/"

@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxBucketApprovedRegion/v$RESOLVED_VERSION"
+tag-template: "FluxBucketApprovedRegion/v$RESOLVED_VERSION"
+tag-prefix: FluxBucketApprovedRegion/v
+include-paths:
+  - "policies/FluxBucketApprovedRegion/"
