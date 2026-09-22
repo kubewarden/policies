@@ -17,6 +17,7 @@ they share common tooling and dependencies.
 ├── policies/ # Policy source code
 │ ├── Cargo.toml # Rust Workspace configuration
 │ ├── Cargo.lock # Shared dependency lock file for Rust
+│ ├── Makefile.p-rego # Shared build rules of the Rego policies
 │ ├── <policy-name>/ # Specific policy directory
 │ │ ├── src/ # Source code
 │ │ ├── test_data/ # Files for testing
@@ -25,6 +26,35 @@ they share common tooling and dependencies.
 │ │ ├── <any other policy file>
 │ ├── <policy-name>/ # Specific policy directory
 │ │ ├── <any other policy file>
+├── staging/ # Rego policies that are not ready for release
+│ ├── <policy-name>/ # Specific policy directory
+```
+
+# Rego Policies
+
+Rego policies have Rego unit tests files in two layouts, the `Makefile.p-rego`
+supports both:
+- in `policy_test.rego` next to `policy.rego`
+- one or more files under `tests/`
+
+The `e2e-tests` target runs `bats e2e.bats`. Every Rego policy has that file.
+The imported policies carry a no-op `e2e.bats` with a TODO, because they have
+no end-to-end test yet.
+
+# The staging Directory
+
+The `staging/` directory holds Rego policies that are not ready for release.
+The CI ignores this directory. It calculates the policy matrix from `policies/`
+only, so a change under `staging/` starts no build, no test and no release.
+
+To promote a policy, move its directory to `policies/`, add the `Makefile`
+symbolic link to `../Makefile.p-rego`, and add a
+`.github/release-drafter-<policy-name>.yml` file with:
+
+```console
+go run hack/release-drafter-config-generator.go \
+    --policy-name <policy-name> \
+    --output .github/release-drafter-<policy-name>.yml
 ```
 
 # Rust Workspace
