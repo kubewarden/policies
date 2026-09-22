@@ -7,7 +7,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/google/cel-go/common/types"
+	"cel.dev/cel-go/common/types"
 	"github.com/hashicorp/go-multierror"
 	"github.com/kubewarden/policies/policies/cel-policy/internal/cel"
 	kubewarden "github.com/kubewarden/policy-sdk-go"

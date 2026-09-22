@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/cel-go/cel"
+	"cel.dev/cel-go/cel"
 	netCap "github.com/kubewarden/policy-sdk-go/pkg/capabilities/net"
 
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"

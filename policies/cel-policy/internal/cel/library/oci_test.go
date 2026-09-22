@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/cel-go/cel"
+	"cel.dev/cel-go/cel"
 
 	manifestCap "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci/manifest"
 	manifestCapConfig "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci/manifest_config"

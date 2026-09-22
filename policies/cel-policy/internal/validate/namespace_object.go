@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/google/cel-go/common/types"
-	"github.com/google/cel-go/common/types/ref"
+	"cel.dev/cel-go/common/types"
+	"cel.dev/cel-go/common/types/ref"
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/kubernetes"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
