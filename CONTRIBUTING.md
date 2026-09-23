@@ -101,17 +101,20 @@ language-scoped variants are also available.
 | ---------------- | --------------------------------------------------------------------------------- |
 | `test-rust`      | Rust policies (detected by `Cargo.toml`) + shared crates under `policies/crates/` |
 | `test-go`        | Go policies (detected by `go.mod`)                                                |
+| `test-rego`      | Rego policies (detected by a `.rego` file)                                       |
 | `lint-rust`      | Rust policies + shared crates under `policies/crates/`                            |
 | `lint-go`        | Go policies                                                                       |
+| `lint-rego`      | Rego policies                                                                     |
 | `e2e-tests-rust` | Rust policies                                                                     |
 | `e2e-tests-go`   | Go policies                                                                       |
+| `e2e-tests-rego` | Rego policies                                                                     |
 
 The language detection is file-based: a policy directory is considered Rust if
-it contains a `Cargo.toml`, and Go if it contains a `go.mod`. These sets are
-mutually exclusive. The shared crates under `policies/crates/` are all Rust and
-are included in the `*-rust` targets for `test` and `lint` (consistent with the
-full-repo targets), but not for `e2e-tests` since crates have no end-to-end
-tests.
+it contains a `Cargo.toml`, Go if it contains a `go.mod`, and Rego if it
+contains a `.rego` file. These sets are mutually exclusive. The shared crates
+under `policies/crates/` are all Rust and are included in the `*-rust` targets
+for `test` and `lint` (consistent with the full-repo targets), but not for
+`e2e-tests` since crates have no end-to-end tests.
 
 # How to Release a Policy
 
