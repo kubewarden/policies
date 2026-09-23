@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/google/cel-go/cel"
-	"github.com/google/cel-go/common/types"
-	"github.com/google/cel-go/common/types/ref"
-	"github.com/google/cel-go/ext"
+	"cel.dev/cel-go/cel"
+	"cel.dev/cel-go/common/types"
+	"cel.dev/cel-go/common/types/ref"
+	"cel.dev/cel-go/ext"
 	"github.com/kubewarden/policies/policies/cel-policy/internal/cel/library"
 	k8sLibrary "k8s.io/apiserver/pkg/cel/library"
 )
@@ -59,7 +59,7 @@ func NewCompiler() (*Compiler, error) {
 		cel.Variable("variables", cel.ObjectType("cel.variables")),
 		// TODO: change this to cel.NativeType by using kw generated k8s objects
 		// once the CEL library supports binding nested objects.
-		/// See: https://github.com/google/cel-go/issues/885
+		/// See: https://cel.dev/cel-go/issues/885
 		cel.Variable("request", cel.DynType),
 		cel.Variable("namespaceObject", cel.DynType),
 		cel.Variable("params", cel.DynType),

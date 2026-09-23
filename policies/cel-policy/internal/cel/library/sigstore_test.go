@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/cel-go/cel"
+	"cel.dev/cel-go/cel"
 
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
 	verify "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci/verify_v2"

@@ -8,8 +8,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/google/cel-go/common/types"
-	"github.com/google/cel-go/common/types/ref"
+	"cel.dev/cel-go/common/types"
+	"cel.dev/cel-go/common/types/ref"
 	"github.com/kubewarden/policies/policies/cel-policy/internal/cel"
 	"github.com/kubewarden/policies/policies/cel-policy/internal/settings"
 	kubewarden "github.com/kubewarden/policy-sdk-go"
