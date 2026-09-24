@@ -1,0 +1,7 @@
+questions:
+  - variable: restart_policy
+    default: Always
+    required: true
+    group: Settings
+    type: string
+    label: Restart policy

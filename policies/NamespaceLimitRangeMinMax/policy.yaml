@@ -1,0 +1,52 @@
+apiVersion: pac.weave.works/v2beta2
+kind: Policy
+metadata:
+  name: weave.templates.namespace-resources-limitrange
+spec:
+  id: weave.templates.namespace-resources-limitrange
+  name: Namespace Resources Limitrange
+  description: |
+    When setting up default CPU and Memory values for your namespace, this policy will check if both requests and limits are set. This policy checks for the following:
+
+    | Resource Setting | Resource Type  |
+    |---|---|
+    |  default | cpu  |
+    |  default  | memory  |
+    |  defaultRequest |  cpu |
+    |  defaultRequest | memory  |
+    |  min | memory  |
+    |  min | cpu  |
+    |  max | cpu |
+    |  max | memory  |
+  how_to_solve: |
+    Ensure you are specifying both CPU and Memory requests and limits in your LimitRange
+    ```
+    spec:
+    limits:
+    - <resource_setting>:
+        <resource_type>: value
+    ```
+
+    https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
+    https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/
+  category: weave.categories.capacity-management
+  severity: medium
+  standards:
+    - id: weave.standards.soc2-type-i
+      controls:
+        - weave.controls.soc2-type-i.2.1.1
+  tags: [soc2-type1]
+  parameters:
+    - name: resource_type
+      type: string
+      required: true
+      value:
+    - name: resource_setting
+      type: string
+      required: true
+      value:
+    - name: namespace
+      type: string
+      required: true
+      value: magalix
+  code: "package weave.advisor.namespace.limitrange_min_max\n\nresource_type := input.parameters.resource_type\nresource_setting := input.parameters.resource_setting\nnamespace := input.parameters.namespace\n\nviolation[result] {\n  values := lr_spec.limits[_]\n  not values[resource_setting][resource_type]\n  result = {\n  \t\"issue_detected\": true,\n    \"msg\": sprintf(\"You are missing '%v': '%v'\", [resource_setting, resource_type]),\n    \"violating_key\": \"spec.limits\"\n\n  }\n}\n\nlr_spec = input.review.object.spec {\n  contains_kind(input.review.object.kind, {\"LimitRange\"})\n} \n\ncontains_kind(kind, kinds) {\n  kinds[_] = kind\n}\n"

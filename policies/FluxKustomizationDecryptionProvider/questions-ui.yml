@@ -1,0 +1,7 @@
+questions:
+  - variable: decryption_providers
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Decryption providers

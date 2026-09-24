@@ -1,0 +1,13 @@
+questions:
+  - variable: attributes
+    default: "resources"
+    required: true
+    group: Settings
+    type: string
+    label: Attributes
+  - variable: exclude_role_name
+    default: ""
+    required: false
+    group: Settings
+    type: string
+    label: Exclude role name

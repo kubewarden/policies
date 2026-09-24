@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmReleaseRemediationRetries/v$RESOLVED_VERSION"
+tag-template: "FluxHelmReleaseRemediationRetries/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmReleaseRemediationRetries/v
+include-paths:
+  - "policies/FluxHelmReleaseRemediationRetries/"

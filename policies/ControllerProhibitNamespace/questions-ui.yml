@@ -1,0 +1,7 @@
+questions:
+  - variable: custom_namespace
+    default: default
+    required: true
+    group: Settings
+    type: string
+    label: Custom namespace

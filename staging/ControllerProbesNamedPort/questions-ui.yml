@@ -1,0 +1,7 @@
+questions:
+  - variable: probe
+    default: livenessProbe
+    required: true
+    group: Settings
+    type: string
+    label: Probe

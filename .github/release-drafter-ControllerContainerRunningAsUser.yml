@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerContainerRunningAsUser/v$RESOLVED_VERSION"
+tag-template: "ControllerContainerRunningAsUser/v$RESOLVED_VERSION"
+tag-prefix: ControllerContainerRunningAsUser/v
+include-paths:
+  - "policies/ControllerContainerRunningAsUser/"

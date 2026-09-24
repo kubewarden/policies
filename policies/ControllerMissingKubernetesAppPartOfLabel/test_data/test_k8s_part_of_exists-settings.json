@@ -1,0 +1,6 @@
+{
+  "exclude_label_key": "",
+  "exclude_label_value": "",
+  "exclude_namespace": "",
+  "label": "app.kubernetes.io/part-of"
+}

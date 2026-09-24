@@ -1,0 +1,13 @@
+questions:
+  - variable: pod_quota
+    default: 2
+    required: true
+    group: Settings
+    type: int
+    label: Pod quota
+  - variable: namespace
+    default: magalix
+    required: true
+    group: Settings
+    type: string
+    label: Namespace

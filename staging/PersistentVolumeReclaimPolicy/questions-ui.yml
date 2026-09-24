@@ -1,0 +1,7 @@
+questions:
+  - variable: pv_policy
+    default: Retain
+    required: true
+    group: Settings
+    type: string
+    label: Pv policy

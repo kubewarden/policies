@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerMissingOwnerLabel/v$RESOLVED_VERSION"
+tag-template: "ControllerMissingOwnerLabel/v$RESOLVED_VERSION"
+tag-prefix: ControllerMissingOwnerLabel/v
+include-paths:
+  - "policies/ControllerMissingOwnerLabel/"

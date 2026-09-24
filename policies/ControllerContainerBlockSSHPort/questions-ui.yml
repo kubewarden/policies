@@ -1,0 +1,7 @@
+questions:
+  - variable: container_port
+    default: 22
+    required: true
+    group: Settings
+    type: int
+    label: Container port

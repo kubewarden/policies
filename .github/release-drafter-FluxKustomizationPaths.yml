@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxKustomizationPaths/v$RESOLVED_VERSION"
+tag-template: "FluxKustomizationPaths/v$RESOLVED_VERSION"
+tag-prefix: FluxKustomizationPaths/v
+include-paths:
+  - "policies/FluxKustomizationPaths/"

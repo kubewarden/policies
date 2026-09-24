@@ -1,0 +1,8 @@
+{
+  "exclude_label_key": "",
+  "exclude_label_value": "",
+  "exclude_namespaces": [],
+  "untrusted_domains": [
+    "github.com/untrusted-org"
+  ]
+}

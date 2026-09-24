@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerContainerBlockSSHPort/v$RESOLVED_VERSION"
+tag-template: "ControllerContainerBlockSSHPort/v$RESOLVED_VERSION"
+tag-prefix: ControllerContainerBlockSSHPort/v
+include-paths:
+  - "policies/ControllerContainerBlockSSHPort/"

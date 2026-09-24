@@ -1,0 +1,7 @@
+questions:
+  - variable: automount_token
+    default: false
+    required: true
+    group: Settings
+    type: boolean
+    label: Automount token

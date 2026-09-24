@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxKustomizationDecryptionProvider/v$RESOLVED_VERSION"
+tag-template: "FluxKustomizationDecryptionProvider/v$RESOLVED_VERSION"
+tag-prefix: FluxKustomizationDecryptionProvider/v
+include-paths:
+  - "policies/FluxKustomizationDecryptionProvider/"

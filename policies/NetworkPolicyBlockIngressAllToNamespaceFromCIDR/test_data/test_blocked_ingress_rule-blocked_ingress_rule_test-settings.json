@@ -1,0 +1,6 @@
+{
+  "cidr": "10.244.120.70/31",
+  "exclude_label_key": "test_label",
+  "exclude_label_value": "OK",
+  "namespace": "default"
+}

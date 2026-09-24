@@ -1,0 +1,7 @@
+questions:
+  - variable: untrusted_domains
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Untrusted domains

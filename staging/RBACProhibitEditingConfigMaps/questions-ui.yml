@@ -1,0 +1,19 @@
+questions:
+  - variable: resource_name
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Resource name
+  - variable: verb
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Verb
+  - variable: namespace
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Namespace

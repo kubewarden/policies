@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "RBACProhibitWildcardsOnPolicyRuleResources/v$RESOLVED_VERSION"
+tag-template: "RBACProhibitWildcardsOnPolicyRuleResources/v$RESOLVED_VERSION"
+tag-prefix: RBACProhibitWildcardsOnPolicyRuleResources/v
+include-paths:
+  - "policies/RBACProhibitWildcardsOnPolicyRuleResources/"

@@ -1,0 +1,13 @@
+questions:
+  - variable: seccomp_annotation
+    default: runtime/default
+    required: true
+    group: Settings
+    type: string
+    label: Seccomp annotation
+  - variable: seccomp_type
+    default: RuntimeDefault
+    required: true
+    group: Settings
+    type: string
+    label: Seccomp type

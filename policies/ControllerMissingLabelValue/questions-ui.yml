@@ -1,0 +1,13 @@
+questions:
+  - variable: label
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Label
+  - variable: value
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Value

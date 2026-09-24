@@ -1,0 +1,7 @@
+questions:
+  - variable: namespaces
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Namespaces

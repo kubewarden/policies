@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxOCIRepositoryPatchAnnotation/v$RESOLVED_VERSION"
+tag-template: "FluxOCIRepositoryPatchAnnotation/v$RESOLVED_VERSION"
+tag-prefix: FluxOCIRepositoryPatchAnnotation/v
+include-paths:
+  - "policies/FluxOCIRepositoryPatchAnnotation/"

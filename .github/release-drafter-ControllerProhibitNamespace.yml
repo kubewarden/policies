@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerProhibitNamespace/v$RESOLVED_VERSION"
+tag-template: "ControllerProhibitNamespace/v$RESOLVED_VERSION"
+tag-prefix: ControllerProhibitNamespace/v
+include-paths:
+  - "policies/ControllerProhibitNamespace/"

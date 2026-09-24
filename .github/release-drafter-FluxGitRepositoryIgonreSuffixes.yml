@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxGitRepositoryIgonreSuffixes/v$RESOLVED_VERSION"
+tag-template: "FluxGitRepositoryIgonreSuffixes/v$RESOLVED_VERSION"
+tag-prefix: FluxGitRepositoryIgonreSuffixes/v
+include-paths:
+  - "policies/FluxGitRepositoryIgonreSuffixes/"

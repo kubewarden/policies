@@ -1,0 +1,59 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Pod"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "pods"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Pod"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "pods"
+  },
+  "name": "security-context-demo",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+      "name": "security-context-demo"
+    },
+    "spec": {
+      "containers": [
+        {
+          "command": [
+            "sh",
+            "-c",
+            "sleep 1h"
+          ],
+          "image": "busybox",
+          "name": "sec-ctx-demo"
+        }
+      ],
+      "securityContext": {
+        "runAsUser": 1000
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

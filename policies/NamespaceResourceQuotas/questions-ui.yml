@@ -1,0 +1,13 @@
+questions:
+  - variable: resource_type
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Resource type
+  - variable: namespace
+    default: magalix
+    required: true
+    group: Settings
+    type: string
+    label: Namespace

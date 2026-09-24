@@ -1,0 +1,7 @@
+questions:
+  - variable: host_port
+    default: hostPort
+    required: true
+    group: Settings
+    type: string
+    label: Host port

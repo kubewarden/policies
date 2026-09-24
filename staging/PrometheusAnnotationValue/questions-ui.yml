@@ -1,0 +1,13 @@
+questions:
+  - variable: prometheus_annotation_key
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Prometheus annotation key
+  - variable: prometheus_annotation_value
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Prometheus annotation value

@@ -1,0 +1,13 @@
+questions:
+  - variable: subjects_name
+    default: system:masters
+    required: true
+    group: Settings
+    type: string
+    label: Subjects name
+  - variable: subjects_kind
+    default: Group
+    required: true
+    group: Settings
+    type: string
+    label: Subjects kind

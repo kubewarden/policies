@@ -1,0 +1,6 @@
+{
+  "exclude_label_key": "",
+  "exclude_label_value": "",
+  "pvc_name": "pvc-test",
+  "snapshot_class": "csi-hostpath-snapclass"
+}

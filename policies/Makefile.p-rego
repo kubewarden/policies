@@ -1,6 +1,9 @@
 # POLICY_TYPE can be one of `gatekeeper`, `opa`, with different build process
 POLICY_TYPE := $(shell grep '^executionMode:' metadata.yml | awk '{print $$2}')
-SOURCE_FILES := $(shell find . -type f -name '*.rego')
+
+# Rego files of the policy. A policy keeps its unit tests either in
+# `policy_test.rego` or under `tests/`. Both layouts are supported.
+SOURCE_FILES := $(wildcard *.rego) $(wildcard utility/*.rego) $(wildcard tests/*.rego)
 
 policy.wasm: $(SOURCE_FILES)
 ifeq ($(POLICY_TYPE), gatekeeper)
@@ -18,11 +21,11 @@ endif
 
 .PHONY: test
 test:
-	opa test *.rego
-	
+	opa test $(SOURCE_FILES)
+
 .PHONY: lint
 lint:
-	opa check --strict *.rego
+	opa check --strict $(SOURCE_FILES)
 
 annotated-policy.wasm: policy.wasm metadata.yml
 	kwctl annotate -m metadata.yml -u README.md -o annotated-policy.wasm policy.wasm
@@ -34,7 +37,7 @@ e2e-tests: annotated-policy.wasm
 .PHONY: clean
 clean:
 	rm -f *.wasm *.tar.gz
-	
+
 .PHONY: debug
 debug:
 	@echo $(MAKEFILE_LIST)
@@ -42,3 +45,4 @@ debug:
 	@echo "CURDIR=$(CURDIR)"
 	@echo "POLICY_DIR=$(POLICY_DIR)"
 	@echo "POLICY_TYPE=$(POLICY_TYPE)"
+	@echo "SOURCE_FILES=$(SOURCE_FILES)"

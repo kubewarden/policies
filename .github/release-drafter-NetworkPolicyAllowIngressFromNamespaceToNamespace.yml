@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "NetworkPolicyAllowIngressFromNamespaceToNamespace/v$RESOLVED_VERSION"
+tag-template: "NetworkPolicyAllowIngressFromNamespaceToNamespace/v$RESOLVED_VERSION"
+tag-prefix: NetworkPolicyAllowIngressFromNamespaceToNamespace/v
+include-paths:
+  - "policies/NetworkPolicyAllowIngressFromNamespaceToNamespace/"

@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxOCIRepositoryLayerSelector/v$RESOLVED_VERSION"
+tag-template: "FluxOCIRepositoryLayerSelector/v$RESOLVED_VERSION"
+tag-prefix: FluxOCIRepositoryLayerSelector/v
+include-paths:
+  - "policies/FluxOCIRepositoryLayerSelector/"

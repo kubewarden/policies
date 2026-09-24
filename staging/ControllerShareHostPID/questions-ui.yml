@@ -1,0 +1,7 @@
+questions:
+  - variable: resource_enabled
+    default: false
+    required: true
+    group: Settings
+    type: boolean
+    label: Resource enabled

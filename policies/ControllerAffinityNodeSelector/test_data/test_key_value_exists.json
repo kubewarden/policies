@@ -1,0 +1,156 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Pod"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "pods"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Pod"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "pods"
+  },
+  "name": "with-node-affinity",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+      "name": "with-node-affinity"
+    },
+    "spec": {
+      "affinity": {
+        "nodeAffinity": {
+          "preferredDuringSchedulingIgnoredDuringExecution": [
+            {
+              "preference": {
+                "matchExpressions": [
+                  {
+                    "key": "another-node-label-key",
+                    "operator": "In",
+                    "values": [
+                      "another-node-label-value"
+                    ]
+                  }
+                ]
+              },
+              "weight": 1
+            }
+          ],
+          "requiredDuringSchedulingIgnoredDuringExecution": {
+            "nodeSelectorTerms": [
+              {
+                "matchExpressions": [
+                  {
+                    "key": "kubernetes.io/e2e-az-name",
+                    "operator": "In",
+                    "values": [
+                      "e2e-az1",
+                      "e2e-az2"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "requiredDuringSchedulingRequiredDuringExecution": [
+            {
+              "preference": {
+                "matchExpressions": [
+                  {
+                    "key": "another-node-label-key",
+                    "operator": "In",
+                    "values": [
+                      "another-node-label-value"
+                    ]
+                  }
+                ]
+              },
+              "weight": 1
+            }
+          ]
+        },
+        "podAffinity": {
+          "preferredDuringSchedulingIgnoredDuringExecution": [
+            {
+              "labelSelector": {
+                "matchExpressions": [
+                  {
+                    "key": "security",
+                    "operator": "In",
+                    "values": [
+                      "S1"
+                    ]
+                  }
+                ]
+              },
+              "topologyKey": "failure-domain.beta.kubernetes.io/zone"
+            }
+          ],
+          "requiredDuringSchedulingIgnoredDuringExecution": [
+            {
+              "labelSelector": {
+                "matchExpressions": [
+                  {
+                    "key": "security",
+                    "operator": "In",
+                    "values": [
+                      "S1"
+                    ]
+                  }
+                ]
+              },
+              "topologyKey": "failure-domain.beta.kubernetes.io/zone"
+            }
+          ],
+          "requiredDuringSchedulingRequiredDuringExecution": [
+            {
+              "labelSelector": {
+                "matchExpressions": [
+                  {
+                    "key": "security",
+                    "operator": "In",
+                    "values": [
+                      "S1"
+                    ]
+                  }
+                ]
+              },
+              "topologyKey": "failure-domain.beta.kubernetes.io/zone"
+            }
+          ]
+        }
+      },
+      "containers": [
+        {
+          "image": "k8s.gcr.io/pause:2.0",
+          "name": "with-node-affinity"
+        }
+      ],
+      "nodeSelector": {
+        "disktype": "ssd"
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

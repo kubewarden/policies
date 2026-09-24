@@ -1,0 +1,7 @@
+questions:
+  - variable: service_account_names
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Service account names

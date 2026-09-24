@@ -1,0 +1,13 @@
+questions:
+  - variable: media_types
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Media types
+  - variable: operations
+    default: ["extract"]
+    required: true
+    group: Settings
+    type: array[
+    label: Operations

@@ -1,0 +1,7 @@
+questions:
+  - variable: prometheus_subject_name
+    default: prometheus
+    required: true
+    group: Settings
+    type: string
+    label: Prometheus subject name

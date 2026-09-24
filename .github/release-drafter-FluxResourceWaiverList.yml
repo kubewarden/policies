@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxResourceWaiverList/v$RESOLVED_VERSION"
+tag-template: "FluxResourceWaiverList/v$RESOLVED_VERSION"
+tag-prefix: FluxResourceWaiverList/v
+include-paths:
+  - "policies/FluxResourceWaiverList/"
