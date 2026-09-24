@@ -38,8 +38,33 @@ supports both:
 - one or more files under `tests/`
 
 The `e2e-tests` target runs `bats e2e.bats`. Every Rego policy has that file.
-The imported policies carry a no-op `e2e.bats` with a TODO, because they have
-no end-to-end test yet.
+
+## End-to-End Tests of a Rego Policy
+
+`hack/generate-rego-e2e.py` writes the end-to-end test of a Rego policy from
+its unit tests. Each `test_*` rule holds the settings and the reviewed object,
+so the script can build the fixtures:
+
+```console
+hack/generate-rego-e2e.py policies/<policy-name>
+hack/generate-rego-e2e.py --all
+```
+
+It writes `test_data/<case>.json`, `test_data/<case>-settings.json` and
+`e2e.bats`, with one accept case and one reject case. It builds the policy and
+runs `kwctl` once per case, to make sure that the request gives the same
+verdict as the unit test and to get the message that the test asserts.
+
+Notes:
+
+- The script needs `opa`, `kwctl`, `make` and `bats`.
+- A generated `e2e.bats` carries a marker line. The script does not overwrite a
+  file without that marker, so a hand-written test is safe. Use `--force` to
+  overwrite one.
+- To cover a verdict that the policy does not test yet, add the missing unit
+  test and run the script again. Do not write the fixture by hand.
+- When you reword the message of a policy, run the script again for that
+  policy. The message is part of the assertion.
 
 # The staging Directory
 
