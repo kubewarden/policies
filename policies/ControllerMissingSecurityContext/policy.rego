@@ -33,7 +33,7 @@ has_security_context(spec) {
 controller_input = input.review.object
 
 controller_spec = controller_input.spec.template.spec {
-	contains(controller_input.kind, {"StatefulSet", "DaemonSet", "Deployment", "Job", "ReplicaSet"})
+	contains(controller_input.kind, {"StatefulSet", "DaemonSet", "Deployment", "Job", "ReplicaSet", "ReplicationController"})
 } else = controller_input.spec {
 	controller_input.kind == "Pod"
 } else = controller_input.spec.jobTemplate.spec.template.spec {
