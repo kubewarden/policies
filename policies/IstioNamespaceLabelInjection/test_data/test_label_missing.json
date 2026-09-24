@@ -1,0 +1,43 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Namespace"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "namespaces"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Namespace"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "namespaces"
+  },
+  "name": "namespace",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+      "name": "namespace"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

@@ -1,0 +1,52 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "PersistentVolume"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "persistentvolumes"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "PersistentVolume"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "persistentvolumes"
+  },
+  "name": "test-volume",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+      "name": "test-volume"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadOnlyMany"
+      ],
+      "capacity": {
+        "storage": "200Gi"
+      },
+      "storageClassName": "gcp-disk"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}
