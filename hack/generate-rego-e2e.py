@@ -373,8 +373,25 @@ def generate(policy_dir, force=False):
         header.append("# TODO: this policy needs a hand-written counter-case.")
         header.append("")
     bats_path.write_text("\n".join(header) + "\n" + "\n\n".join(blocks) + "\n")
+    remove_stale_fixtures(policy_dir, bats_path.read_text())
 
     return problems
+
+
+def remove_stale_fixtures(policy_dir, bats_text):
+    """Remove the fixtures of a case that the new e2e.bats does not use.
+
+    A regeneration can choose another case, for example when the policy gains a
+    unit test. The fixture of the previous case then stays behind. Only a file
+    that this script writes is removed, that is one that carries the name of a
+    test rule.
+    """
+    test_data = policy_dir / "test_data"
+    if not test_data.is_dir():
+        return
+    for path in sorted(test_data.glob("test_*.json")):
+        if path.name not in bats_text:
+            path.unlink()
 
 
 def rego_policies(root):
