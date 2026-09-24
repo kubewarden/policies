@@ -1,0 +1,49 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "OCIRepository"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "ocirepositories"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "OCIRepository"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "ocirepositories"
+  },
+  "name": "example",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "kind": "OCIRepository",
+    "metadata": {
+      "name": "example",
+      "namespace": "default"
+    },
+    "spec": {
+      "layerSelector": {
+        "mediaType": "application/non-predefined.media",
+        "operation": "extract"
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

@@ -1,0 +1,9 @@
+{
+  "exclude_label_key": "",
+  "exclude_label_value": "",
+  "exclude_namespaces": [],
+  "regions": [
+    "us-west-2",
+    "us-east-1"
+  ]
+}

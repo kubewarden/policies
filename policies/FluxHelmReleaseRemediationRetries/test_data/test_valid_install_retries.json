@@ -1,0 +1,50 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "helm.toolkit.fluxcd.io",
+    "version": "v2beta1",
+    "kind": "HelmRelease"
+  },
+  "resource": {
+    "group": "helm.toolkit.fluxcd.io",
+    "version": "v2beta1",
+    "resource": "helmreleases"
+  },
+  "requestKind": {
+    "group": "helm.toolkit.fluxcd.io",
+    "version": "v2beta1",
+    "kind": "HelmRelease"
+  },
+  "requestResource": {
+    "group": "helm.toolkit.fluxcd.io",
+    "version": "v2beta1",
+    "resource": "helmreleases"
+  },
+  "name": "valid-helm-release",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "helm.toolkit.fluxcd.io/v2beta1",
+    "kind": "HelmRelease",
+    "metadata": {
+      "name": "valid-helm-release"
+    },
+    "spec": {
+      "install": {
+        "remediation": {
+          "retries": 4
+        }
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

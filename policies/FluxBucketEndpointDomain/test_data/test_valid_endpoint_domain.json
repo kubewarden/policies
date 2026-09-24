@@ -1,0 +1,46 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Bucket"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "buckets"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Bucket"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "buckets"
+  },
+  "name": "valid-bucket",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "Bucket",
+    "metadata": {
+      "name": "valid-bucket"
+    },
+    "spec": {
+      "endpoint": "example.com"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

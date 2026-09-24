@@ -1,0 +1,48 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Kustomization"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "kustomizations"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "Kustomization"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "kustomizations"
+  },
+  "name": "example",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "kind": "Kustomization",
+    "metadata": {
+      "name": "example",
+      "namespace": "default"
+    },
+    "spec": {
+      "decryption": {
+        "provider": "invalid-provider"
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

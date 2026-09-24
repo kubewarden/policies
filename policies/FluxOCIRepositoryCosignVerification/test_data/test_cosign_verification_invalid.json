@@ -1,0 +1,48 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "OCIRepository"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "ocirepositories"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "OCIRepository"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "ocirepositories"
+  },
+  "name": "my-oci-repository",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "OCIRepository",
+    "metadata": {
+      "name": "my-oci-repository"
+    },
+    "spec": {
+      "verify": {
+        "provider": "invalid-provider"
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

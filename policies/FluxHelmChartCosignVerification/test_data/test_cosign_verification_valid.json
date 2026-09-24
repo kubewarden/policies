@@ -1,0 +1,51 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "HelmChart"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "helmcharts"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "HelmChart"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "helmcharts"
+  },
+  "name": "my-helm-chart",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "HelmChart",
+    "metadata": {
+      "name": "my-helm-chart"
+    },
+    "spec": {
+      "verify": {
+        "provider": "cosign",
+        "secretRef": {
+          "name": "my-cosign-keys"
+        }
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

@@ -1,0 +1,46 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "HelmRepository"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "helmrepositories"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "HelmRepository"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "helmrepositories"
+  },
+  "name": "valid-helm-repo",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "HelmRepository",
+    "metadata": {
+      "name": "valid-helm-repo"
+    },
+    "spec": {
+      "type": "oci"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

@@ -1,0 +1,45 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "kustomize.toolkit.fluxcd.io",
+    "version": "v1",
+    "kind": "Kustomization"
+  },
+  "resource": {
+    "group": "kustomize.toolkit.fluxcd.io",
+    "version": "v1",
+    "resource": "kustomizations"
+  },
+  "requestKind": {
+    "group": "kustomize.toolkit.fluxcd.io",
+    "version": "v1",
+    "kind": "Kustomization"
+  },
+  "requestResource": {
+    "group": "kustomize.toolkit.fluxcd.io",
+    "version": "v1",
+    "resource": "kustomizations"
+  },
+  "name": "my-kustomization",
+  "namespace": "flux-system",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "kustomize.toolkit.fluxcd.io/v1",
+    "kind": "Kustomization",
+    "metadata": {
+      "name": "my-kustomization",
+      "namespace": "flux-system"
+    },
+    "spec": {}
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

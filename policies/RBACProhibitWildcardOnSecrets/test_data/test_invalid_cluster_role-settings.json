@@ -1,0 +1,6 @@
+{
+  "exclude_label_key": "",
+  "exclude_label_value": "",
+  "resource": "secrets",
+  "verb": "*"
+}
