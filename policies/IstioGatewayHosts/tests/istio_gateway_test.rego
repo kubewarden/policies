@@ -58,3 +58,45 @@ test_key_value_exists {
 
 	count(violation) == 0 with input as testcase
 }
+
+test_host_not_allowed {
+	testcase = {
+        "parameters": {
+            "hostnames": [
+                "console.gcp.dev.magalix.com",
+            ],
+            "exclude_namespaces": [],
+            "exclude_label_key": "",
+            "exclude_label_value": "",
+        },
+        "review": {
+            "object": {
+                "kind": "Gateway",
+                "apiVersion": "networking.istio.io/v1alpha3",
+                "metadata": {
+                    "name": "console",
+                    "namespace": "magalix"
+                },
+                "spec": {
+                    "selector": {
+                        "istio": "ingressgateway"
+                    },
+                    "servers": [
+                        {
+                            "hosts": [
+                                "console.example.com"
+                            ],
+                            "port": {
+                                "name": "https",
+                                "number": 443,
+                                "protocol": "HTTPS"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+
+	count(violation) == 1 with input as testcase
+}

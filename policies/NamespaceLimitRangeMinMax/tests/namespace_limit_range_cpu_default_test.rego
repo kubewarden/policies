@@ -42,3 +42,34 @@ test_cpu_default {
 
 	count(violation) == 0 with input as testcase
 }
+
+test_cpu_defaultrequest_missing {
+	testcase = {
+        "parameters": {
+            "resource_type": "cpu",
+            "resource_setting": "defaultRequest"
+        },
+        "review": {
+            "object": {
+                "apiVersion": "v1",
+                "kind": "LimitRange",
+                "metadata": {
+                    "name": "default-limit-range"
+                },
+                "spec": {
+                    "limits": [
+                        {
+                            "default": {
+                                "cpu": 1,
+                                "memory": "512Mi"
+                            },
+                            "type": "Container"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+
+	count(violation) == 1 with input as testcase
+}

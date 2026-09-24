@@ -36,3 +36,31 @@ test_container_sysctls {
 
   count(violation) == 1 with input as testcase
 }
+test_container_without_sysctls {
+  testcase = {
+    "parameters": {
+      "exclude_namespaces": [],
+      "exclude_label_key": "",
+      "exclude_label_value": "",
+    },
+    "review": {
+      "object": {
+        "apiVersion": "v1",
+        "kind": "Pod",
+        "metadata": {
+          "name": "no-sysctl"
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "alpine",
+              "image": "alpine:latest"
+            }
+          ]
+        }
+      }
+    }
+  }
+
+  count(violation) == 0 with input as testcase
+}

@@ -28,3 +28,31 @@ test_limits_cpu {
 
 	count(violation) == 0 with input as testcase
 }
+
+test_limits_cpu_missing {
+	testcase = {
+        "parameters": {
+            "resource_type": "limits.cpu",
+            "namespace": "magalix"
+        },
+        "review": {
+            "object": {
+                "apiVersion": "v1",
+                "kind": "ResourceQuota",
+                "metadata": {
+                    "name": "mem-cpu-demo",
+                    "namespace": "magalix"
+                },
+                "spec": {
+                    "hard": {
+                        "requests.cpu": "1",
+                        "requests.memory": "1Gi",
+                        "limits.memory": "2Gi"
+                    }
+                }
+            }
+        }
+    }
+
+	count(violation) == 1 with input as testcase
+}

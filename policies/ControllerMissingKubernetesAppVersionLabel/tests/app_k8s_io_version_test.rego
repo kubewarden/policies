@@ -66,3 +66,34 @@ test_k8s_version_exists {
 
 	count(violation) == 0 with input as testcase
 }
+
+test_k8s_version_missing {
+	testcase = {
+		"parameters": {
+			"exclude_namespaces": [],
+			"exclude_label_key": "",
+			"exclude_label_value": "",
+		},
+		"review": {"object": {
+			"apiVersion": "apps/v1",
+			"kind": "Deployment",
+			"metadata": {
+				"name": "demoservice",
+				"labels": {"app": "demoservice"},
+			},
+			"spec": {
+				"replicas": 1,
+				"selector": {"matchLabels": {"app": "demoservice"}},
+				"template": {
+					"metadata": {"labels": {"app": "demoservice"}},
+					"spec": {"containers": [{
+						"name": "demoservice",
+						"image": "banzaicloud/allspark:0.1.2",
+					}]},
+				},
+			},
+		}},
+	}
+
+	count(violation) == 1 with input as testcase
+}

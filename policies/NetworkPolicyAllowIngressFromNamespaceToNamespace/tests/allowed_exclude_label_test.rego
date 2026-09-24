@@ -44,3 +44,43 @@ test_allowed_exclude_label {
 
   count(violation) == 0 with input as testcase
 }
+
+test_ingress_from_wrong_namespace {
+  testcase = {
+    "parameters": {
+      "src_namespace": "ns1",
+      "dst_namespace": "ns2",
+      "exclude_label_key": "",
+      "exclude_label_value": ""
+    },
+    "review": {
+      "object": {
+        "apiVersion": "networking.k8s.io/v1",
+        "kind": "NetworkPolicy",
+        "metadata": {
+          "name": "allow-ingress-from-namespace-to-another",
+          "namespace": "ns2"
+        },
+        "spec": {
+          "podSelector": {},
+          "ingress": [
+            {
+              "from": [
+                {
+                  "namespaceSelector": {
+                    "matchLabels": {
+                      "kubernetes.io/metadata.name": "ns3"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "policyTypes": ["Ingress"]
+        }
+      }
+    }
+  }
+
+  count(violation) == 1 with input as testcase
+}
