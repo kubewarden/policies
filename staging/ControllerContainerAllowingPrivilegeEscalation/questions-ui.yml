@@ -1,0 +1,7 @@
+questions:
+  - variable: allow_privilege_escalation
+    default: false
+    required: true
+    group: Settings
+    type: boolean
+    label: Allow privilege escalation

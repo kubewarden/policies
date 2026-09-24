@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxKustomizationImageTagStandards/v$RESOLVED_VERSION"
+tag-template: "FluxKustomizationImageTagStandards/v$RESOLVED_VERSION"
+tag-prefix: FluxKustomizationImageTagStandards/v
+include-paths:
+  - "policies/FluxKustomizationImageTagStandards/"

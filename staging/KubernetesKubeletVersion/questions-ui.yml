@@ -1,0 +1,7 @@
+questions:
+  - variable: version
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Version

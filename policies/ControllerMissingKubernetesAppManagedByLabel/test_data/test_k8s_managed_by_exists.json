@@ -1,0 +1,106 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "apps",
+    "version": "v1",
+    "kind": "Deployment"
+  },
+  "resource": {
+    "group": "apps",
+    "version": "v1",
+    "resource": "deployments"
+  },
+  "requestKind": {
+    "group": "apps",
+    "version": "v1",
+    "kind": "Deployment"
+  },
+  "requestResource": {
+    "group": "apps",
+    "version": "v1",
+    "resource": "deployments"
+  },
+  "name": "demoservice",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "app": "demoservice",
+        "app.kubernetes.io/managed-by": "name",
+        "owner": "tony2"
+      },
+      "name": "demoservice"
+    },
+    "spec": {
+      "replicas": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "demoservice"
+        }
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "demoservice"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "command": [
+                "node",
+                "app.js"
+              ],
+              "env": [
+                {
+                  "name": "PORT",
+                  "value": "5001"
+                }
+              ],
+              "image": "airwavetechio/demoservice:v0.0.2",
+              "name": "demoservice",
+              "ports": [
+                {
+                  "containerPort": 5001,
+                  "name": "liveness-port"
+                }
+              ],
+              "securityContext": {
+                "allowPrivilegeEscalation": true,
+                "capabilities": {
+                  "add": [
+                    "SYS_ADMIN"
+                  ]
+                },
+                "privileged": true,
+                "readOnlyRootFilesystem": false,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              }
+            }
+          ],
+          "securityContext": {
+            "fsGroup": 1000,
+            "runAsGroup": 1000,
+            "runAsNonRoot": false,
+            "runAsUser": 0
+          }
+        }
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

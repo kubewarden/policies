@@ -1,0 +1,49 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "snapshot.storage.k8s.io",
+    "version": "v1",
+    "kind": "VolumeSnapshot"
+  },
+  "resource": {
+    "group": "snapshot.storage.k8s.io",
+    "version": "v1",
+    "resource": "volumesnapshots"
+  },
+  "requestKind": {
+    "group": "snapshot.storage.k8s.io",
+    "version": "v1",
+    "kind": "VolumeSnapshot"
+  },
+  "requestResource": {
+    "group": "snapshot.storage.k8s.io",
+    "version": "v1",
+    "resource": "volumesnapshots"
+  },
+  "name": "new-snapshot-test",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "snapshot.storage.k8s.io/v1",
+    "kind": "VolumeSnapshot",
+    "metadata": {
+      "name": "new-snapshot-test"
+    },
+    "spec": {
+      "source": {
+        "persistentVolumeClaimName": "pvc-test"
+      },
+      "volumeSnapshotClassName": "csi-hostpath-snapclass"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

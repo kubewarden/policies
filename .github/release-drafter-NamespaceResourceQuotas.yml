@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "NamespaceResourceQuotas/v$RESOLVED_VERSION"
+tag-template: "NamespaceResourceQuotas/v$RESOLVED_VERSION"
+tag-prefix: NamespaceResourceQuotas/v
+include-paths:
+  - "policies/NamespaceResourceQuotas/"

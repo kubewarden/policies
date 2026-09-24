@@ -1,0 +1,7 @@
+questions:
+  - variable: label
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Label

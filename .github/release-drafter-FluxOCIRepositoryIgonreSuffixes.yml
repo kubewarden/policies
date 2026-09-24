@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxOCIRepositoryIgonreSuffixes/v$RESOLVED_VERSION"
+tag-template: "FluxOCIRepositoryIgonreSuffixes/v$RESOLVED_VERSION"
+tag-prefix: FluxOCIRepositoryIgonreSuffixes/v
+include-paths:
+  - "policies/FluxOCIRepositoryIgonreSuffixes/"

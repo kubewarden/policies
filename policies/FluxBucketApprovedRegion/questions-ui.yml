@@ -1,0 +1,7 @@
+questions:
+  - variable: regions
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Regions

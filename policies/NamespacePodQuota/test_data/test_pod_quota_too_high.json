@@ -1,0 +1,49 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "ResourceQuota"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "resourcequotas"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "ResourceQuota"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "resourcequotas"
+  },
+  "name": "pod-demo",
+  "namespace": "magalix",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "name": "pod-demo",
+      "namespace": "magalix"
+    },
+    "spec": {
+      "hard": {
+        "pods": "9"
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

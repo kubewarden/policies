@@ -1,0 +1,7 @@
+questions:
+  - variable: prune
+    default:
+    required: true
+    group: Settings
+    type: boolean
+    label: Prune

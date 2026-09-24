@@ -1,0 +1,69 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "apps",
+    "version": "v1",
+    "kind": "Deployment"
+  },
+  "resource": {
+    "group": "apps",
+    "version": "v1",
+    "resource": "deployments"
+  },
+  "requestKind": {
+    "group": "apps",
+    "version": "v1",
+    "kind": "Deployment"
+  },
+  "requestResource": {
+    "group": "apps",
+    "version": "v1",
+    "resource": "deployments"
+  },
+  "name": "demoservice",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "app": "demoservice"
+      },
+      "name": "demoservice"
+    },
+    "spec": {
+      "replicas": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "demoservice"
+        }
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "demoservice"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "image": "banzaicloud/allspark:0.1.2",
+              "name": "demoservice"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

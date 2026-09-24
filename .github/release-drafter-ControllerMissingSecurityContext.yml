@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "ControllerMissingSecurityContext/v$RESOLVED_VERSION"
+tag-template: "ControllerMissingSecurityContext/v$RESOLVED_VERSION"
+tag-prefix: ControllerMissingSecurityContext/v
+include-paths:
+  - "policies/ControllerMissingSecurityContext/"

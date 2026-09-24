@@ -1,0 +1,12 @@
+{
+  "exclude_label_key": "",
+  "exclude_label_value": "",
+  "exclude_namespaces": [],
+  "media_types": [
+    "application/deployment.content.v1.tar+gzip"
+  ],
+  "operations": [
+    "extract",
+    "copy"
+  ]
+}

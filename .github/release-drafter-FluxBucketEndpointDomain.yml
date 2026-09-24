@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxBucketEndpointDomain/v$RESOLVED_VERSION"
+tag-template: "FluxBucketEndpointDomain/v$RESOLVED_VERSION"
+tag-prefix: FluxBucketEndpointDomain/v
+include-paths:
+  - "policies/FluxBucketEndpointDomain/"

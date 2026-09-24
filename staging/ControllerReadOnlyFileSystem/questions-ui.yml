@@ -1,0 +1,7 @@
+questions:
+  - variable: read_only
+    default: true
+    required: true
+    group: Settings
+    type: boolean
+    label: Read only

@@ -1,0 +1,7 @@
+questions:
+  - variable: configmaps
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Configmaps

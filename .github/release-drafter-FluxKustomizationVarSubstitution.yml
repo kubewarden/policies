@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxKustomizationVarSubstitution/v$RESOLVED_VERSION"
+tag-template: "FluxKustomizationVarSubstitution/v$RESOLVED_VERSION"
+tag-prefix: FluxKustomizationVarSubstitution/v
+include-paths:
+  - "policies/FluxKustomizationVarSubstitution/"

@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmReleaseStorageNamespace/v$RESOLVED_VERSION"
+tag-template: "FluxHelmReleaseStorageNamespace/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmReleaseStorageNamespace/v
+include-paths:
+  - "policies/FluxHelmReleaseStorageNamespace/"

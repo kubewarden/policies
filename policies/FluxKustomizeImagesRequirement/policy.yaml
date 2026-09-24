@@ -1,0 +1,32 @@
+apiVersion: pac.weave.works/v2beta2
+kind: Policy
+metadata:
+  name: weave.policies.kustomization-images-requirement
+spec:
+  id: weave.policies.kustomization-images-requirement
+  name: Kustomization Images Requirement
+  enabled: true
+  description: "The 'spec.images' field in a Kustomization object must be enabled or disabled based on the policy input images_required."
+  how_to_solve: "Update the 'spec.images' field in the Kustomization object based on the policy input images_required."
+  category: weave.categories.organizational-standard
+  severity: medium
+  targets: {kinds: [Kustomization]}
+  tags: [flux]
+  parameters:
+    - name: exclude_namespaces
+      type: array
+      required: false
+      value: []
+    - name: exclude_label_key
+      type: string
+      required: false
+      value: ""
+    - name: exclude_label_value
+      type: string
+      required: false
+      value: ""
+    - name: images_required
+      type: boolean
+      required: true
+      value: true
+  code: "package weave.advisor.kustomization_images_requirement\n\nimport future.keywords.in\n\nexclude_namespaces := input.parameters.exclude_namespaces\nexclude_label_key := input.parameters.exclude_label_key\nexclude_label_value := input.parameters.exclude_label_value\nimages_required := input.parameters.images_required\n\nviolation[result] {\n    isExcludedNamespace == false\n    not exclude_label_value == controller_input.metadata.labels[exclude_label_key]\n    hasImages := object_has_images(controller_spec)\n    hasImages != images_required\n    msg := get_message(images_required)\n    result = {\n        \"issue_detected\": true,\n        \"msg\": msg,\n        \"violating_key\": \"spec.images\"\n    }\n}\n\nobject_has_images(spec) {\n    count(spec.images) > 0\n} else = false\n\nget_message(true) = \"The 'spec.images' field in a Kustomization object must have values based on the policy input\" \n\nget_message(false) = \"The 'spec.images' field in a Kustomization object must be empty based on the policy input\" \n\n# Controller input\ncontroller_input = input.review.object\n\n# controller_spec acts as an iterator to get spec from the Kustomization object\ncontroller_spec = controller_input.spec {\n    controller_input.kind == \"Kustomization\"\n}\n\nisExcludedNamespace = true {\n    controller_input.metadata.namespace\n    controller_input.metadata.namespace in exclude_namespaces\n} else = false\n"

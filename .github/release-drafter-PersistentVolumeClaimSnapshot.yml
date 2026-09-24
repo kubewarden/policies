@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "PersistentVolumeClaimSnapshot/v$RESOLVED_VERSION"
+tag-template: "PersistentVolumeClaimSnapshot/v$RESOLVED_VERSION"
+tag-prefix: PersistentVolumeClaimSnapshot/v
+include-paths:
+  - "policies/PersistentVolumeClaimSnapshot/"

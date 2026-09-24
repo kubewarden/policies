@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxHelmReleaseMaxHistory/v$RESOLVED_VERSION"
+tag-template: "FluxHelmReleaseMaxHistory/v$RESOLVED_VERSION"
+tag-prefix: FluxHelmReleaseMaxHistory/v
+include-paths:
+  - "policies/FluxHelmReleaseMaxHistory/"

@@ -1,0 +1,4 @@
+{
+  "access_mode": "ReadWriteOnce",
+  "name": "test-volume"
+}

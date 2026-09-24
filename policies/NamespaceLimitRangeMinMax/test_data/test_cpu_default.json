@@ -1,0 +1,66 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "LimitRange"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "limitranges"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "LimitRange"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "limitranges"
+  },
+  "name": "default-limit-range",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "LimitRange",
+    "metadata": {
+      "name": "default-limit-range"
+    },
+    "spec": {
+      "limits": [
+        {
+          "default": {
+            "cpu": 1,
+            "memory": "512Mi"
+          },
+          "defaultRequest": {
+            "cpu": 0.5,
+            "memory": "256Mi"
+          },
+          "max": {
+            "cpu": "800m",
+            "memory": "1Gi"
+          },
+          "min": {
+            "cpu": "200m",
+            "memory": "500Mi"
+          },
+          "type": "Container"
+        }
+      ]
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

@@ -1,0 +1,7 @@
+questions:
+  - variable: type
+    default: NodePort
+    required: true
+    group: Settings
+    type: string
+    label: Type

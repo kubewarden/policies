@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxOCIRepositoryCosignVerification/v$RESOLVED_VERSION"
+tag-template: "FluxOCIRepositoryCosignVerification/v$RESOLVED_VERSION"
+tag-prefix: FluxOCIRepositoryCosignVerification/v
+include-paths:
+  - "policies/FluxOCIRepositoryCosignVerification/"

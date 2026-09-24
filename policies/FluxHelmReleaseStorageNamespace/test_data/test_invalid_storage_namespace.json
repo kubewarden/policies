@@ -1,0 +1,46 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "HelmRelease"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "helmreleases"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "HelmRelease"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "helmreleases"
+  },
+  "name": "invalid-helm-release",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "v1",
+    "kind": "HelmRelease",
+    "metadata": {
+      "name": "invalid-helm-release"
+    },
+    "spec": {
+      "storageNamespace": "disallowed-storage-namespace"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

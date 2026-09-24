@@ -1,0 +1,7 @@
+questions:
+  - variable: uid
+    default: 0
+    required: true
+    group: Settings
+    type: int
+    label: Uid

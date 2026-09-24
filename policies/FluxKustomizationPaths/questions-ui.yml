@@ -1,0 +1,7 @@
+questions:
+  - variable: exclude_paths
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Exclude paths

@@ -21,6 +21,15 @@ configuration parameters, and version history.
 View the official collection here: 👉 Artifact Hub: [Kubewarden
 Policies](https://artifacthub.io/packages/search?kind=13&verified_publisher=true&official=true&cncf=true&sort=relevance&page=1)
 
+# Released Policies and Staging Policies
+
+The `policies/` directory holds the released policies. The CI builds, tests and
+releases them.
+
+The `staging/` directory holds Rego policies that are not ready for release.
+The CI ignores this directory. A policy moves to `policies/` when it is ready.
+The [CONTRIBUTING.md](./CONTRIBUTING.md) guide describes that move.
+
 # How to Use a Policy
 
 If you want to try the policies from the source code, you can follow these

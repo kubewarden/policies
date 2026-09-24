@@ -1,0 +1,46 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "source.toolkit.fluxcd.io",
+    "version": "v1beta2",
+    "kind": "Bucket"
+  },
+  "resource": {
+    "group": "source.toolkit.fluxcd.io",
+    "version": "v1beta2",
+    "resource": "buckets"
+  },
+  "requestKind": {
+    "group": "source.toolkit.fluxcd.io",
+    "version": "v1beta2",
+    "kind": "Bucket"
+  },
+  "requestResource": {
+    "group": "source.toolkit.fluxcd.io",
+    "version": "v1beta2",
+    "resource": "buckets"
+  },
+  "name": "invalid-bucket",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "source.toolkit.fluxcd.io/v1beta2",
+    "kind": "Bucket",
+    "metadata": {
+      "name": "invalid-bucket"
+    },
+    "spec": {
+      "region": "eu-west-1"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

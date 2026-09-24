@@ -1,0 +1,6 @@
+{
+  "dst_namespace": "ns2",
+  "exclude_label_key": "test_label",
+  "exclude_label_value": "OK",
+  "src_namespace": "ns1"
+}

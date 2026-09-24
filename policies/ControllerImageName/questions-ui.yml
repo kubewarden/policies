@@ -1,0 +1,7 @@
+questions:
+  - variable: restricted_image_names
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Restricted image names

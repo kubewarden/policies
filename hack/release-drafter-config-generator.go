@@ -6,7 +6,7 @@ import (
 	"text/template"
 )
 
-const fileTemplate = `_extends: policies:.github/release-drafter.yml
+const fileTemplate = `_extends: policies:release-drafter.yml
 name-template: "{{.PolicyName}}/v$RESOLVED_VERSION"
 tag-template: "{{.PolicyName}}/v$RESOLVED_VERSION"
 tag-prefix: {{.PolicyName}}/v

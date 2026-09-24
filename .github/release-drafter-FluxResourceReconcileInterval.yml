@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxResourceReconcileInterval/v$RESOLVED_VERSION"
+tag-template: "FluxResourceReconcileInterval/v$RESOLVED_VERSION"
+tag-prefix: FluxResourceReconcileInterval/v
+include-paths:
+  - "policies/FluxResourceReconcileInterval/"

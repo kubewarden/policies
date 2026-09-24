@@ -1,0 +1,46 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "",
+    "version": "v1",
+    "kind": "GitRepository"
+  },
+  "resource": {
+    "group": "",
+    "version": "v1",
+    "resource": "gitrepositories"
+  },
+  "requestKind": {
+    "group": "",
+    "version": "v1",
+    "kind": "GitRepository"
+  },
+  "requestResource": {
+    "group": "",
+    "version": "v1",
+    "resource": "gitrepositories"
+  },
+  "name": "example",
+  "namespace": "default",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "kind": "GitRepository",
+    "metadata": {
+      "name": "example",
+      "namespace": "default"
+    },
+    "spec": {
+      "url": "https://github.com/trusted-org/repo"
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

@@ -1,0 +1,61 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "group": "networking.istio.io",
+    "version": "v1alpha3",
+    "kind": "Gateway"
+  },
+  "resource": {
+    "group": "networking.istio.io",
+    "version": "v1alpha3",
+    "resource": "gatewaies"
+  },
+  "requestKind": {
+    "group": "networking.istio.io",
+    "version": "v1alpha3",
+    "kind": "Gateway"
+  },
+  "requestResource": {
+    "group": "networking.istio.io",
+    "version": "v1alpha3",
+    "resource": "gatewaies"
+  },
+  "name": "console",
+  "namespace": "magalix",
+  "operation": "CREATE",
+  "userInfo": {
+    "username": "kubernetes-admin",
+    "groups": [
+      "system:masters",
+      "system:authenticated"
+    ]
+  },
+  "object": {
+    "apiVersion": "networking.istio.io/v1alpha3",
+    "kind": "Gateway",
+    "metadata": {
+      "name": "console",
+      "namespace": "magalix"
+    },
+    "spec": {
+      "selector": {
+        "istio": "ingressgateway"
+      },
+      "servers": [
+        {
+          "hosts": [
+            "console.example.com"
+          ],
+          "port": {
+            "name": "https",
+            "number": 443,
+            "protocol": "HTTPS"
+          }
+        }
+      ]
+    }
+  },
+  "oldObject": null,
+  "dryRun": false,
+  "options": null
+}

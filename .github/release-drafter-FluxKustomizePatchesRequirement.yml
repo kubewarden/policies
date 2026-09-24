@@ -1,0 +1,6 @@
+_extends: policies:release-drafter.yml
+name-template: "FluxKustomizePatchesRequirement/v$RESOLVED_VERSION"
+tag-template: "FluxKustomizePatchesRequirement/v$RESOLVED_VERSION"
+tag-prefix: FluxKustomizePatchesRequirement/v
+include-paths:
+  - "policies/FluxKustomizePatchesRequirement/"
