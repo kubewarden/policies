@@ -14,15 +14,15 @@
   [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
 }
 
-@test "reject: missing security context" {
+@test "reject: empty pod security context" {
   run kwctl run -e gatekeeper annotated-policy.wasm \
-      -r test_data/test_missing_security_context.json \
-      -s test_data/test_missing_security_context-settings.json
+      -r test_data/test_empty_pod_security_context.json \
+      -s test_data/test_empty_pod_security_context-settings.json
 
   # this prints the output when one of the checks below fails
   echo "output = ${output}"
 
   [ "$status" -eq 0 ]
   [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
-  [[ "$output" == *"Container missing spec.template.spec.containers[0].securityContext while Pod spec.template.spec.securityContext is not defined as well., Container missing spec.template.spec.containers[1].securityContext while Pod spec.template.spec.securityContext is not defined as well."* ]]
+  [[ "$output" == *"Container missing spec.template.spec.containers[0].securityContext while the Pod spec.template.spec.securityContext is missing or empty."* ]]
 }

@@ -13,15 +13,21 @@ exclude_label_value := input.parameters.exclude_label_value
 violation[result] {
 	isExcludedNamespace == false
 	not exclude_label_value == controller_input.metadata.labels[exclude_label_key]
-	not controller_spec.securityContext	# Pod securityContext missing
+	not has_security_context(controller_spec)	# Pod securityContext missing or empty
 	some i
 	containers := controller_spec.containers[i]
-	not containers.securityContext	# Container securityContext missing
+	not has_security_context(containers)	# Container securityContext missing or empty
 	result = {
 		"issue_detected": true,
-		"msg": sprintf("Container missing spec.template.spec.containers[%v].securityContext while Pod spec.template.spec.securityContext is not defined as well.", [i]),
+		"msg": sprintf("Container missing spec.template.spec.containers[%v].securityContext while the Pod spec.template.spec.securityContext is missing or empty.", [i]),
 		"violating_key": "spec.template.spec.containers[%v]",
 	}
+}
+
+# The API server defaults an absent securityContext to an empty object. An
+# empty object carries no security setting, so it counts as missing.
+has_security_context(spec) {
+	count(spec.securityContext) > 0
 }
 
 controller_input = input.review.object

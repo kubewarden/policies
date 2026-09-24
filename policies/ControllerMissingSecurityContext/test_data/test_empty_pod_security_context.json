@@ -20,7 +20,7 @@
     "version": "v1",
     "resource": "pods"
   },
-  "name": "security-context-demo",
+  "name": "empty-pod-security-context",
   "namespace": "default",
   "operation": "CREATE",
   "userInfo": {
@@ -34,29 +34,16 @@
     "apiVersion": "v1",
     "kind": "Pod",
     "metadata": {
-      "name": "security-context-demo"
+      "name": "empty-pod-security-context"
     },
     "spec": {
       "containers": [
         {
-          "command": [
-            "sh",
-            "-c",
-            "sleep 1h"
-          ],
           "image": "busybox",
           "name": "sec-ctx-demo"
-        },
-        {
-          "command": [
-            "sh",
-            "-c",
-            "sleep 1h"
-          ],
-          "image": "busybox",
-          "name": "sec-ctx-demo2"
         }
-      ]
+      ],
+      "securityContext": {}
     }
   },
   "oldObject": null,
