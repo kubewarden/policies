@@ -1,0 +1,13 @@
+questions:
+  - variable: class
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Class
+  - variable: annotation
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Annotation

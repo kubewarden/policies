@@ -1,0 +1,7 @@
+questions:
+  - variable: namespace_name
+    default: kube-
+    required: true
+    group: Settings
+    type: string
+    label: Namespace name

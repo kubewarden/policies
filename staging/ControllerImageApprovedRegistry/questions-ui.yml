@@ -1,0 +1,7 @@
+questions:
+  - variable: registries
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Registries

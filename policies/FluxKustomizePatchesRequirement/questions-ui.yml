@@ -1,0 +1,7 @@
+questions:
+  - variable: patches_required
+    default:
+    required: true
+    group: Settings
+    type: boolean
+    label: Patches required

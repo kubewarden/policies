@@ -1,0 +1,13 @@
+questions:
+  - variable: name
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Name
+  - variable: access_mode
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Access mode

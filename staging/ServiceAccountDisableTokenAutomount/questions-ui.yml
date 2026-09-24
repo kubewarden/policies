@@ -1,0 +1,13 @@
+questions:
+  - variable: automount
+    default: false
+    required: true
+    group: Settings
+    type: boolean
+    label: Automount
+  - variable: namespace
+    default: default
+    required: true
+    group: Settings
+    type: string
+    label: Namespace

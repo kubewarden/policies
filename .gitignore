@@ -1,2 +1,7 @@
 target/
 policies/bin/
+
+# Build artifacts of the Rego policies. The `opa build` step writes
+# `bundle.tar.gz`, and the Makefile extracts `policy.wasm` from it.
+*.wasm
+bundle.tar.gz

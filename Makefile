@@ -1,4 +1,4 @@
-.PHONY: clean annotated-policy.wasm test test-rust test-go lint lint-rust lint-go e2e-tests e2e-tests-rust e2e-tests-go
+.PHONY: clean annotated-policy.wasm test test-rust test-go test-rego lint lint-rust lint-go lint-rego e2e-tests e2e-tests-rust e2e-tests-go e2e-tests-rego
 
 # Helper function to run a target across all policies (excluding crates/) with summary
 define run-policy-target
@@ -91,6 +91,34 @@ define run-go-policy-target
 	fi
 endef
 
+# Helper function to run a target across Rego policies only (excluding crates/) with summary.
+# A Rego policy has a Makefile and at least one .rego file.
+define run-rego-policy-target
+	@passed=0; failed=0; failed_policies=""; \
+	for policy in policies/*/; do \
+		[ "$$policy" = "policies/crates/" ] && continue; \
+		if [ -f "$$policy/Makefile" ] && [ -n "$$(find "$$policy" -maxdepth 1 -name '*.rego' -print -quit)" ]; then \
+			echo "Running $(1) in $$policy"; \
+			if $(MAKE) -C "$$policy" $(1); then \
+				passed=$$((passed + 1)); \
+			else \
+				failed=$$((failed + 1)); \
+				failed_policies="$$failed_policies  - $$policy\n"; \
+			fi; \
+		fi; \
+	done; \
+	echo ""; \
+	echo "=== $(1) Summary ==="; \
+	echo "Passed: $$passed"; \
+	echo "Failed: $$failed"; \
+	if [ $$failed -gt 0 ]; then \
+		echo ""; \
+		echo "Failed policies:"; \
+		printf "$$failed_policies"; \
+		exit 1; \
+	fi
+endef
+
 clean:
 	$(call run-policy-target,clean)
 	$(call run-crate-target,clean)
@@ -109,6 +137,9 @@ test-rust:
 test-go:
 	$(call run-go-policy-target,test)
 
+test-rego:
+	$(call run-rego-policy-target,test)
+
 lint:
 	$(call run-policy-target,lint)
 	$(call run-crate-target,lint)
@@ -120,6 +151,9 @@ lint-rust:
 lint-go:
 	$(call run-go-policy-target,lint)
 
+lint-rego:
+	$(call run-rego-policy-target,lint)
+
 e2e-tests:
 	$(call run-policy-target,e2e-tests)
 
@@ -128,3 +162,6 @@ e2e-tests-rust:
 
 e2e-tests-go:
 	$(call run-go-policy-target,e2e-tests)
+
+e2e-tests-rego:
+	$(call run-rego-policy-target,e2e-tests)

@@ -17,6 +17,7 @@ they share common tooling and dependencies.
 ├── policies/ # Policy source code
 │ ├── Cargo.toml # Rust Workspace configuration
 │ ├── Cargo.lock # Shared dependency lock file for Rust
+│ ├── Makefile.p-rego # Shared build rules of the Rego policies
 │ ├── <policy-name>/ # Specific policy directory
 │ │ ├── src/ # Source code
 │ │ ├── test_data/ # Files for testing
@@ -25,6 +26,35 @@ they share common tooling and dependencies.
 │ │ ├── <any other policy file>
 │ ├── <policy-name>/ # Specific policy directory
 │ │ ├── <any other policy file>
+├── staging/ # Rego policies that are not ready for release
+│ ├── <policy-name>/ # Specific policy directory
+```
+
+# Rego Policies
+
+Rego policies have Rego unit tests files in two layouts, the `Makefile.p-rego`
+supports both:
+- in `policy_test.rego` next to `policy.rego`
+- one or more files under `tests/`
+
+The `e2e-tests` target runs `bats e2e.bats`. Every Rego policy has that file.
+The imported policies carry a no-op `e2e.bats` with a TODO, because they have
+no end-to-end test yet.
+
+# The staging Directory
+
+The `staging/` directory holds Rego policies that are not ready for release.
+The CI ignores this directory. It calculates the policy matrix from `policies/`
+only, so a change under `staging/` starts no build, no test and no release.
+
+To promote a policy, move its directory to `policies/`, add the `Makefile`
+symbolic link to `../Makefile.p-rego`, and add a
+`.github/release-drafter-<policy-name>.yml` file with:
+
+```console
+go run hack/release-drafter-config-generator.go \
+    --policy-name <policy-name> \
+    --output .github/release-drafter-<policy-name>.yml
 ```
 
 # Rust Workspace
@@ -71,17 +101,20 @@ language-scoped variants are also available.
 | ---------------- | --------------------------------------------------------------------------------- |
 | `test-rust`      | Rust policies (detected by `Cargo.toml`) + shared crates under `policies/crates/` |
 | `test-go`        | Go policies (detected by `go.mod`)                                                |
+| `test-rego`      | Rego policies (detected by a `.rego` file)                                       |
 | `lint-rust`      | Rust policies + shared crates under `policies/crates/`                            |
 | `lint-go`        | Go policies                                                                       |
+| `lint-rego`      | Rego policies                                                                     |
 | `e2e-tests-rust` | Rust policies                                                                     |
 | `e2e-tests-go`   | Go policies                                                                       |
+| `e2e-tests-rego` | Rego policies                                                                     |
 
 The language detection is file-based: a policy directory is considered Rust if
-it contains a `Cargo.toml`, and Go if it contains a `go.mod`. These sets are
-mutually exclusive. The shared crates under `policies/crates/` are all Rust and
-are included in the `*-rust` targets for `test` and `lint` (consistent with the
-full-repo targets), but not for `e2e-tests` since crates have no end-to-end
-tests.
+it contains a `Cargo.toml`, Go if it contains a `go.mod`, and Rego if it
+contains a `.rego` file. These sets are mutually exclusive. The shared crates
+under `policies/crates/` are all Rust and are included in the `*-rust` targets
+for `test` and `lint` (consistent with the full-repo targets), but not for
+`e2e-tests` since crates have no end-to-end tests.
 
 # How to Release a Policy
 

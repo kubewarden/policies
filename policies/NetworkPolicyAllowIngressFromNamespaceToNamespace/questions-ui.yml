@@ -1,0 +1,13 @@
+questions:
+  - variable: src_namespace
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Src namespace
+  - variable: dst_namespace
+    default:
+    required: true
+    group: Settings
+    type: string
+    label: Dst namespace

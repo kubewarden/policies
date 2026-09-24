@@ -1,0 +1,7 @@
+questions:
+  - variable: image_tag
+    default: latest
+    required: true
+    group: Settings
+    type: string
+    label: Image tag

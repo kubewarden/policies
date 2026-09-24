@@ -1,0 +1,7 @@
+questions:
+  - variable: waiver_list
+    default:
+    required: true
+    group: Settings
+    type: array[
+    label: Waiver list
