@@ -25,4 +25,4 @@ settings:
 # Resources
 
 Policy applies to resources kinds:
-`Deployment`, `Job`, `ReplicationController`, `ReplicaSet`, `DaemonSet`, `StatefulSet`, `CronJob`
+`Deployment`, `Job`, `Pod`, `ReplicationController`, `ReplicaSet`, `DaemonSet`, `StatefulSet`, `CronJob`

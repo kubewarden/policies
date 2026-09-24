@@ -9,7 +9,7 @@ rules:
     operations: [CREATE, UPDATE]
   - apiGroups: [""]
     apiVersions: [v1]
-    resources: [replicationcontrollers]
+    resources: [pods, replicationcontrollers]
     operations: [CREATE, UPDATE]
 mutating: false
 executionMode: gatekeeper
@@ -17,7 +17,7 @@ backgroundAudit: true
 annotations:
   io.artifacthub.displayName: Containers Missing Security Context
   io.artifacthub.keywords: pci-dss, cis-benchmark, mitre-attack, nist800-190, gdpr, default
-  io.artifacthub.resources: Deployment, Job, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
+  io.artifacthub.resources: Deployment, Job, Pod, ReplicationController, ReplicaSet, DaemonSet, StatefulSet, CronJob
   io.kubewarden.policy.title: containers-missing-security-context
   io.kubewarden.policy.version: 1.0.4
   io.kubewarden.policy.description: |
