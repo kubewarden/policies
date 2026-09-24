@@ -18,7 +18,7 @@ violation[result] {
     not domain_matches(repository_url, domains)
     result = {
         "issue_detected": true,
-        "msg": sprintf("The HelmRepository URL must be from one of the allowed domains '%s'; found '%s'", [domains, repository_url]),
+        "msg": sprintf("The HelmRepository URL must be from one of the allowed domains '%v'; found '%v'", [domains, repository_url]),
         "violating_key": "spec.url"
     }
 }
