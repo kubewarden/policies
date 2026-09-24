@@ -135,3 +135,27 @@ test_key_value_exists {
 
 	count(violation) == 0 with input as testcase
 }
+test_key_missing {
+	testcase = {
+		"parameters": {
+			"key": "disktype",
+			"value": "ssd",
+			"exclude_namespaces": [],
+			"exclude_label_key": "",
+			"exclude_label_value": "",
+		},
+		"review": {
+			"object": {
+				"apiVersion": "v1",
+				"kind": "Pod",
+				"metadata": {"name": "without-node-selector"},
+				"spec": {"containers": [{
+					"name": "without-node-selector",
+					"image": "k8s.gcr.io/pause:2.0",
+				}]},
+			}
+		},
+	}
+
+	count(violation) == 1 with input as testcase
+}

@@ -18,7 +18,7 @@ violation[result] {
   not controller_spec.nodeSelector[key]
   result = {
     "issue_detected": true,
-    "msg": sprintf("Looking for key '%v'; found '%v'", [key, controller_spec.nodeSelector]),
+    "msg": sprintf("Looking for key '%v'; found '%v'", [key, object.get(controller_spec, "nodeSelector", {})]),
     "violating_key": "spec.template.spec.nodeSelector",
     "recommended_value": value  
   }
