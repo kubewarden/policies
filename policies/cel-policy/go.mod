@@ -9,7 +9,7 @@ require (
 	github.com/kubewarden/policy-sdk-go v0.13.1
 	github.com/opencontainers/image-spec v1.1.1
 	github.com/stretchr/testify v1.12.1
-	k8s.io/api v0.37.0
+	k8s.io/api v0.37.1
 	k8s.io/apiserver v1.35.0
 )
 
@@ -87,6 +87,6 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260918162117-cecb64721679 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
-	k8s.io/apimachinery v0.37.0
-	k8s.io/kubernetes v1.37.0
+	k8s.io/apimachinery v0.37.1
+	k8s.io/kubernetes v1.37.1
 )
