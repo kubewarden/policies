@@ -72,15 +72,9 @@ The `staging/` directory holds Rego policies that are not ready for release.
 The CI ignores this directory. It calculates the policy matrix from `policies/`
 only, so a change under `staging/` starts no build, no test and no release.
 
-To promote a policy, move its directory to `policies/`, add the `Makefile`
-symbolic link to `../Makefile.p-rego`, and add a
-`.github/release-drafter-<policy-name>.yml` file with:
-
-```console
-go run hack/release-drafter-config-generator.go \
-    --policy-name <policy-name> \
-    --output .github/release-drafter-<policy-name>.yml
-```
+To promote a policy, move its directory to `policies/` and add the `Makefile`
+symbolic link to `../Makefile.p-rego`. The policy needs no CI configuration of
+its own: the release workflows discover it from the directory layout.
 
 # Rust Workspace
 
@@ -146,8 +140,16 @@ for `test` and `lint` (consistent with the full-repo targets), but not for
 The release process is fully automated via CI/CD to ensure consistency and
 provenance. This repository has CI that automate the task of bumping policy
 version in all places required. This is done by the
-`.github/workflows/trigger-policy-release.yml`. When this CI is run users can
-define the next version to be released like this:
+`.github/workflows/trigger-policy-release.yml`.
+
+This workflow runs on a monthly schedule and releases **every** policy, with a
+patch version bump. It releases a policy even when nothing under its directory
+changed, so that the policy picks up an update to a dependency it shares with
+the others: such an update lands in `policies/Cargo.lock`, outside the directory
+of any single policy.
+
+A minor or a major release is deliberate. Run the workflow by hand and give the
+version:
 
 ```console
 gh workflow run trigger-policy-release.yaml \
