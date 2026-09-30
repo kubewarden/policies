@@ -13,7 +13,8 @@ on:
       policy-version:
         description: |
           Release version of the policy, without 'v' prefix. Optional.
-          Defaults to extracting the version from tag if tag present.
+          A run that leaves this empty bumps the patch number. Give a version
+          to cut a minor or a major release.
           E.g: tag "v0.1.0", policy-version=0.1.0
         required: false
         type: string
@@ -107,27 +108,48 @@ jobs:
           fi
           # If there is no tag with the current version in the metadata file,
           # the previous version of the policy is missing. It looks like that
-          # the policy is bein released for the first time. Then, release
-          # drafter should use the current version already set in the policy.
-          # Otherwise, let's release-drafter calculate the version for us based
-          # on the PRs merged.
+          # the policy is being released for the first time. Then, the version
+          # already set in the policy is the one to release. Otherwise, leave
+          # this empty and let the next step bump the patch number.
           policy_tag=$(git tag -l  $(basename ${{ matrix.policy-working-dir }})/v${{ steps.policy-info.outputs.policy-version }})
           if [ -z "$policy_tag" ]; then
             # No tag, let's use the version from the policy
             echo "version=${{ steps.policy-info.outputs.policy-version }}" >> $GITHUB_OUTPUT
             exit 0
           fi
-          echo "version=''" >> $GITHUB_OUTPUT
+          echo "version=" >> $GITHUB_OUTPUT
 
-      - name: Create draft release and calculate version
+      # Every scheduled run releases every policy, so that a policy picks up an
+      # update to a dependency it shares with the others. A shared update lands
+      # in 'policies/Cargo.lock', outside the directory of any single policy, so
+      # there is nothing under a policy directory to detect it by. The bump is
+      # therefore unconditional.
+      #
+      # It is always a patch bump. Cut a minor or a major release by running
+      # this workflow by hand with the 'policy-version' input.
+      - name: Resolve the version to release
         id: create-release
-        uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
-        with:
-          config-name: "release-drafter-${{ steps.policy-info.outputs.policy-basename }}.yml"
-          version: ${{ steps.get-expected-version.outputs.version}}
-          token: ${{ steps.generate-token.outputs.token }}
+        shell: bash
+        env:
+          FORCED_VERSION: ${{ steps.get-expected-version.outputs.version }}
+          CURRENT_VERSION: ${{ steps.policy-info.outputs.policy-version }}
+        run: |
+          set -o errexit
+          set -o nounset
+          set -o pipefail
 
-      - name: Ensure that release drafter is not downgrading the policy version
+          # A forced version comes from the 'policy-version' input, or from a
+          # policy whose current version carries no tag yet.
+          if [ -n "$FORCED_VERSION" ]; then
+            RESOLVED_VERSION="$FORCED_VERSION"
+          else
+            RESOLVED_VERSION="$(semver bump patch "$CURRENT_VERSION")"
+          fi
+
+          echo "resolved version: ${RESOLVED_VERSION}"
+          echo "resolved_version=${RESOLVED_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure that the resolved version is not a downgrade
         run: |
           semver_result=$(semver compare ${{ steps.policy-info.outputs.policy-version }} ${{ steps.create-release.outputs.resolved_version }}) 
           if [ "$semver_result" == "1" ]; then
@@ -144,7 +166,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Create values.yaml for Updatecli based on release drafter release and policy information
+      - name: Create values.yaml for Updatecli from the resolved version and the policy information
         if: ${{ steps.get-expected-version.outputs.version != steps.policy-info.outputs.policy-version }}
         run: |
           cat <<EOF > values.yaml
