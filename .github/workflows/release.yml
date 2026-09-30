@@ -271,14 +271,31 @@ jobs:
 
       # A manual run publishes the ':latest' tag only. A GitHub release needs a
       # tag, and a manual run does not create one.
-      - name: Create release
+      #
+      # The release carries no notes. The 'Publish release' step below takes it
+      # out of draft and decides whether it is a pre-release, from the tag name.
+      - name: Create the draft release
         id: create-release
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
-        uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
-        with:
-          config-name: "release-drafter-${{ needs.calculate-policy-from-tag.outputs.policy-name }}.yml"
-          prerelease: ${{ contains(needs.calculate-policy-from-tag.outputs.policy-version, '-alpha') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-beta') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-rc') }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -o errexit
+          set -o nounset
+          set -o pipefail
+
+          # A re-run of this workflow finds the release of an earlier attempt.
+          # Reuse it, so the run does not fail on an already existing release.
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --draft --title "$TAG" --notes "" >/dev/null
+          fi
+
+          RELEASE_ID="$(gh release view "$TAG" --json databaseId -q .databaseId)"
+          echo "release id: ${RELEASE_ID}"
+          echo "id=${RELEASE_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Upload release assets
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
@@ -311,8 +328,8 @@ jobs:
               });
             }
       - name: Publish release
-        # if we are on a single repo, we obtain the last draft release as it contains the changelog
-        # and edit it by adding the artifacts. Then we mark the release as latest
+        # Take the draft release created above out of draft, now that it
+        # carries the Wasm module and the SBOM, and mark it as the latest.
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
