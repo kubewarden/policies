@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "ControllerAffinityNodeSelector/v$RESOLVED_VERSION"
-tag-template: "ControllerAffinityNodeSelector/v$RESOLVED_VERSION"
-tag-prefix: ControllerAffinityNodeSelector/v
-include-paths:
-  - "policies/ControllerAffinityNodeSelector/"

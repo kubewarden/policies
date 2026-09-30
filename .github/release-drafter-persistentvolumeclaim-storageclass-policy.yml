@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "persistentvolumeclaim-storageclass-policy/v$RESOLVED_VERSION"
-tag-template: "persistentvolumeclaim-storageclass-policy/v$RESOLVED_VERSION"
-tag-prefix: persistentvolumeclaim-storageclass-policy/v
-include-paths:
-  - "policies/persistentvolumeclaim-storageclass-policy/"

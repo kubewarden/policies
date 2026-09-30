@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "ns-policyserver-mapper-policy/v$RESOLVED_VERSION"
-tag-template: "ns-policyserver-mapper-policy/v$RESOLVED_VERSION"
-tag-prefix: ns-policyserver-mapper-policy/v
-include-paths:
-  - "policies/ns-policyserver-mapper-policy/"

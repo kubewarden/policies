@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "trusted-repos-policy/v$RESOLVED_VERSION"
-tag-template: "trusted-repos-policy/v$RESOLVED_VERSION"
-tag-prefix: trusted-repos-policy/v
-include-paths:
-  - "policies/trusted-repos-policy/"

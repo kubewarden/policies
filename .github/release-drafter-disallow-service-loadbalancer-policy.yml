@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "disallow-service-loadbalancer-policy/v$RESOLVED_VERSION"
-tag-template: "disallow-service-loadbalancer-policy/v$RESOLVED_VERSION"
-tag-prefix: disallow-service-loadbalancer-policy/v
-include-paths:
-  - "policies/disallow-service-loadbalancer-policy/"

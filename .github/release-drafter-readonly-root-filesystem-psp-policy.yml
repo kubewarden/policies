@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "readonly-root-filesystem-psp-policy/v$RESOLVED_VERSION"
-tag-template: "readonly-root-filesystem-psp-policy/v$RESOLVED_VERSION"
-tag-prefix: readonly-root-filesystem-psp-policy/v
-include-paths:
-  - "policies/readonly-root-filesystem-psp-policy/"

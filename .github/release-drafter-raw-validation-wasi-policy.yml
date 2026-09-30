@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "raw-validation-wasi-policy/v$RESOLVED_VERSION"
-tag-template: "raw-validation-wasi-policy/v$RESOLVED_VERSION"
-tag-prefix: raw-validation-wasi-policy/v
-include-paths:
-  - "policies/raw-validation-wasi-policy/"

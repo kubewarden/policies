@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "safe-annotations-policy/v$RESOLVED_VERSION"
-tag-template: "safe-annotations-policy/v$RESOLVED_VERSION"
-tag-prefix: safe-annotations-policy/v
-include-paths:
-  - "policies/safe-annotations-policy/"

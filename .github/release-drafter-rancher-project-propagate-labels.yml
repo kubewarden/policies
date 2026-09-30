@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "rancher-project-propagate-labels/v$RESOLVED_VERSION"
-tag-template: "rancher-project-propagate-labels/v$RESOLVED_VERSION"
-tag-prefix: rancher-project-propagate-labels/v
-include-paths:
-  - "policies/rancher-project-propagate-labels/"

@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "unique-ingress-policy/v$RESOLVED_VERSION"
-tag-template: "unique-ingress-policy/v$RESOLVED_VERSION"
-tag-prefix: unique-ingress-policy/v
-include-paths:
-  - "policies/unique-ingress-policy/"

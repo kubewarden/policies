@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "context-aware-demo/v$RESOLVED_VERSION"
-tag-template: "context-aware-demo/v$RESOLVED_VERSION"
-tag-prefix: context-aware-demo/v
-include-paths:
-  - "policies/context-aware-demo/"

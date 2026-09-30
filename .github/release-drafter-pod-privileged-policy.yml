@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "pod-privileged-policy/v$RESOLVED_VERSION"
-tag-template: "pod-privileged-policy/v$RESOLVED_VERSION"
-tag-prefix: pod-privileged-policy/v
-include-paths:
-  - "policies/pod-privileged-policy/"

@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "echo/v$RESOLVED_VERSION"
-tag-template: "echo/v$RESOLVED_VERSION"
-tag-prefix: echo/v
-include-paths:
-  - "policies/echo/"

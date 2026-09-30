@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "psa-label-enforcer-policy/v$RESOLVED_VERSION"
-tag-template: "psa-label-enforcer-policy/v$RESOLVED_VERSION"
-tag-prefix: psa-label-enforcer-policy/v
-include-paths:
-  - "policies/psa-label-enforcer-policy/"

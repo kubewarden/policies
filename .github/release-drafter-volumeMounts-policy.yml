@@ -1,6 +1,0 @@
-_extends: policies:release-drafter.yml
-name-template: "volumeMounts-policy/v$RESOLVED_VERSION"
-tag-template: "volumeMounts-policy/v$RESOLVED_VERSION"
-tag-prefix: volumeMounts-policy/v
-include-paths:
-  - "policies/volumeMounts-policy/"
