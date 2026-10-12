@@ -112,28 +112,24 @@ jobs:
         with:
           policy-working-dir: "${{ matrix.policy-working-dir }}"
 
-      - name: Check the requested version
-        id: get-expected-version
+      - name: Ensure that the requested version is not a downgrade
+        if: ${{ inputs.policy-version != '' }}
         shell: bash
         run: |
-          if [ ! -z "${{ inputs.policy-version }}" ]; then
-            semver_result=$(semver compare ${{ steps.policy-info.outputs.policy-version }} ${{ inputs.policy-version }})
-            if [ "$semver_result" == "1" ]; then
-              echo "::error title=Invalid version::Cannot downgrade a policy version"
-              exit 1
-            fi
-            echo "version=${{ inputs.policy-version }}" >> $GITHUB_OUTPUT
-            exit 0
+          semver_result=$(semver compare ${{ steps.policy-info.outputs.policy-version }} ${{ inputs.policy-version }})
+          if [ "$semver_result" == "1" ]; then
+            echo "::error title=Invalid version::Cannot downgrade a policy version"
+            exit 1
           fi
-          # Let release-drafter calculate the version based on the PRs merged.
-          echo "version=''" >> $GITHUB_OUTPUT
 
+      # With an empty version input, release-drafter calculates the version
+      # based on the PRs merged since the last release.
       - name: Create draft release and calculate version
         id: create-release
         uses: release-drafter/release-drafter@72967cdc98ddd3160f1fc3dff619de365e137dd0 # v7.9.0
         with:
           config-name: "release-drafter-${{ steps.policy-info.outputs.policy-basename }}.yml"
-          version: ${{ steps.get-expected-version.outputs.version}}
+          version: ${{ inputs.policy-version }}
           token: ${{ steps.generate-token.outputs.token }}
 
       - name: Ensure that release drafter is not downgrading the policy version
