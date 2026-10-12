@@ -226,6 +226,12 @@ F --> G[release.yml builds and publishes]
 H[Maintainer pushes a tag by hand] --> G
 ```
 
+## Repository settings that the release flow expects
+
+- **Immutable releases**.
+- **Automatically delete head branches**, under *Pull Requests*. GitHub
+  deletes the branch of every merged PR, release PRs included.
+
 ## Publish the 'latest' tag of one policy
 
 You can also run `release.yml` manually, against a branch. That run builds one
