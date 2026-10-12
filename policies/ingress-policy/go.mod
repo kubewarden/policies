@@ -2,7 +2,7 @@ module github.com/kubewarden/ingress-policy
 
 go 1.26
 
-toolchain go1.27.1
+toolchain go1.27.2
 
 require (
 	github.com/deckarep/golang-set/v2 v2.8.0
