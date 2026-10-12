@@ -143,11 +143,30 @@ for `test` and `lint` (consistent with the full-repo targets), but not for
 
 # How to Release a Policy
 
-The release process is fully automated via CI/CD to ensure consistency and
-provenance. This repository has CI that automate the task of bumping policy
-version in all places required. This is done by the
-`.github/workflows/trigger-policy-release.yml`. When this CI is run users can
-define the next version to be released like this:
+Every release starts from a git tag with the pattern `<policy-name>/v<version>`.
+A tag comes from one of two places:
+
+- The merge of a release PR. The CI opens this PR.
+- A maintainer, by hand. This is the path for the first release of a policy.
+
+## Automated releases
+
+The workflow `.github/workflows/trigger-policy-release.yaml` runs on a
+schedule, and on demand. For each policy, it reads the version from
+`metadata.yml` and checks for the tag `<policy-name>/v<version>`:
+
+- If the tag exists, release-drafter computes the next version from the PRs
+  merged since that tag. Then updatecli opens a PR that bumps the version in
+  all required files. The PR has the `TRIGGER-RELEASE` label.
+- If the tag does not exist, the workflow skips the policy and prints a
+  notice. The policy was never released from this repository. See
+  [First release of a policy](#first-release-of-a-policy).
+
+When the release PR is merged, `.github/workflows/release-tag.yaml` creates
+the tag and starts `.github/workflows/release.yml`. That workflow builds,
+signs and publishes the policy.
+
+To run the workflow for one policy, with a version of your choice:
 
 ```console
 gh workflow run trigger-policy-release.yaml \
@@ -160,40 +179,51 @@ gh workflow run trigger-policy-release.yaml \
 > The `policy-working-dir` must be the name of the directory under the
 > `policies` directory
 
-In this scenario, the CI will open a PR bumping the version in all required
-files. Once this PR is merged another CI will detect the release, create the
-tag and continue the release process.
-
-However, if you already bump the version, you can omit the `policy-version`
-field:
-
-```
-gh workflow run trigger-policy-release.yaml \
-    -f "policy-working-dir=allowed-proc-mount-types-psp-policy" \
-    -R kubewarden/policies
-```
-
-Therefore, the CI will skip the PR to update the files and go strait to tagging
-the release the policy artifacts.
+The `policy-version` must be greater than the version in `metadata.yml`. If you
+omit `policy-version`, release-drafter computes the next version.
 
 > [!NOTE]
 > The `trigger-policy-release.yaml` CI can also be trigged in the Github UI.
 
-The release CI flow is something like this:
+## First release of a policy
+
+A new policy, or a policy imported from another repository, has a version in
+`metadata.yml` with no tag. The automation cannot compute a next version
+without a previous tag, so a maintainer makes the first release by hand:
+
+1. Make sure that `main` has the version that you want to release in
+   `metadata.yml`, and in `Cargo.toml` for a Rust policy.
+2. Create the tag on `main` and push it:
+
+   ```console
+   git tag -a <policy-name>/v<version> -m "Release version <policy-name>/v<version>"
+   git push origin <policy-name>/v<version>
+   ```
+
+3. The push starts `release.yml`. The run fails if the version in the tag
+   does not match the version in `metadata.yml`.
+
+From the next version on, the automation opens release PRs for the policy.
+
+> [!WARNING]
+> Do not push tags from another repository when you import a policy. Each
+> tag push starts a release, and the tag commits do not exist in this
+> repository. Make the first release by hand, with a version greater than
+> the last version released elsewhere.
+
+## Release flow
 
 ```mermaid
 flowchart TD
 
-A[Trigger trigger-policy-release.yaml ] --> B{CI inputs has version}
+A[trigger-policy-release.yaml runs] --> B{Tag for current version exists}
 
-B -->|Yes| C[Open PR updating version in files]
-B -->|No| D[Trigger the release-tag.yaml to create the tag]
-D --> E[Tag created]
-E --> F[Trigger release.yaml]
-C --> G[PR merged]
-G --> D
-F --> H[Policy released]
-I[User push a new tag] --> E
+B -->|Yes| C[Open PR that bumps the version]
+B -->|No| D[Skip policy, print notice]
+C --> E[PR merged]
+E --> F[release-tag.yaml creates the tag]
+F --> G[release.yml builds and publishes]
+H[Maintainer pushes a tag by hand] --> G
 ```
 
 ## Publish the 'latest' tag of one policy

@@ -48,6 +48,28 @@ jobs:
           fi
           declare -p policies_working_dirs # for debug
 
+          # This workflow never creates a tag. A tag comes from one of two places:
+          #   - release-tag.yaml, after the merge of the PR that this workflow opens
+          #   - a maintainer, by hand, for the first release of a policy
+          # release-drafter computes the next version from the PRs merged since
+          # the tag of the current version. Without that tag there is nothing
+          # to compute from, so the policy is skipped.
+          # An explicit policy-version input skips this check. The version
+          # guard in the open-release-pr job still rejects a downgrade.
+          if [ -z "${{ inputs.policy-version }}" ]; then
+            tagged_policies_working_dirs=()
+            for policy_working_dir in "${policies_working_dirs[@]}"; do
+              policy_basename=$(basename "$policy_working_dir")
+              policy_version=$(yq -r '.annotations."io.kubewarden.policy.version"' "$policy_working_dir/metadata.yml")
+              if [ -z "$(git tag -l "$policy_basename/v$policy_version")" ]; then
+                echo "::notice title=No tag for current version::$policy_basename v$policy_version has no tag, so it was never released from this repository. Push the tag $policy_basename/v$policy_version by hand to make the first release. Automation takes over from the next version."
+                continue
+              fi
+              tagged_policies_working_dirs+=("$policy_working_dir")
+            done
+            policies_working_dirs=("${tagged_policies_working_dirs[@]}")
+          fi
+
           policy_working_dirs=$(jq --compact-output --null-input \
             '$ARGS.positional | unique' \
             --args -- "${policies_working_dirs[@]}")
@@ -59,6 +81,8 @@ jobs:
     name: "Open PR to release policy"
     runs-on: ubuntu-latest
     needs: calculate-policy-matrix
+    # An empty matrix is an error for GitHub. Skip the job when every policy was filtered out.
+    if: ${{ needs.calculate-policy-matrix.outputs.policy_working_dirs != '[]' }}
     strategy:
       fail-fast: false
       # limit the number of jobs to avoid rate limits errors from Github API
@@ -88,12 +112,12 @@ jobs:
         with:
           policy-working-dir: "${{ matrix.policy-working-dir }}"
 
-      - name: Check if there is a tag to the version from metadata file.
+      - name: Check the requested version
         id: get-expected-version
         shell: bash
         run: |
           if [ ! -z "${{ inputs.policy-version }}" ]; then
-            semver_result=$(semver compare ${{ steps.policy-info.outputs.policy-version }} ${{ inputs.policy-version }}) 
+            semver_result=$(semver compare ${{ steps.policy-info.outputs.policy-version }} ${{ inputs.policy-version }})
             if [ "$semver_result" == "1" ]; then
               echo "::error title=Invalid version::Cannot downgrade a policy version"
               exit 1
@@ -101,18 +125,7 @@ jobs:
             echo "version=${{ inputs.policy-version }}" >> $GITHUB_OUTPUT
             exit 0
           fi
-          # If there is no tag with the current version in the metadata file,
-          # the previous version of the policy is missing. It looks like that
-          # the policy is bein released for the first time. Then, release
-          # drafter should use the current version already set in the policy.
-          # Otherwise, let's release-drafter calculate the version for us based
-          # on the PRs merged.
-          policy_tag=$(git tag -l  $(basename ${{ matrix.policy-working-dir }})/v${{ steps.policy-info.outputs.policy-version }})
-          if [ -z "$policy_tag" ]; then
-            # No tag, let's use the version from the policy
-            echo "version=${{ steps.policy-info.outputs.policy-version }}" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+          # Let release-drafter calculate the version based on the PRs merged.
           echo "version=''" >> $GITHUB_OUTPUT
 
       - name: Create draft release and calculate version
@@ -131,17 +144,7 @@ jobs:
             exit 1
           fi
 
-      # If there is version lacking a tag, we do not need to run updatecli because
-      # the script will not update the metadata.yaml file. Therefore, the tag
-      # is the only thing missing
-      - name: Trigger tagging workflow
-        if: ${{ steps.get-expected-version.outputs.version == steps.policy-info.outputs.policy-version }}
-        run: gh workflow run release-tag.yaml --field  "policy-working-dir=${{matrix.policy-working-dir }}"
-        env:
-          GH_TOKEN: ${{ github.token }}
-
       - name: Create values.yaml for Updatecli based on release drafter release and policy information
-        if: ${{ steps.get-expected-version.outputs.version != steps.policy-info.outputs.policy-version }}
         run: |
           cat <<EOF > values.yaml
           github:
@@ -155,7 +158,6 @@ jobs:
           EOF
 
       - name: Open PR with updatecli
-        if: ${{ steps.get-expected-version.outputs.version != steps.policy-info.outputs.policy-version }}
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |-
