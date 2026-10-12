@@ -29,32 +29,28 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0 # checkout all history to do git diff
+          fetch-depth: 0 # checkout all tags
       - name: calculate which policies need a CI job
         id: calculate-policy-dirs
         shell: bash
         run: |
           if [ -z "${{inputs.policy-working-dir}}" ]; then
             # All policies must be released (scheduled run or workflow_dispatch with no specific policy)
-            git remote -v
             policies_working_dirs=($(find policies -maxdepth 2 -name Makefile -exec dirname '{}' \;))
-
-            declare -p policies_working_dirs # for debug
-            policy_working_dirs=$(jq --compact-output --null-input \
-              '$ARGS.positional | unique' \
-              --args -- "${policies_working_dirs[@]}")
           else
             policy_working_dir=policies/${{ inputs.policy-working-dir }}
             if [ ! -d "$policy_working_dir" ]; then
-              echo "$policy_working_dir does not exist"
               echo "::error title=Invalid inputs::$policy_working_dir does not exist"
               exit 1;
             fi
-            # Release a single policy 
-            policies_working_dirs=("policies/${{ inputs.policy-working-dir }}")
-            declare -p policies_working_dirs # for debug
-            policy_working_dirs=$(jq --compact-output --null-input '$ARGS.positional | unique' --args -- "${policies_working_dirs[@]}")
+            # Release a single policy
+            policies_working_dirs=("$policy_working_dir")
           fi
+          declare -p policies_working_dirs # for debug
+
+          policy_working_dirs=$(jq --compact-output --null-input \
+            '$ARGS.positional | unique' \
+            --args -- "${policies_working_dirs[@]}")
 
           echo "policy_working_dirs=$policy_working_dirs"
           echo "policy_working_dirs=$policy_working_dirs" >> $GITHUB_OUTPUT
