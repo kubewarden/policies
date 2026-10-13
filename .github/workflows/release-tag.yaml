@@ -124,10 +124,3 @@ jobs:
         run: gh workflow run release.yml --ref "$VERSION"
         env:
           GH_TOKEN: ${{ github.token }}
-
-      - name: Delete branch corresponding to the PR
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.ref != 'main'
-        run: |
-          git push origin --delete ${{ github.event.pull_request.head.ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
