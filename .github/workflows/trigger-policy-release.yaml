@@ -95,7 +95,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
 
-      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: generate-token
         with:
           app-id: ${{ secrets.APP_ID }}
@@ -124,7 +124,7 @@ jobs:
       # based on the PRs merged since the last release.
       - name: Create draft release and calculate version
         id: create-release
-        uses: release-drafter/release-drafter@72967cdc98ddd3160f1fc3dff619de365e137dd0 # v7.9.0
+        uses: release-drafter/release-drafter@978bb0b30c5ee8cdd332ced253758157150d43f0 # v7.10.0
         with:
           config-name: "release-drafter-${{ steps.policy-info.outputs.policy-basename }}.yml"
           version: ${{ inputs.policy-version }}
