@@ -257,6 +257,81 @@ the policy catalog.
 > tag pushed with `GITHUB_TOKEN`, so `release-tag.yaml` must start the run
 > itself, with `gh workflow run release.yml --ref <tag>`.
 
+# Maintainer Scripts
+
+The `hack/` directory holds scripts for maintainers. These scripts run the
+release CI from the command line. Both scripts need the `gh` CLI. Log in
+with write access to the repository before you run them.
+
+## `hack/release-all-policies.sh`
+
+This script bumps the version of every policy. It then starts one release
+PR for each policy. It needs the `yq` tool.
+
+The script reads the `policies/*/metadata.yml` files. For each file, it
+reads the current `io.kubewarden.policy.version` annotation and bumps it by
+the type you give. Then it runs the `trigger-policy-release.yaml` workflow
+for that policy.
+
+```console
+hack/release-all-policies.sh --bump patch --dry-run
+hack/release-all-policies.sh --bump patch --repo kubewarden/policies
+```
+
+| Flag        | Description                                                                   |
+| ----------- | ------------------------------------------------------------------------------ |
+| `--bump`    | Required. Give one value: `major`, `minor`, or `patch`.                       |
+| `--repo`    | Optional. Give the target repository. The default is the current repository. |
+| `--dry-run` | Print the actions. Do not start any workflow.                                |
+
+## `hack/merge-green-prs.sh`
+
+This script merges open PRs when all their checks pass. It does not merge
+draft PRs. After it merges a PR, it deletes the branch. It needs the `jq`
+tool.
+
+By default, the script only considers PRs from two automation bots:
+`app/kubewarden-auth-token-generator` and `app/renovate`. These bots open
+the version-bump PRs that `release-all-policies.sh` starts.
+
+The script skips a PR in these cases:
+
+- The PR has merge conflicts.
+- GitHub has not yet computed if the PR can merge.
+- A check on the PR failed.
+- A check on the PR is still pending.
+
+At the end, the script prints a summary. The summary lists how many PRs
+fall into each case above.
+
+```console
+hack/merge-green-prs.sh --dry-run
+hack/merge-green-prs.sh --repo kubewarden/policies
+```
+
+| Flag        | Description                                                                    |
+| ----------- | --------------------------------------------------------------------------------|
+| `--repo`    | Optional. Give the target repository. The default is the current repository.  |
+| `--author`  | Optional. Give one author login. Repeat this flag for more than one author.   |
+| `--all`     | Consider every open, non-draft PR. Ignore the author.                         |
+| `--dry-run` | Print what the script would merge and delete. Make no changes.                |
+
+> [!WARNING]
+> If you use `--all`, the script also merges PRs from people, not only bots.
+> Review every open PR yourself before you use this flag.
+
+## Releasing all policies
+
+Follow these steps to bump and release every policy:
+
+1. Run `hack/release-all-policies.sh --bump <type>`. This step opens one
+   version-bump PR for each policy.
+2. Wait until CI marks each PR green.
+3. Run `hack/merge-green-prs.sh`. This step merges the green PRs and
+   deletes their branches.
+
+Each merge then starts the tag and release CI described above.
+
 # Tag Pattern
 
 The CI creates tags using the following logic based on the subdirectory under
