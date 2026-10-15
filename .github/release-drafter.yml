@@ -29,6 +29,11 @@ name-template: "v$RESOLVED_VERSION"
 template: |
   $CHANGES
 
+# Larger history pages and fewer associated PRs per commit lower the number of
+# GitHub API calls for each policy. The defaults are 15 and 5.
+history-limit: 100
+pull-request-limit: 2
+
 autolabeler:
   # Tag any PR with "!" in the subject as major update. In other words, breaking change
   - label: "kind/breaking-change"
