@@ -3,13 +3,13 @@ module github.com/kubewarden/policies/policies/cel-policy
 go 1.26.0
 
 require (
-	cel.dev/cel-go v0.32.0
+	cel.dev/cel-go v0.33.2
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/kubewarden/k8s-objects v1.29.0-kw1
 	github.com/kubewarden/policy-sdk-go v0.13.1
 	github.com/opencontainers/image-spec v1.1.1
 	github.com/stretchr/testify v1.12.1
-	k8s.io/api v0.37.1
+	k8s.io/api v0.37.2
 	k8s.io/apiserver v1.35.0
 )
 
@@ -87,6 +87,6 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20261012220534-4341edf3f941 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
-	k8s.io/apimachinery v0.37.1
-	k8s.io/kubernetes v1.37.1
+	k8s.io/apimachinery v0.37.2
+	k8s.io/kubernetes v1.37.2
 )
