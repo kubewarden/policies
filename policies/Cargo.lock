@@ -969,9 +969,9 @@ dependencies = [
 
 [[package]]
 name = "k8s-openapi"
-version = "0.28.0"
+version = "0.29.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9c6922f6afe80418dd6019818af5d0d34584c371780ff09b9752370c25b4abb"
+checksum = "ab0d13801242174b1f3966907c3f32039f2d6b36c7ce82c61225d66ed5d1eb70"
 dependencies = [
  "base64 0.22.1",
  "jiff",
@@ -982,15 +982,15 @@ dependencies = [
 
 [[package]]
 name = "k8s-openapi-codegen-common"
-version = "0.28.0"
+version = "0.29.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "01ecbb9884316e5fbd87befb4ee8d41b6d1f589d83d56f0a88608be6159cbe8d"
+checksum = "930df2e75c235b05fd8f19327fa3b72134080f3e9693ae64c1dafda2b6f7a962"
 
 [[package]]
 name = "k8s-openapi-derive"
-version = "0.28.0"
+version = "0.29.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4da3836874caf121054b0bf11c3438f72a366fa717ffe7e2b2376989021d39a7"
+checksum = "0c8a531e8feccf15879524bcbd72d56d9ebb9adafa21f6b4640e948d2c9036b6"
 dependencies = [
  "k8s-openapi-codegen-common",
  "proc-macro2",
@@ -1015,9 +1015,9 @@ checksum = "a4933f3f57a8e9d9da04db23fb153356ecaf00cbd14aee46279c33dc80925c37"
 
 [[package]]
 name = "kubewarden-policy-sdk"
-version = "0.17.3"
+version = "0.18.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8fe472cdc6565b1aaf89d0a3e931f91cb26652066fc7e086d50872d0af9dab5b"
+checksum = "2870a98a38d90a76e57c6e708ca1439c27d862fe17fe83a32ae4d50b4df12369"
 dependencies = [
  "cfg-if",
  "chrono",
@@ -1029,7 +1029,6 @@ dependencies = [
  "oci-spec",
  "serde",
  "serde_json",
- "serde_yaml",
  "slog",
  "thiserror",
  "url",
@@ -1170,13 +1169,13 @@ checksum = "521739c6d2bac4aa25192232afe6841231376b2b26d4d9fae5ecf8ca5772e441"
 
 [[package]]
 name = "num-derive"
-version = "0.4.2"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed3955f1a9c7c0c15e092f9c887db08b1fc683305fdf6eb6684f22555355e202"
+checksum = "e4e98dc3b890f6c23a0f9d3d491a2823d0dea0fa656302a13dd225fa924112a8"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.119",
+ "syn 3.0.9",
 ]
 
 [[package]]
