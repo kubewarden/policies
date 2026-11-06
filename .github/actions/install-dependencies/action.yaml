@@ -39,8 +39,8 @@ runs:
         #!/bin/bash
         set -e
 
-        SYFT_VERSION="1.28.0"
-        SYFT_CHECKSUM="3edee7fe1ceb1f78360e547f57048930d57f00c7ec3d0b8bdfb902805f048468"
+        SYFT_VERSION="1.57.0"
+        SYFT_CHECKSUM="9c077a7d43029b3b13e98a8db720661e700c4d58db6352153a06395ae4a2a704"
         INSTALL_DIR=$HOME/.syft
 
         mkdir -p $INSTALL_DIR
