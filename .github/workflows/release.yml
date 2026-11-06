@@ -24,6 +24,7 @@ jobs:
       policy-working-dir: ${{ steps.calculate-vars.outputs.policy_working_dir }}
       policy-version: ${{ steps.calculate-vars.outputs.policy_version }}
       policy-name: ${{ steps.calculate-vars.outputs.policy_name }}
+      policy-language: ${{ steps.calculate-vars.outputs.policy_language }}
       has-artifacthub-metadata: ${{ steps.calculate-vars.outputs.has_artifacthub_metadata }}
       skip-publishing: ${{ steps.calculate-vars.outputs.skip_publishing }}
     steps:
@@ -56,10 +57,14 @@ jobs:
           fi
           policy_working_dir=$( find policies -type d -name "$policy_name")
 
-          policy_language=""
           if [ ! -d "$policy_working_dir" ]; then
             echo "::error title=Policy not found::there is no directory 'policies/$policy_name'"
             exit 1;
+          fi
+
+          policy_language=other
+          if [ -f "$policy_working_dir/Cargo.toml" ]; then
+            policy_language=rust
           fi
 
           policy_ociUrl=$(yq -r '.annotations."io.kubewarden.policy.ociUrl"' $policy_working_dir/metadata.yml)
@@ -90,10 +95,12 @@ jobs:
           echo "policy_name=$policy_name"
           echo "policy_working_dir=$policy_working_dir"
           echo "policy_version=$policy_version"
+          echo "policy_language=$policy_language"
 
           echo "policy_name=$policy_name" >> $GITHUB_OUTPUT
           echo "policy_working_dir=$policy_working_dir" >> $GITHUB_OUTPUT
           echo "policy_version=$policy_version" >> $GITHUB_OUTPUT
+          echo "policy_language=$policy_language" >> $GITHUB_OUTPUT
 
           # Check for ArtifactHub metadata, to skip if none
           if yq -e '.annotations."io.artifacthub.displayName"' $policy_working_dir/metadata.yml >/dev/null; then
@@ -173,15 +180,17 @@ jobs:
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
+        with:
+          install-rust-sbom-tools: ${{ needs.calculate-policy-from-tag.outputs.policy-language == 'rust' }}
 
       - name: Build Wasm module
         shell: bash
-        run: make -C ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }} policy.wasm
+        run: make -C ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }} policy.wasm CARGO_BUILD="auditable build"
 
       - name: Annotate Wasm module
         shell: bash
         run: |
-          make -C ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }} annotated-policy.wasm
+          make -C ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }} annotated-policy.wasm CARGO_BUILD="auditable build"
 
       - name: Generate the SBOM files
         shell: bash
@@ -189,10 +198,37 @@ jobs:
         run: |
           # SBOM files should have "sbom" in the name due the CLO monitor
           # https://clomonitor.io/docs/topics/checks/#software-bill-of-materials-sbom
+          syft_extra_args=()
+          is_rust_policy=false
+          if [ -f Cargo.toml ]; then
+            is_rust_policy=true
+            # Syft cannot read the cargo-auditable data in a Wasm file.
+            # auditable2cdx converts it to CycloneDX, which syft can read.
+            # The list is a superset of the compiled crates, because
+            # cargo-auditable takes it from `cargo metadata`, which is less
+            # exact than the build. See CONTRIBUTING.md, "SBOM of a Rust
+            # policy".
+            if ! auditable2cdx annotated-policy.wasm > policy.cdx.json; then
+              echo "::error title=No crate list::The Wasm module has no cargo-auditable data. Make sure that the build ran 'cargo auditable build'."
+              exit 1
+            fi
+            syft_extra_args=(--select-catalogers +sbom-cataloger)
+          fi
+
           syft scan --output spdx-json=policy-sbom.spdx.json \
-            --source-name $(yq '.annotations["io.kubewarden.policy.title"] + "-" + .annotations["io.kubewarden.policy.version"]' metadata.yml) \
+            --source-name "$(yq '.annotations["io.kubewarden.policy.title"] + "-" + .annotations["io.kubewarden.policy.version"]' metadata.yml)" \
             --source-version ${{ github.sha }} \
+            --exclude './target/**' \
+            "${syft_extra_args[@]}" \
             -vv dir:.
+
+          if [ "$is_rust_policy" = true ]; then
+            cargo_package_count=$(jq '[.packages[]? | select(any(.externalRefs[]?; .referenceLocator | startswith("pkg:cargo/")))] | length' policy-sbom.spdx.json)
+            if [ "${cargo_package_count}" -eq 0 ]; then
+              echo "::error title=Empty SBOM::The SBOM of the Rust policy has no cargo packages. Make sure that the build ran 'cargo auditable build'."
+              exit 1
+            fi
+          fi
 
       - name: Sign BOM file
         shell: bash

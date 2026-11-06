@@ -3,6 +3,11 @@ description: "Install all the binaries needed inside of GH action"
 branding:
   icon: "package"
   color: "blue"
+inputs:
+  install-rust-sbom-tools:
+    description: "If true, install cargo-auditable and auditable2cdx. The release uses them to make the SBOM of Rust policies."
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -76,6 +81,15 @@ runs:
         rustup toolchain install stable --profile minimal --target wasm32-wasip1
         rustup override set stable
       shell: bash
+    - name: Install Rust SBOM tools
+      if: ${{ inputs.install-rust-sbom-tools == 'true' }}
+      shell: bash
+      run: |
+        set -e
+        CARGO_AUDITABLE_VERSION="0.7.7"
+        AUDITABLE2CDX_VERSION="0.1.0"
+        cargo install --locked --version "${CARGO_AUDITABLE_VERSION}" cargo-auditable
+        cargo install --locked --version "${AUDITABLE2CDX_VERSION}" auditable2cdx
     - name: Install tinygo
       shell: bash
       run: |
