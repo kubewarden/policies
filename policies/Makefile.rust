@@ -2,16 +2,22 @@ ROOT_DIR ?= $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 POLICY_DIR := $(notdir $(patsubst %/,%,$(ROOT_DIR)))
 TARGET_DIR ?= $(CURDIR)/target
 CARGO_GLOBAL_OPTIONS ?= --locked
+# The release sets CARGO_BUILD="auditable build". Then cargo-auditable writes
+# the crate list into the Wasm module, and the release makes the SBOM from that
+# list. Local builds do not need cargo-auditable.
+CARGO_BUILD ?= build
 
 # Find all Rust source files to track as dependencies
 RUST_SOURCES := $(shell find $(CURDIR)/src -name "*.rs" 2>/dev/null)
 
-# Some projects do not have a Cargo.lock, hence we cannot force the presence of Cargo.lock in the Makefile dependencies. 
-# Instead, we will track all Cargo.* files, which includes Cargo.toml and Cargo.lock if it exists.
+# The policies are members of a cargo workspace, so the Cargo.lock is in the
+# workspace root and not in the policy directory. The rule tracks the
+# Cargo.toml of the policy. A change to the workspace Cargo.lock does not start
+# a new build.
 CARGO_FILES := $(shell find $(CURDIR) -name "Cargo.*" 2>/dev/null)
 
 policy.wasm: $(CARGO_FILES) $(RUST_SOURCES)
-	cargo $(CARGO_GLOBAL_OPTIONS) build --target=wasm32-wasip1 --target-dir=$(TARGET_DIR) --release 
+	cargo $(CARGO_BUILD) $(CARGO_GLOBAL_OPTIONS) --target=wasm32-wasip1 --target-dir=$(TARGET_DIR) --release 
 	cp $(TARGET_DIR)/wasm32-wasip1/release/*.wasm $(CURDIR)/policy.wasm
 
 annotated-policy.wasm: policy.wasm metadata.yml

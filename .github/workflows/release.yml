@@ -56,7 +56,6 @@ jobs:
           fi
           policy_working_dir=$( find policies -type d -name "$policy_name")
 
-          policy_language=""
           if [ ! -d "$policy_working_dir" ]; then
             echo "::error title=Policy not found::there is no directory 'policies/$policy_name'"
             exit 1;
@@ -158,6 +157,8 @@ jobs:
       packages: write
       # Required by cosign keyless signing
       id-token: write
+    env:
+      CARGO_BUILD: auditable build
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -173,6 +174,8 @@ jobs:
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
+        with:
+          install-rust-sbom-tools: ${{ hashFiles(format('{0}/Cargo.toml', needs.calculate-policy-from-tag.outputs.policy-working-dir)) != '' }}
 
       - name: Build Wasm module
         shell: bash
@@ -183,16 +186,52 @@ jobs:
         run: |
           make -C ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }} annotated-policy.wasm
 
+      - name: Make the crate list of the Rust policy
+        id: rust-crates
+        if: ${{ hashFiles(format('{0}/Cargo.toml', needs.calculate-policy-from-tag.outputs.policy-working-dir)) != '' }}
+        shell: bash
+        working-directory: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
+        run: |
+          # Syft cannot read the cargo-auditable data in a Wasm file.
+          # auditable2cdx converts it to CycloneDX, which syft can read.
+          # The list is a superset of the compiled crates, because
+          # cargo-auditable takes it from `cargo metadata`, which is less
+          # exact than the build. See CONTRIBUTING.md, "SBOM of a Rust
+          # policy".
+          if ! auditable2cdx annotated-policy.wasm > policy.cdx.json; then
+            echo "::error title=No crate list::The Wasm module has no cargo-auditable data. Make sure that the build ran 'cargo auditable build'."
+            exit 1
+          fi
+          # In a directory scan, syft reads SBOM files only if you select the
+          # sbom cataloger.
+          echo "syft-extra-args=--select-catalogers +sbom-cataloger" >> "$GITHUB_OUTPUT"
+
       - name: Generate the SBOM files
         shell: bash
         working-directory: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
         run: |
           # SBOM files should have "sbom" in the name due the CLO monitor
           # https://clomonitor.io/docs/topics/checks/#software-bill-of-materials-sbom
+
+          # Do not quote this expression. For a policy that is not a Rust policy,
+          # it is empty, and quotes would give syft an empty argument.
           syft scan --output spdx-json=policy-sbom.spdx.json \
-            --source-name $(yq '.annotations["io.kubewarden.policy.title"] + "-" + .annotations["io.kubewarden.policy.version"]' metadata.yml) \
+            --source-name "$(yq '.annotations["io.kubewarden.policy.title"] + "-" + .annotations["io.kubewarden.policy.version"]' metadata.yml)" \
             --source-version ${{ github.sha }} \
+            --exclude './target/**' \
+            ${{ steps.rust-crates.outputs.syft-extra-args }} \
             -vv dir:.
+
+      - name: Check the SBOM of the Rust policy
+        shell: bash
+        working-directory: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
+        if: ${{ steps.rust-crates.outcome == 'success' }}
+        run: |
+          cargo_package_count=$(jq '[.packages[]? | select(any(.externalRefs[]?; .referenceLocator | startswith("pkg:cargo/")))] | length' policy-sbom.spdx.json)
+          if [ "${cargo_package_count}" -eq 0 ]; then
+            echo "::error title=Empty SBOM::The SBOM of the Rust policy has no cargo packages. Make sure that the build ran 'cargo auditable build'."
+            exit 1
+          fi
 
       - name: Sign BOM file
         shell: bash
