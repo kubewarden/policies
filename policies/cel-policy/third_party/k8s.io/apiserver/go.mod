@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	cel.dev/cel-go v0.33.2
-	google.golang.org/genproto/googleapis/api v0.0.0-20261026165753-2ffab32bce7e
+	google.golang.org/genproto/googleapis/api v0.0.0-20261104224025-d1e00e9f33ab
 	k8s.io/apimachinery v0.37.2
 )
 
