@@ -10,7 +10,7 @@ questions:
   label: Description
   required: false
   hide_input: true
-  type: map
+  type: string
   variable: description
 - default: []
   description: A list of labels that cannot be used
