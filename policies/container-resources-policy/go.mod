@@ -10,7 +10,7 @@ require (
 	github.com/google/gofuzz v1.2.0
 	github.com/kubewarden/k8s-objects v1.29.0-kw1
 	github.com/kubewarden/policy-sdk-go v0.13.1
-	github.com/spf13/pflag v1.0.10
+	github.com/spf13/pflag v1.1.0
 	github.com/stretchr/testify v1.12.1
 	github.com/wapc/wapc-guest-tinygo v0.3.3
 	gopkg.in/inf.v0 v0.9.1
