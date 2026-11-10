@@ -12,6 +12,17 @@
     "automerge": true
   },
   "ignorePaths": ["policies/kyverno-dsl-policy/go.mod"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update the tool versions and checksums in versions.env",
+      "managerFilePatterns": ["/^versions\\.env$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?\\s*\\n\\w+_VERSION=\"(?<currentValue>[^\"]+)\"",
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))? digestVersion=(?<currentValue>\\S+)\\s*\\n\\w+_CHECKSUM=\"(?<currentDigest>[a-f0-9]{64})\""
+      ]
+    }
+  ],
   "packageRules": [
     {
       "description": "bundle Rust dependencies updates together",
@@ -52,6 +63,21 @@
       "matchDepNames": ["go"],
       "groupName": "Go toolchain",
       "groupSlug": "go-toolchain",
+      "semanticCommits": "enabled",
+      "semanticCommitType": "build"
+    },
+    {
+      "description": "keep OPA on 0.x. OPA 1.x reads Rego v1 syntax by default, and the Rego policies use v0 syntax",
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": ["open-policy-agent/opa"],
+      "allowedVersions": "<1.0.0"
+    },
+    {
+      "description": "bundle the tool updates of versions.env together",
+      "matchManagers": ["custom.regex"],
+      "matchFileNames": ["versions.env"],
+      "groupName": "CI tools",
+      "groupSlug": "ci-tools",
       "semanticCommits": "enabled",
       "semanticCommitType": "build"
     }

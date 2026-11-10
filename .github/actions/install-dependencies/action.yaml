@@ -18,14 +18,13 @@ runs:
       run: |
         #!/bin/bash
         set -e
+        source "${GITHUB_ACTION_PATH}/../../../versions.env"
 
-        KWCTL_VERSION="v1.35.0"
-        KWCTL_CHECKSUM="2f518033989a897c2f502a2f4fa90b3ca666eee976a82d045abdea5022330341"
         ASSET="kwctl-linux-x86_64"
         INSTALL_DIR=$HOME/.kwctl
 
         mkdir -p $INSTALL_DIR
-        curl -sL https://github.com/kubewarden/kubewarden-controller/releases/download/${KWCTL_VERSION}/$ASSET.zip -o $INSTALL_DIR/$ASSET.zip
+        curl -sL https://github.com/kubewarden/adm-controller/releases/download/${KWCTL_VERSION}/$ASSET.zip -o $INSTALL_DIR/$ASSET.zip
         echo "${KWCTL_CHECKSUM}  $INSTALL_DIR/$ASSET.zip" | sha256sum -c -
         unzip -o $INSTALL_DIR/$ASSET.zip -d $INSTALL_DIR
         rm $INSTALL_DIR/$ASSET.zip
@@ -43,14 +42,13 @@ runs:
       run: |
         #!/bin/bash
         set -e
+        source "${GITHUB_ACTION_PATH}/../../../versions.env"
 
-        SYFT_VERSION="1.57.0"
-        SYFT_CHECKSUM="9c077a7d43029b3b13e98a8db720661e700c4d58db6352153a06395ae4a2a704"
         INSTALL_DIR=$HOME/.syft
 
         mkdir -p $INSTALL_DIR
 
-        curl -sL https://github.com/anchore/syft/releases/download/v${SYFT_VERSION}/syft_${SYFT_VERSION}_linux_amd64.tar.gz -o $INSTALL_DIR/syft.tar.gz
+        curl -sL https://github.com/anchore/syft/releases/download/${SYFT_VERSION}/syft_${SYFT_VERSION#v}_linux_amd64.tar.gz -o $INSTALL_DIR/syft.tar.gz
         echo "${SYFT_CHECKSUM}  $INSTALL_DIR/syft.tar.gz" | sha256sum -c -
         tar xvf $INSTALL_DIR/syft.tar.gz -C $INSTALL_DIR
         rm $INSTALL_DIR/syft.tar.gz
@@ -61,19 +59,18 @@ runs:
       run: |
         #!/bin/bash
         set -e
+        source "${GITHUB_ACTION_PATH}/../../../versions.env"
 
-        BINARYEN_VERSION="116"
-        BINARYEN_CHECKSUM="c55b74f3109cdae97490faf089b0286d3bba926bb6ea5ed00c8c784fc53718fd"
         INSTALL_DIR=$HOME/.binaryen
 
         mkdir -p $INSTALL_DIR
 
-        curl -sL https://github.com/WebAssembly/binaryen/releases/download/version_${BINARYEN_VERSION}/binaryen-version_${BINARYEN_VERSION}-x86_64-linux.tar.gz -o $INSTALL_DIR/binaryen.tar.gz
+        curl -sL https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz -o $INSTALL_DIR/binaryen.tar.gz
         echo "${BINARYEN_CHECKSUM}  $INSTALL_DIR/binaryen.tar.gz" | sha256sum -c -
         tar xvf $INSTALL_DIR/binaryen.tar.gz -C $INSTALL_DIR
-        mv $INSTALL_DIR/binaryen-version_${BINARYEN_VERSION}/bin/* $INSTALL_DIR
+        mv $INSTALL_DIR/binaryen-${BINARYEN_VERSION}/bin/* $INSTALL_DIR
         rm $INSTALL_DIR/binaryen.tar.gz
-        rm -rf $INSTALL_DIR/binaryen-version_${BINARYEN_VERSION}
+        rm -rf $INSTALL_DIR/binaryen-${BINARYEN_VERSION}
 
         echo $INSTALL_DIR >> $GITHUB_PATH
     - name: Setup rust toolchain
@@ -86,14 +83,12 @@ runs:
       shell: bash
       run: |
         set -e
-        CARGO_AUDITABLE_VERSION="0.7.7"
-        CARGO_AUDITABLE_CHECKSUM="7676443367c5e33d9fb22acef63cccb5e9202de12dae1b0579995eb3e2bc7a18"
-        AUDITABLE2CDX_VERSION="0.1.0"
+        source "${GITHUB_ACTION_PATH}/../../../versions.env"
         ASSET="cargo-auditable-x86_64-unknown-linux-musl"
         INSTALL_DIR=$HOME/.cargo-auditable
 
         mkdir -p $INSTALL_DIR
-        curl -sL https://github.com/rust-secure-code/cargo-auditable/releases/download/v${CARGO_AUDITABLE_VERSION}/${ASSET}.tar.xz -o $INSTALL_DIR/${ASSET}.tar.xz
+        curl -sL https://github.com/rust-secure-code/cargo-auditable/releases/download/${CARGO_AUDITABLE_VERSION}/${ASSET}.tar.xz -o $INSTALL_DIR/${ASSET}.tar.xz
         echo "${CARGO_AUDITABLE_CHECKSUM}  $INSTALL_DIR/${ASSET}.tar.xz" | sha256sum -c -
         tar xJf $INSTALL_DIR/${ASSET}.tar.xz --strip-components=1 -C $INSTALL_DIR
         rm $INSTALL_DIR/${ASSET}.tar.xz
@@ -105,10 +100,9 @@ runs:
       shell: bash
       run: |
         set -e
-        TINYGO_VERSION="0.42.0"
-        TINYGO_CHECKSUM="2082c4762fea6d5cc4cd1f4a243eaacf07b12f576717d4c6b74828bd163cb563"
-        TINYGO_DEB="tinygo_${TINYGO_VERSION}_amd64.deb"
-        wget https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/${TINYGO_DEB}
+        source "${GITHUB_ACTION_PATH}/../../../versions.env"
+        TINYGO_DEB="tinygo_${TINYGO_VERSION#v}_amd64.deb"
+        wget https://github.com/tinygo-org/tinygo/releases/download/${TINYGO_VERSION}/${TINYGO_DEB}
         echo "${TINYGO_CHECKSUM}  ${TINYGO_DEB}" | sha256sum -c -
         sudo dpkg -i ${TINYGO_DEB}
         rm ${TINYGO_DEB}
@@ -127,8 +121,7 @@ runs:
       shell: bash
       run: |
         set -e
-        OPA_VERSION="v0.65.0"
-        OPA_CHECKSUM="cd6b0b2d762571a746f0261890b155e6dd71cca90dad6b42b6fcf6dd7f619f08"
+        source "${GITHUB_ACTION_PATH}/../../../versions.env"
         INSTALL_DIR=$HOME/.opa
         mkdir -p $INSTALL_DIR
         curl -sL https://github.com/open-policy-agent/opa/releases/download/${OPA_VERSION}/opa_linux_amd64_static -o $INSTALL_DIR/opa
