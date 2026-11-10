@@ -1,3 +1,11 @@
+# The CI action installs TinyGo from the same versions.env, so the local
+# Docker image and CI use the same TinyGo version. Each TinyGo policy
+# Makefile is a symlink to this file. realpath follows the symlink, so the
+# path is relative to policies/ and not to the policy. This line must stay
+# before the include at the end, because the include changes MAKEFILE_LIST.
+VERSIONS_ENV := $(abspath $(dir $(realpath $(lastword $(MAKEFILE_LIST))))../versions.env)
+TINYGO_VERSION := $(patsubst v%,%,$(shell . $(VERSIONS_ENV) && echo "$$TINYGO_VERSION"))
+
 POLICY_DIR := $(notdir $(patsubst %/,%,$(CURDIR)))
 
 policy.wasm: 
@@ -6,11 +14,12 @@ policy.wasm:
 ifeq ($(CI),true)
 	tinygo build -o policy.wasm -target=wasi -no-debug .
 else
+	$(if $(TINYGO_VERSION),,$(error TINYGO_VERSION is empty. Make sure that $(VERSIONS_ENV) exists and sets TINYGO_VERSION))
 	docker run \
 		--rm \
 		-e GOFLAGS="-buildvcs=false" \
 		-v $(ROOT_DIR)/$(POLICY_DIR):/src:z \
-		-w /src tinygo/tinygo:0.42.0 \
+		-w /src tinygo/tinygo:$(TINYGO_VERSION) \
 		tinygo build -o policy.wasm -target=wasi -no-debug .
 endif
 
