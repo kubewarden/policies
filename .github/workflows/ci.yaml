@@ -70,6 +70,21 @@ jobs:
             if echo "$git_files" | grep -qE '^policies/Makefile\.p-rego$'; then
               policies_working_dirs+=("${rego_policies[@]}")
             fi
+
+            # An update of a CI tool changes no file in `policies/`, but every
+            # policy kind depends on the tools. One policy of each kind keeps
+            # the job count small. The nightly schedule builds all policies. To
+            # build all policies before the merge, run this workflow by hand on
+            # the PR branch.
+            tool_files="$(git diff --no-color --name-only origin/${{ github.base_ref }}...${{ github.sha }} -- versions.env .github/actions/install-dependencies || true)"
+            if [ -n "$tool_files" ]; then
+              policies_working_dirs+=(
+                policies/echo
+                policies/ingress-policy
+                policies/raw-validation-wasi-policy
+                policies/raw-validation-opa-policy
+              )
+            fi
           fi
 
           declare -p policies_working_dirs # for debug
