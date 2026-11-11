@@ -3,6 +3,11 @@ description: "Install all the binaries needed inside of GH action"
 branding:
   icon: "package"
   color: "blue"
+inputs:
+  install-rust-sbom-tools:
+    description: "If true, install cargo-auditable and auditable2cdx. The release uses them to make the SBOM of Rust policies."
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -39,8 +44,8 @@ runs:
         #!/bin/bash
         set -e
 
-        SYFT_VERSION="1.28.0"
-        SYFT_CHECKSUM="3edee7fe1ceb1f78360e547f57048930d57f00c7ec3d0b8bdfb902805f048468"
+        SYFT_VERSION="1.57.0"
+        SYFT_CHECKSUM="9c077a7d43029b3b13e98a8db720661e700c4d58db6352153a06395ae4a2a704"
         INSTALL_DIR=$HOME/.syft
 
         mkdir -p $INSTALL_DIR
@@ -76,6 +81,26 @@ runs:
         rustup toolchain install stable --profile minimal --target wasm32-wasip1
         rustup override set stable
       shell: bash
+    - name: Install Rust SBOM tools
+      if: ${{ inputs.install-rust-sbom-tools == 'true' }}
+      shell: bash
+      run: |
+        set -e
+        CARGO_AUDITABLE_VERSION="0.7.7"
+        CARGO_AUDITABLE_CHECKSUM="7676443367c5e33d9fb22acef63cccb5e9202de12dae1b0579995eb3e2bc7a18"
+        AUDITABLE2CDX_VERSION="0.1.0"
+        ASSET="cargo-auditable-x86_64-unknown-linux-musl"
+        INSTALL_DIR=$HOME/.cargo-auditable
+
+        mkdir -p $INSTALL_DIR
+        curl -sL https://github.com/rust-secure-code/cargo-auditable/releases/download/v${CARGO_AUDITABLE_VERSION}/${ASSET}.tar.xz -o $INSTALL_DIR/${ASSET}.tar.xz
+        echo "${CARGO_AUDITABLE_CHECKSUM}  $INSTALL_DIR/${ASSET}.tar.xz" | sha256sum -c -
+        tar xJf $INSTALL_DIR/${ASSET}.tar.xz --strip-components=1 -C $INSTALL_DIR
+        rm $INSTALL_DIR/${ASSET}.tar.xz
+        echo $INSTALL_DIR >> $GITHUB_PATH
+
+        # auditable2cdx has no prebuilt binary, so it is built from source.
+        cargo install --locked --version "${AUDITABLE2CDX_VERSION}" auditable2cdx
     - name: Install tinygo
       shell: bash
       run: |
