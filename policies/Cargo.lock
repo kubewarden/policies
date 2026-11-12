@@ -1392,7 +1392,7 @@ dependencies = [
 
 [[package]]
 name = "probes-policy"
-version = "1.0.9"
+version = "1.0.10"
 dependencies = [
  "anyhow",
  "k8s-openapi",
