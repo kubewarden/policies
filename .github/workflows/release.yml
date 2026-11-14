@@ -459,7 +459,7 @@ jobs:
       github.repository_owner == 'kubewarden' &&
       needs.calculate-policy-from-tag.outputs.skip-publishing != 'true'
     needs: [calculate-policy-from-tag, release, push-artifacthub]
-    uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@4d25ea5d35d22768786526f592b0f9ba27587c9c # v8.0.0
+    uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@d12b2b18e1f9dbfe15c79c9ecb7149cf956704a7 # v8.1.0
     with:
       policy-name: ${{ needs.calculate-policy-from-tag.outputs.policy-name }}
       policy-working-dir: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
