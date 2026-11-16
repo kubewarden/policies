@@ -313,7 +313,7 @@ jobs:
       - name: Create release
         id: create-release
         if: ${{ ! startsWith(github.ref, 'refs/heads/') }}
-        uses: release-drafter/release-drafter@978bb0b30c5ee8cdd332ced253758157150d43f0 # v7.10.0
+        uses: release-drafter/release-drafter@d1a19e60e81a7e650d00a7de9277f87e439117ea # v7.11.0
         with:
           config-name: "release-drafter-${{ needs.calculate-policy-from-tag.outputs.policy-name }}.yml"
           prerelease: ${{ contains(needs.calculate-policy-from-tag.outputs.policy-version, '-alpha') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-beta') || contains(needs.calculate-policy-from-tag.outputs.policy-version, '-rc') }}
@@ -459,7 +459,7 @@ jobs:
       github.repository_owner == 'kubewarden' &&
       needs.calculate-policy-from-tag.outputs.skip-publishing != 'true'
     needs: [calculate-policy-from-tag, release, push-artifacthub]
-    uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@4d25ea5d35d22768786526f592b0f9ba27587c9c # v8.0.0
+    uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-catalog.yml@d12b2b18e1f9dbfe15c79c9ecb7149cf956704a7 # v8.1.0
     with:
       policy-name: ${{ needs.calculate-policy-from-tag.outputs.policy-name }}
       policy-working-dir: ${{ needs.calculate-policy-from-tag.outputs.policy-working-dir }}
