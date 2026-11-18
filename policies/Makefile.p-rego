@@ -5,11 +5,14 @@ POLICY_TYPE := $(shell grep '^executionMode:' metadata.yml | awk '{print $$2}')
 # `policy_test.rego` or under `tests/`. Both layouts are supported.
 SOURCE_FILES := $(wildcard *.rego) $(wildcard utility/*.rego) $(wildcard tests/*.rego)
 
+# The Rego policies use v0 syntax. OPA 1.x reads v1 syntax by default.
+OPA_FLAGS := --v0-compatible
+
 policy.wasm: $(SOURCE_FILES)
 ifeq ($(POLICY_TYPE), gatekeeper)
-	opa build -t wasm -e policy/violation -o bundle.tar.gz policy.rego
+	opa build $(OPA_FLAGS) -t wasm -e policy/violation -o bundle.tar.gz policy.rego
 else ifeq ($(POLICY_TYPE), opa)
-	opa build -t wasm -e policy/main utility/policy.rego -o bundle.tar.gz policy.rego
+	opa build $(OPA_FLAGS) -t wasm -e policy/main utility/policy.rego -o bundle.tar.gz policy.rego
 else
 	@printf "Please assign POLICY_TYPE to either 'gatekeeper' or 'opa'\n"
 	exit 1
@@ -21,11 +24,11 @@ endif
 
 .PHONY: test
 test:
-	opa test $(SOURCE_FILES)
+	opa test $(OPA_FLAGS) $(SOURCE_FILES)
 
 .PHONY: lint
 lint:
-	opa check --strict $(SOURCE_FILES)
+	opa check $(OPA_FLAGS) --strict $(SOURCE_FILES)
 
 annotated-policy.wasm: policy.wasm metadata.yml
 	kwctl annotate -m metadata.yml -u README.md -o annotated-policy.wasm policy.wasm
@@ -45,4 +48,5 @@ debug:
 	@echo "CURDIR=$(CURDIR)"
 	@echo "POLICY_DIR=$(POLICY_DIR)"
 	@echo "POLICY_TYPE=$(POLICY_TYPE)"
+	@echo "OPA_FLAGS=$(OPA_FLAGS)"
 	@echo "SOURCE_FILES=$(SOURCE_FILES)"

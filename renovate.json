@@ -67,12 +67,6 @@
       "semanticCommitType": "build"
     },
     {
-      "description": "keep OPA on 0.x. OPA 1.x reads Rego v1 syntax by default, and the Rego policies use v0 syntax",
-      "matchManagers": ["custom.regex"],
-      "matchPackageNames": ["open-policy-agent/opa"],
-      "allowedVersions": "<1.0.0"
-    },
-    {
       "description": "bundle the tool updates of versions.env together",
       "matchManagers": ["custom.regex"],
       "matchFileNames": ["versions.env"],
