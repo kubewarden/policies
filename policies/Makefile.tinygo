@@ -8,11 +8,20 @@ TINYGO_VERSION := $(patsubst v%,%,$(shell . $(VERSIONS_ENV) && echo "$$TINYGO_VE
 
 POLICY_DIR := $(notdir $(patsubst %/,%,$(CURDIR)))
 
+# TinyGo 0.43 and later add code to each function that uses defer, so that
+# recover works on WebAssembly. This code reads the current goroutine. The
+# waPC host calls __guest_call outside of a goroutine, so the policy stops
+# with a nil pointer panic. -panic-unwind=none removes this code. A panic then
+# stops the policy, as with TinyGo 0.42. TinyGo versions before 0.44 do not
+# accept this flag. Remove the flag when the policies run in WebAssembly
+# reactor mode.
+TINYGO_BUILD_FLAGS := -target=wasi -no-debug -panic-unwind=none
+
 policy.wasm: 
 # CI is a environment variable set in the GitHub Actions workflow.
 # If we are running in CI, we assume TinyGo is already installed.
 ifeq ($(CI),true)
-	tinygo build -o policy.wasm -target=wasi -no-debug .
+	tinygo build -o policy.wasm $(TINYGO_BUILD_FLAGS) .
 else
 	$(if $(TINYGO_VERSION),,$(error TINYGO_VERSION is empty. Make sure that $(VERSIONS_ENV) exists and sets TINYGO_VERSION))
 	docker run \
@@ -20,7 +29,7 @@ else
 		-e GOFLAGS="-buildvcs=false" \
 		-v $(ROOT_DIR)/$(POLICY_DIR):/src:z \
 		-w /src tinygo/tinygo:$(TINYGO_VERSION) \
-		tinygo build -o policy.wasm -target=wasi -no-debug .
+		tinygo build -o policy.wasm $(TINYGO_BUILD_FLAGS) .
 endif
 
 
