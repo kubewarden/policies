@@ -37,6 +37,11 @@ supports both:
 - in `policy_test.rego` next to `policy.rego`
 - one or more files under `tests/`
 
+The Rego policies use Rego v0 syntax. OPA 1.x reads Rego v1 syntax by
+default. For this reason, `Makefile.p-rego` passes the `--v0-compatible`
+flag to `opa build`, `opa test` and `opa check`. If you run `opa` by hand on
+a policy, add the same flag.
+
 The `e2e-tests` target runs `bats e2e.bats`. Every Rego policy has that file.
 
 ## End-to-End Tests of a Rego Policy
