@@ -3,7 +3,7 @@ module k8s.io/apiserver
 go 1.26.0
 
 require (
-	cel.dev/cel-go v0.33.2
+	cel.dev/cel-go v0.33.4
 	google.golang.org/genproto/googleapis/api v0.0.0-20261110000943-09e21b237f2c
 	k8s.io/apimachinery v0.37.2
 )
